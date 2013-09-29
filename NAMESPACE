@@ -1,1 +1,1 @@
-export(k.read,k.crusius,k.cole,k.macIntyre,z.mix,water.density,o2.saturation)
+export(k.read,k.crusius,k.cole,k.macIntyre,o2.saturation)
