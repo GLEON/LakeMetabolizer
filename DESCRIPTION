@@ -3,7 +3,7 @@ Title: Tools for the analysis of ecosystem metabolism
 Maintainer: Luke Winslow <lawinslow@gmail.com>
 Version: 1.0
 Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
-Description: Example for Hilary.
+Description: Here is an example
 License: GPL (>= 2)
 Depends: rLakeAnalyzer
 Packaged: 2013-08-01 09:09:24 UTC; Luke
