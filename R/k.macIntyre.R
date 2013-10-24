@@ -43,7 +43,7 @@ k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH,
   # Get water temperature data
   if(!missing(wtr)){ 
     wtr <- wtr
-    Ts <- wtr[1]
+    Ts <- wtr[[1]]
   } else {  
     stop("no wtr file available\n")
   }
