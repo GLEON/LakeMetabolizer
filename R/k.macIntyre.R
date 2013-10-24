@@ -17,7 +17,7 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par){
+k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par){
   
   #Constants
   dT <- 0.5   # change in temp for mixed layer depth. Step change in temperature from the surface
@@ -26,6 +26,8 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
   vonK <- 0.41 #von Karman constant
   swRat <- 0.46 # percentage of SW radiation that penetrates the water column
   mnWnd <- 0.2 # minimum wind speed
+  g <- 9.81 # gravity
+  C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
  
   # Get short wave radiation data 
   if(!missing(sw)){ 
@@ -61,6 +63,7 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
   }
   
   # Get long wave radiation data
+ 
   if(!missing(lwnet)){ 
     lwnet <- lwnet
   } else if(!missing(lw)){
@@ -68,11 +71,8 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
     Tk <- Ts+Kelvin # water temperature in Kelvin
     LWo <- S_B*emiss*Tk^4 # long wave out
     lwnet <- lw_in-LWo
-  } else if (!missing(RH) & !missing(airT)){
-    lwnet <- calc.lw.net(dateTime,sw,Ts,lat,atm.press,airT,RH)
-    lwnet <- lwnet[,2]
   } else {  
-    stop("no long wave data available")
+    stop("no longwave radiation available")
   }
   
   # Get wind speed data
@@ -88,7 +88,7 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
 
 
   # calculate sensible and latent heat fluxes
-  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ)
+  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ,2,2)
   C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
@@ -139,7 +139,6 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
   }
   tExp <- thermalExpFromTemp(Ts)
   
-  rho_w= waterDensity_1(T_wtr[,1])
   B1 = H_star*tExp*g
   B2 = rho_w*C_w
   Bflx = B1/B2
@@ -168,9 +167,9 @@ k.cole <- function(wndZ, Kd, atm.press, dateTime, wtr, airT, Uz, Rh, sw, lw, par
     
   k600 <- as.numeric(Sk600)
   k600 <- k600*24/100 #units in m d-1
-  ScO2 <- 1800.6 - (120.1 * wtr) + (3.7818 *wtr^2) - (0.047608 * wtr^3) # Schmidt number for O2 (Waninkhof, 1992)
+  ScO2 <- 1800.6 - (120.1 * Ts) + (3.7818 *Ts^2) - (0.047608 * Ts^3) # Schmidt number for O2 (Waninkhof, 1992)
   Sc600 <- ScO2 / 600
-  n <- ifelse(U10 < 3.7,0.5,0.67) # n = 0.5 if U10 is less than 3.7 ms^-1, and 0.67 for U10 > 3.7 ms^-1
+  n <- ifelse(wnd < 3.7,0.5,0.67) # n = 0.5 if U10 is less than 3.7 ms^-1, and 0.67 for U10 > 3.7 ms^-1
   kO2 <- k600 * (Sc600)^(-n) # gas exchange for O2 m d-1 
   kO2 <- kO2*(timeStep/1440) #change kO2 to units of m/(timeStep*min)
   return(kO2)
