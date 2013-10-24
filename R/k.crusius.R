@@ -16,7 +16,7 @@
 # interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
 
-k.cole <- function(wnd,wtr,wndHeight){
+k.crusius <- function(wnd,wtr,wndHeight){
   U10 <- wnd * (10/wndHeight)^1/7 
   k600 <- 0.228*U10^2.2+0.168 # units in cm h-1
   k600 <- k600*24/100 #units in m d-1
