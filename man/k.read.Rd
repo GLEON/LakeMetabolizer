@@ -5,7 +5,7 @@
   in units of m/(timeStep*min) (i.e. 30 minute sampling interval will return 
   kO2 in units of m/(1/48) - converts to fraction of day}
 \usage{
-  k.read <- function(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,airT,Uz,RH,par,lwnet,sw)
+  k.read <- function(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,airT,Uz,RH,sw,lwnet,par)
 }
 \arguments{
   \item{wndZ}{Height of wind measurement, m}
@@ -20,8 +20,8 @@
   \item{Uz}{Numeric value of wind speed, m/s}
   \item{RH}{Numeric value of relative humidity, \%}
   \item{sw}{Numeric value of short wave radiation, W/m2} 
-  \item{par}{Numeric value of photosynthetically active radiation (if sw not available)}  
   \item{lwnet}{Numeric value net long wave radiation, W/m2}  
+  \item{par}{Numeric value of photosynthetically active radiation (if sw not available)}  
 }
 
 \value{
@@ -48,8 +48,9 @@
   Uz <- 3
   RH <- 90
   sw <- 800
+  lwnet <- -55
   timeStep <- 30
-  ko2_read <- k.read(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,depth,airT,Uz,RH,sw)
+  ko2_read <- k.read(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,depth,airT,Uz,RH,sw,lwnet)
 }
 
 \references{
