@@ -89,10 +89,10 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   vonK <- 0.41 # von Karman  constant
   if (wndZ != 10) {
     e1 <- sqrt(C_D)
-    u10 <- wnd/(1-e1/vonK*log(10/wndZ))
+    wnd <- wnd/(1-e1/vonK*log(10/wndZ))
   }
   rhoAir <- 1.2 #  air density
-  tau <- C_D*u10^2*rhoAir
+  tau <- C_D*wnd^2*rhoAir
   uSt <- sqrt(tau/rho_w)
   
   # find Z_aml
