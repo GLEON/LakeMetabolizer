@@ -3,7 +3,7 @@
 #Edits 2013-09-10: Luke Winslow
 #updated: R.I.Woolway Oct 2013
   
-k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, par, lwnet, lw){ 
+k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, par, lwnet){ 
   
   # define constants used in function
   dT <- 0.5   # change in temp for mixed layer depth
@@ -57,17 +57,9 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   # Get long wave radiation data
   if(!missing(lwnet)){ 
     lwnet <- lwnet
-    } else if(!missing(lw)){
-      lw_in <- lw # long wave in
-      Tk <- Ts+Kelvin # water temperature in Kelvin
-      LWo <- S_B*emiss*Tk^4 # long wave out
-      lwnet <- lw_in-LWo
-      } else if (!missing(RH) & !missing(airT)){
-        lwnet <- calc.lw.net(dateTime,sw,Ts,lat,atm.press,airT,RH)
-        lwnet <- lwnet[,2]
-      } else {  
-        stop("no long wave data available")
-      }
+    } else {  
+    stop("no long wave data available")
+    }
   
   # Get wind speed data
   if(!missing(Uz)){ 
