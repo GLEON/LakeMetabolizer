@@ -2,7 +2,7 @@
 #author: Hilary Dugan 
 #Edits 2013-09-10: Luke Winslow
 #updated: R.I.Woolway Oct 2013
-  
+
 k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, par, lwnet){ 
   
   # define constants used in function
@@ -12,25 +12,22 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   KeCrit <- 0.18     # constant for wave age = 20 (Soloviev et al. 2007)
   albedo_SW <- 0.07
   vonK <- 0.41 # vonKarman constant
-  rhoAir <- 1.2 # density of air
-  Kelvin <- 273.15 # temp mod for deg K   
-  emiss <- 0.972 # emissivity;
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
+  rhoAir <- 1.2 # density of air 
   swRat <- 0.46 # percentage of SW radiation that penetrates the water column
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
   mnWnd <- 0.2 # minimum wind speed
-
+  
   # Get short wave radiation data 
   if(!missing(sw)){ 
     sw <- sw
-    } else if (!missing(par)){
-      sw <- par
-      parMult <- 0.4957
-      sw <- sw*parMult
-      } else {  
-        stop("no SW equivalent file available\n")
-      }
+  } else if (!missing(par)){
+    sw <- par
+    parMult <- 0.4957
+    sw <- sw*parMult
+  } else {  
+    stop("no SW equivalent file available\n")
+  }
   
   # Get water temperature data
   if(!missing(wtr)){ 
@@ -43,31 +40,31 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   # Get air temperature
   if(!missing(airT)){ 
     airT <- airT
-    } else {  
-      stop("no air temp data available")
-    }
+  } else {  
+    stop("no air temp data available")
+  }
   
   # Get relative humidity data
   if(!missing(RH)){ 
     RH <- RH
-    } else {  
-      stop("no relative humidity data available")
-    }
-
+  } else {  
+    stop("no relative humidity data available")
+  }
+  
   # Get long wave radiation data
   if(!missing(lwnet)){ 
     lwnet <- lwnet
-    } else {  
+  } else {  
     stop("no long wave data available")
-    }
+  }
   
   # Get wind speed data
   if(!missing(Uz)){ 
     wnd <- Uz
-    } else{  
-      stop("no wind speed data available")
-    }
-
+  } else{  
+    stop("no wind speed data available")
+  }
+  
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
   wnd[rpcI] <- mnWnd
@@ -77,7 +74,7 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
-    
+  
   # calculate total heat flux
   dUdt <- sw*0.93 - E - H + lwnet
   Qo <- sw*(1-albedo_SW)*swRat
@@ -94,7 +91,7 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   vonK <- 0.41 # von Karman  constant
   tau <- C_D*u10^2*rhoAir
   uSt <- sqrt(tau/rho_w)
-
+  
   # find Z_aml
   if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
     z_aml <- depth[length(depth)]
@@ -139,8 +136,8 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
     tempTable <- seq(0,100,by=5)
     # table in m2/s E-6
     visTable <- c(1.792,1.519,1.308,1.141,1.007,0.897,
-                 0.804,0.727,0.661,0.605,0.556,0.513,0.477,0.444,
-                 0.415,0.39,0.367,0.347,0.328,0.311,0.296)
+                  0.804,0.727,0.661,0.605,0.556,0.513,0.477,0.444,
+                  0.415,0.39,0.367,0.347,0.328,0.311,0.296)
     v <- data.frame(approx(tempTable,visTable,xout = Ts))[2]
     v <- v*1e-6
     return(v)
@@ -176,6 +173,6 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   n <- ifelse(wnd < 3.7,0.5,0.67) # n = 0.5 if U10 is less than 3.7 ms^-1, and 0.67 for U10 > 3.7 ms^-1
   kO2 <- k600 * (Sc600)^(-n) # gas exchange for O2 m d-1 
   kO2 <- kO2*(timeStep/1440) #change kO2 to units of m/(timeStep*min)
-
+  
   return(kO2)
 }
