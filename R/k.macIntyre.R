@@ -88,7 +88,7 @@ k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH,
 
 
   # calculate sensible and latent heat fluxes
-  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ,2,2)
+  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ)
   C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
