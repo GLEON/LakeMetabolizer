@@ -42,9 +42,6 @@ calc.lw.net <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   LWo <- S_B*emiss*Tks^4
   lwnet <- LWin-LWo
   
-  lwnet <- data.frame(dateTime = dateTime,
-                      lwnet = lwnet)
-  
   return(lwnet)     
 } 
 
