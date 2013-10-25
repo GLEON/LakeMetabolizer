@@ -42,7 +42,7 @@ calc.lw.net <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   LWo <- S_B*emiss*Tks^4
   lwnet <- LWin-LWo
   
-  return(lwnet)     
+  return(as.numeric(lwnet))     
 } 
 
 calc.clearsky <- function(dateTime,lat,atm.press,airT,RH){
