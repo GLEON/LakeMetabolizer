@@ -3,7 +3,7 @@
 #Edits 2013-09-10: Luke Winslow
 #updated: R.I.Woolway Oct 2013
 
-k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, par, lwnet){ 
+k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par){ 
   
   # define constants used in function
   dT <- 0.5   # change in temp for mixed layer depth
