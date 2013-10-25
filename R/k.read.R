@@ -11,8 +11,6 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   nu <- 0.29 # proportionality constant from Zappa et al. 2007, lower bounds
   KeCrit <- 0.18     # constant for wave age = 20 (Soloviev et al. 2007)
   albedo_SW <- 0.07
-  vonK <- 0.41 # vonKarman constant
-  rhoAir <- 1.2 # density of air 
   swRat <- 0.46 # percentage of SW radiation that penetrates the water column
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
