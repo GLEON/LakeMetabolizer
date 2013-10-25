@@ -5,7 +5,7 @@
   in units of m/(timeStep*min) (i.e. 30 minute sampling interval will return 
   kO2 in units of m/(1/48) - converts to fraction of day}
 \usage{
-  k.read <- function(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,airT,Uz,RH,sw,lwnet,par)
+  k.read <- function(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,airT,Uz,RH,sw,lwnet,par,lw)
 }
 \arguments{
   \item{wndZ}{Height of wind measurement, m}
@@ -22,6 +22,7 @@
   \item{sw}{Numeric value of short wave radiation, W/m2} 
   \item{lwnet}{Numeric value net long wave radiation, W/m2}  
   \item{par}{Numeric value of photosynthetically active radiation, umol m-2 s-1 (if sw not available)}  
+  \item{lw}{Numeric value of incoming long wave radiation, W/m2}  
 }
 
 \value{
