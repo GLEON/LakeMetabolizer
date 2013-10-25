@@ -52,8 +52,8 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
   rh <- dat$rh
   
   # if temperature and humidity height are missing, assume same as wind
-  if (missing(ht)){ht <- wndZ}
-  if (missing(hq)){hq <- wndZ}
+  if (missing(ht)){ht <- hu}
+  if (missing(hq)){hq <- hu}
 
   # define constants
   const_vonKarman <- 0.41 # von Karman constant
