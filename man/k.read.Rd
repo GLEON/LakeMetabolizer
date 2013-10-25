@@ -21,7 +21,7 @@
   \item{RH}{Numeric value of relative humidity, \%}
   \item{sw}{Numeric value of short wave radiation, W/m2} 
   \item{lwnet}{Numeric value net long wave radiation, W/m2}  
-  \item{par}{Numeric value of photosynthetically active radiation (if sw not available)}  
+  \item{par}{Numeric value of photosynthetically active radiation, umol m-2 s-1 (if sw not available)}  
 }
 
 \value{
