@@ -16,8 +16,8 @@
 # interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
 
-k.crusius <- function(wnd,wtr,wndHeight){
-  U10 <- wnd * (10/wndHeight)^1/7 
+k.crusius <- function(wnd,wtr){
+  U10 = wnd  #This function uses just the wind speed it is supplied. 
   k600 <- 0.228*U10^2.2+0.168 # units in cm h-1
   k600 <- k600*24/100 #units in m d-1
   ScO2 <- 1800.6 - (120.1 * wtr) + (3.7818 *wtr^2) - (0.047608 * wtr^3) # Schmidt number for O2 (Waninkhof, 1992)
@@ -27,4 +27,3 @@ k.crusius <- function(wnd,wtr,wndHeight){
   kO2 <- kO2*(timeStep/1440) #change kO2 to units of m/(timeStep*min)
   return(kO2)
 }
-

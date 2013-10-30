@@ -3,13 +3,12 @@
 
 # wnd: wind value in m/s
 # wtr: water temperature at dissolved oxygen sensor depth in degrees celsius 
-# wndHeight: height in meters of wind measurement 
 
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-k.cole <- function(wnd,wtr,wndHeight){
-  U10 <- wnd * (10/wndHeight)^1/7
+k.cole <- function(wnd,wtr){
+  U10 <- wnd  #This function uses just the wind speed it is supplied. 
   k600 <- 2.07 + (0.215 * (U10^1.7)) # units in cm h-1
   k600 <- k600*24/100 #units in m d-1
   ScO2 <- 1800.6 - (120.1 * wtr) + (3.7818 *wtr^2) - (0.047608 * wtr^3) # Schmidt number for O2 (Waninkhof, 1992)
