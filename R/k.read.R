@@ -5,6 +5,9 @@
 
 k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par, lw){ 
   
+  #needs rLakeAnalyzer package for water density function
+  require(rLakeAnalyzer)
+  
   # define constants used in function
   dT <- 0.5   # change in temp for mixed layer depth
   C1 <- 114.278 # from Soloviev et al. 2007
