@@ -5,7 +5,7 @@ Version: 1.0
 Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 Description: A collection of tools for the calculation of freewater metabolism. 
 License: GPL (>= 2)
-Depends: rLakeAnalyzer
+Imports: rLakeAnalyzer
 Packaged: 2013-08-01 09:09:24 UTC; Luke
 Repository: http://github.com/GLEON/LakeMetaboliser
 Date/Publication: 2014-01-01 09:09:24
