@@ -51,9 +51,9 @@ o2.at.sat(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "we
 	temps = 1:25
 	sals = 1:25
 	
-	par(mfrow=c(2,1))
+	par(mfrow=c(1,2))
 	plot(temps, o2.at.sat(temps), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
-	plot(o2.at.sat(rep(20,25), salinity=sals), xlab='Salinity (PSU)', ylab='Oxygen Saturation @ 25C (mg/L)')
+	plot(o2.at.sat(rep(20,25), salinity=sals), xlab='Salinity (PSU)', ylab='')
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
