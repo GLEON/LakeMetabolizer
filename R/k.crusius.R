@@ -1,5 +1,5 @@
 # ---Author: Hilary Dugan, 2013-10-20 --- 
-# Last update: 2014-02-01
+# Last update: 2014-02-01 
 
 # Uses power function from:
 # -- References 
