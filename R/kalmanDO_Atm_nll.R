@@ -64,3 +64,4 @@ KFnllDO <- function(Params, DO, Aitch, PAR, Chla, Temp, Atm=FALSE, Wind=NA, Freq
 	NLL <- sum(NegLogLikes)#Sum up all likelihoods for the total for this model/ set of parameters
 	return(NLL)#NLL is the item which nlm() will attemp to minimize, thus yielding the 'most likely' combinations of parameter values
 	}#End function
+	

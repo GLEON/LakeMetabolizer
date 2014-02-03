@@ -52,3 +52,4 @@ KFsmoothDO <- function(Params, DO, Aitch, PAR, DOsatd, KO2zmix, lnTemp){
 	return(list(Asmooth, Etavec))	
 		
 	}
+	

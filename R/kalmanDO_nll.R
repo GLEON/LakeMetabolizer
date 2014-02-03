@@ -49,3 +49,4 @@ KFnllDO <- function(Params, DO, Aitch, PAR, Chla, Temp, Atm=FALSE, Wind=NA, Freq
 	NLL <- sum(NegLogLikes)
 	return(NLL)
 	}
+	

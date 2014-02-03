@@ -53,4 +53,3 @@ KFsmoothTemp <- function(Params, Temp, Watts, Aitch){
 		}
 	return(list(Asmooth, Errors))
 	}
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
