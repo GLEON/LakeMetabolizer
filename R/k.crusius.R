@@ -19,11 +19,8 @@
 # of m/(timeStep).
 # If timeStep = 60, then k02 measured in cm/60 min)
 
-k.crusius <- function(wnd,wtr,timeStep,method){
-  if (nargs()==3) {
-    method = "power"
-  }
-    
+k.crusius <- function(wnd,wtr,timeStep,method='power'){
+
   U10 = wnd  #This function uses just the wind speed it is supplied. 
   
   if (method=="constant"){
