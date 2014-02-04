@@ -18,7 +18,7 @@
   \item{sw}{vector of shortwave radiation in W/m2}
   \item{lwnet}{vector of longwave radiation. If missing, run calc.lw.net function first}
   \item{par}{vector of par data in umol m-2 s-1 }
-
+}
 \value{
   A number for k600 in m/day
 }
@@ -27,7 +27,7 @@
 }
 
 \seealso{
-\code{\link{k.read}}, \code{\link{k.cole}}, \code{\link{k.macIntyre}}
+\code{\link{k.read}}, \code{\link{k.cole}}, \code{\link{k.crusius}}
 }
 
 \examples{
