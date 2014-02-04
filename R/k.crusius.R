@@ -19,7 +19,7 @@
 # of m/(timeStep).
 # If timeStep = 60, then k02 measured in cm/60 min)
 
-k.crusius <- function(wnd,wtr,timeStep,method='power'){
+k.crusius <- function(wnd,method='power'){
 
   U10 = wnd  #This function uses just the wind speed it is supplied. 
   
@@ -32,12 +32,5 @@ k.crusius <- function(wnd,wtr,timeStep,method='power'){
   }
   
   k600 <- k600*24/100 #units in m d-1
-  # Schmidt number for O2 (Waninkhof, 1992)
-  ScO2 <- 1800.6 - (120.1 * wtr) + (3.7818 *wtr^2) - (0.047608 * wtr^3) 
-  Sc600 <- ScO2 / 600
-  # n=0.5 if U10 < 3.7 ms^-1, and 0.67 for U10 > 3.7 ms^-1
-  n <- ifelse(U10 < 3.7,0.5,0.67) 
-  kO2 <- k600 * (Sc600)^(-n) # gas exchange for O2 m d-1 
-  kO2 <- kO2*(timeStep/1440) #change kO2 to units of m/(timeStep*min)
-  return(kO2)
+  return(k600)
 }
