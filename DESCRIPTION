@@ -1,11 +1,34 @@
 Package: LakeMetaboliser
 Title: Tools for the analysis of ecosystem metabolism
 Maintainer: Luke Winslow <lawinslow@gmail.com>
-Version: 1.0
+Version: 1.0.1
 Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 Description: A collection of tools for the calculation of freewater metabolism. 
-License: GPL (>= 2)
-Imports: rLakeAnalyzer
+License: file LICENSE
+Imports: 
+	rLakeAnalyzer, rjags, R2jags, R2WinBUGS
+Collate:
+   	'k.cole.R'
+	'k.crusius.R'
+	'k.macIntyre.R'
+	'k.read.R'
+	'k600.2.kGAS.R'
+	'KalmanDO_Atm_smooth.R'
+	'calc.lw.net.R'
+	'calc.zeng.R'
+	'getSchmidt.R'
+	'kalmanDO_Atm_nll.R'
+	'kalmanDO_nll.R'
+	'kalmanDO_smooth.R'
+	'kalmanTemp_smooth.R'
+	'kalman_Temp_nll.R'
+	'metab.bookkeep.R'
+	'metab.kalman.R'
+	'metab.optim.R'
+	'o2.saturation.R'
+	'scale.exp.wind.R'
+Depends:
+	R (>= 2.15.0)
 Packaged: 2013-08-01 09:09:24 UTC; Luke
 Repository: http://github.com/GLEON/LakeMetaboliser
 Date/Publication: 2014-01-01 09:09:24
