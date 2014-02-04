@@ -7,6 +7,7 @@
 # atm.press: Atmospheric pressure in hPa or Mb. If unknown use '1013' for sea level 
 # dateTime: date and time vector
 # wtr: dataframe of water temperatures 
+# depth: vector of water temperature depths
 # airT: vector of air temperatures in °C
 # Uz: vector of wind speed in m/s
 # Rh: vector of relative humidity in %
