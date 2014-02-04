@@ -26,7 +26,7 @@
 }
 
 \references{
-  Crusius, John, and Rik Wanninkhof. "Gas transfer velocities measured at low wind speed over a lake." Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+  Crusius, John, and Rik Wanninkhof. Gas transfer velocities measured at low wind speed over a lake. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 }
 
 \keyword{GLEON} 
