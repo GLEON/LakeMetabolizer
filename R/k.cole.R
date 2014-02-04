@@ -3,8 +3,7 @@
 
 # wnd: wind value in m/s
 
-# OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
-#          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
+# OUTPUT: returns the gas exchange velocity for k600 in units of m/day
 
 k.cole <- function(wnd){
   U10 <- wnd  #This function uses just the wind speed it is supplied. 
