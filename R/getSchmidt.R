@@ -1,7 +1,7 @@
 #---jread-usgs 2013-05-13---
 getSchmidt	<-	function(temperature, gas){
 	# temperature can be a number or an array of numbers
-	# gas must be a valid name. Code for more, but currently only He, O2, CO2
+	# gas must be a valid name. Code for more, but currently only in the supported data frame.
 	
 	# __Wanninkhof, Rik. "Relationship between wind speed and gas exchange over the ocean."__ 
 	# __Journal of Geophysical Research: Oceans (1978–2012) 97.C5 (1992): 7373-7382.__
