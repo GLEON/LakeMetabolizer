@@ -17,7 +17,7 @@ getSchmidt	<-	function(temperature, gas){
 	if (!is.character(gas)){stop(paste('gas must be a character. was given as',gas))}
 	if (!any(names(Schmidt)==gas)){stop(paste(gas,'not found in list of coded gasses'))}
 
-	A	<-	unlist(Schmidt[gas][1])
+	A	<-	unlist(Schmidt[gas])[1]
 	B	<-	unlist(Schmidt[gas])[2]
 	C	<-	unlist(Schmidt[gas])[3]
 	D	<-	unlist(Schmidt[gas])[4]
