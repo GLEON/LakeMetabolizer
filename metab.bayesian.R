@@ -1,4 +1,4 @@
-library("rjags")
+# library("rjags")
 library("R2jags")
 library("R2WinBUGS")	
 
@@ -36,26 +36,26 @@ write.model(j2Mod, "j2Mod")
 # = Read in data =
 # ================
 #Supply elements of U (PAR, log(temp), 0's)
-U[,1] <- # PAR Values
-U[,2] <- # log(temp) values
+U[,1] <- rnorm(10) # filler PAR Values
+U[,2] <- rnorm(10) # filler log(temp) values
 
 #Supply kP (for K), and cP (for C)
 # ** I am making up these values for now
-kP[,1] <- 0 # means for K
-kP[,2] <- 1 # variances for K
+kP[,1] <- rep(1E-3, 10) # means for K
+kP[,2] <- rep(1,10) # variances for K
 cP[1,1] <- 1E-5 # prior mean of GPP coefficient (C[1,1]*PAR=GPP)
 cP[1,2] <- 1E-5 # prior variance of GPP coefficient
 cP[2,1] <- -1E2 # prior mean of R coefficient (C[2,1]*log(Temp)=R)
 cP[2,2] <- 1E2 # prior variance of R coefficient
 
 #Supply observed DO
-Y <- 
+Y <- rnorm(10) # filler values
 
 #Supply saturated DO
-satO <- 
+satO <- rnorm(10) # filler values
 
 #Supply Zmix
-Zmix <- 
+Zmix <- rep(1,10) # filler values
 
 data <- list(Y=Y, N=length(Y), U=U, kP=kP, cP=cP, satO=satO)
 params <- c("C", "sigmaV", "sigmaW")
