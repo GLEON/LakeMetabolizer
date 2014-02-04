@@ -22,7 +22,7 @@ getSchmidt	<-	function(temperature, gas){
 	C	<-	unlist(Schmidt[gas])[3]
 	D	<-	unlist(Schmidt[gas])[4]
 
-	Sc = A-B*temperature+C*temperature^2-D*temperature^3
+	Sc = as.numeric(A-B*temperature+C*temperature^2-D*temperature^3)
 
 	return(Sc)
 }
