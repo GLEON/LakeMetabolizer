@@ -95,5 +95,5 @@ KFsmoothDO <- function(Params, DO, Aitch, PAR, Chla, Temp, Atm=FALSE, Wind=NA, F
 		}
 	return(list(Asmooth, FluxMatrix, Gradient))	
 		
-	}
+}
 	
