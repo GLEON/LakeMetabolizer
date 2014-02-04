@@ -4,20 +4,16 @@
 # Uses power function from:
 # -- References 
 #CRUSIUS, JOHN, AND RIK WANNINKHOF. 2003
-#Gas transfer velocities measured at low wind speed over a lak.
+#Gas transfer velocities measured at low wind speed over a lake.
 #Limnology and Oceanography. 48(3): 1010:1017.
 
 # INPUTS
 # wnd: wind value in metres/second
-# wtr: water temperature at dissolved oxygen sensor depth 
-# in degrees celsius 
-# timeStep: time interval between measurements, in minutes
 # method: Either "linear", "bilinear", or "power"
 # as defined in Crusius et al., (2003). Default is "power"
 
-# OUTPUT: returns the gas exchange velocity for O2 in units 
-# of m/(timeStep).
-# If timeStep = 60, then k02 measured in cm/60 min)
+# OUTPUT: returns the gas exchange velocity for k600 in units 
+# of m/day.
 
 k.crusius <- function(wnd,method='power'){
 
