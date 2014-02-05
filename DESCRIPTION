@@ -6,7 +6,7 @@ Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul 
 Description: A collection of tools for the calculation of freewater metabolism. 
 License: file LICENSE
 Imports: 
-	rLakeAnalyzer, rjags, R2jags, R2WinBUGS
+	rLakeAnalyzer
 Collate:
    	'k.cole.R'
 	'k.crusius.R'
