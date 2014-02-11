@@ -1,4 +1,4 @@
-date.2doy <- function(x){
+date2doy <- function(x){
 	stopifnot(any(grepl("^POSIX",class(wo[,1]))))
 	day <- as.numeric(format(x, "%j"))
 	pat <- quote("([0-9]{2}:){2}[0-9]{2}")
