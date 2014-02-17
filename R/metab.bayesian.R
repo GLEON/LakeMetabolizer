@@ -5,13 +5,13 @@ library("R2WinBUGS")
 # ==================
 # = Load Functions =
 # ==================	
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/scale.exp.wind.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/k.cole.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/k600.2.kGAS.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/getSchmidt.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/date2doy.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/o2.saturation.R")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/R/longestRun.R")
+source("scale.exp.wind.R")
+source("k.cole.R")
+source("k600.2.kGAS.R")
+source("getSchmidt.R")
+source("date2doy.R")
+source("o2.saturation.R")
+source("longestRun.R")
 
 # ====================
 # = Read in Raw Data =
