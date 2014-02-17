@@ -17,10 +17,10 @@ source("longestRun.R")
 # = Read in Raw Data =
 # ====================
 # wind data >> scale.exp.wind() >> k.cole() >> k600.2.kGAS() >>
-wo <- read.table("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inst/extdata/troutbog.wnd", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
-po <- read.table("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inst/extdata/troutbog.par", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
-to <- read.table("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inst/extdata/troutbog.wtr", sep="\t", header=TRUE, colClasses=c("POSIXct",rep("numeric",10)))[,1:2]
-doo <- read.table("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inst/extdata/troutbog.doobs", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
+wo <- read.table("../inst/extdata/troutbog.wnd", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
+po <- read.table("../inst/extdata/troutbog.par", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
+to <- read.table("../inst/extdata/troutbog.wtr", sep="\t", header=TRUE, colClasses=c("POSIXct",rep("numeric",10)))[,1:2]
+doo <- read.table("../inst/extdata/troutbog.doobs", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
 
 # ===========================
 # = Combine & Organize Data =
