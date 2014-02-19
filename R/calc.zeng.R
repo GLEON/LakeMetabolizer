@@ -190,11 +190,11 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
 
     # calculate transfer coefficients corrected for atmospheric stability
     C_H <- (-rho_a*const_SpecificHeatAir*ustar*tstar)/(rho_a*const_SpecificHeatAir*Uz*(Ts - airT))
-    C_E <- C_H
+    C_E <- (-rho_a*xlv*ustar*qstar)/(rho_a*xlv*Uz*(q_s - q_z))
     C_D <- (ustar*ustar)/(Uz*Uz)
 
     # calculate tau and sensible and latent heat fluxes
-    tau <- C_D*rho_a*Uz*Uz
+    tau <- C_D*rho_a*ustar*ustar
     ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT)
     alh <- rho_a*xlv*C_E*Uz*(q_s - q_z)
 
