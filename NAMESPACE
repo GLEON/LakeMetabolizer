@@ -1,1 +1,1 @@
-export(k.read, k.crusius, k.cole, k.macIntyre, o2.at.sat, metab.optim, k600.2.kGAS)
+export(k.read, k.crusius, k.cole, k.macIntyre, o2.at.sat, metab.optim, metab.bookkeep, k600.2.kGAS)
