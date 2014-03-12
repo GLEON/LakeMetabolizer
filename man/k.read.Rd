@@ -62,4 +62,5 @@
   exchange}. Geophysical Research Letters 39, DOI: 10.1029/2012GL051886.
 }
 
-\keyword{GLEON}
+\keyword{methods}
+\keyword{math}
