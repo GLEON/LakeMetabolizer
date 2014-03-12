@@ -82,7 +82,7 @@ bayesFit <- function(data, params, tend="median", ...){ #function that writes ja
 
 
 
-metab.bayes = function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
+metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
   
   
   if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
