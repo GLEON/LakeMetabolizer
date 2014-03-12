@@ -1,17 +1,6 @@
 # library("rjags")
-library("R2jags")
-library("R2WinBUGS")
-
-# ==================
-# = Load Functions =
-# ==================	
-source("scale.exp.wind.R")
-source("k.cole.R")
-source("k600.2.kGAS.R")
-source("getSchmidt.R")
-source("date2doy.R")
-source("o2.saturation.R")
-source("longestRun.R")
+require("R2jags")
+require("R2WinBUGS")
 
 
 # =========================
@@ -133,57 +122,5 @@ metab.bayes = function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
 
 
 
-# ====================
-# = Read in Raw Data =
-# ====================
-# wind data >> scale.exp.wind() >> k.cole() >> k600.2.kGAS() >>
-wo <- read.table("../inst/extdata/troutbog.wnd", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
-po <- read.table("../inst/extdata/troutbog.par", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
-to <- read.table("../inst/extdata/troutbog.wtr", sep="\t", header=TRUE, colClasses=c("POSIXct",rep("numeric",10)))[,1:2]
-doo <- read.table("../inst/extdata/troutbog.doobs", sep="\t", header=TRUE, colClasses=c("POSIXct","numeric"))
-
-# ===========================
-# = Combine & Organize Data =
-# ===========================
-#merge
-d1 <- merge(to, doo, all=TRUE)
-d2 <- merge(wo, po, all=TRUE)
-d3 <- merge(d1,d2, all=TRUE)
-
-#convert to DoY format (not actually needed in this case, but conventient to have)
-d3[,1] <- date2doy(d3[,1])
-
-#subset to the portion of the data set with the most consecutive observations (not necessary)
-data0 <- d3[longestRun(d3),]
-names(data0) <- c("DoY", "Temp", "DO", "Wind", "PAR") # rename columns while still data frame
-data0 <- as.matrix(data0) # convert to matrix
-row.names(data0) <- NULL # remove row names left over from d3
-data0 <- data0[data0[,"DoY"]>=319&data0[,"DoY"]<320,] # subset for fast trial run
-
-Freq <- median(diff(data0[,"DoY"])) # determine the sampling frequency; i have a function for mode if we are worried about it
-
-wind <- scale.exp.wind(data0[,"Wind"], 2) # convert wind
-Kvec <- k600.2.kGAS(k.cole(wind)*Freq, data0[,"Temp"], "O2") # calculate K for relevant sampling frequency
-
-
-
-metab.bayes(irr=data0[,"PAR"], z.mix=rep(1, length(Kvec)), 
-            do.sat=o2.at.sat(data0[,"Temp"], 716), wtr=data0[,'Temp'],
-            k.gas=Kvec, do.obs=data0[,"DO"])
-
-
-# dev.new()
-# par(mfrow=c(3,2), mar=c(2,2,1.5,0.5), ps=10)
-#nP <- ncol(test[[1]]$BUGSoutput$sims.matrix)
-#parD <- c(ceiling(sqrt(nP)), floor(sqrt(nP)))
-# R2jags::traceplot(test[[1]], mfrow=c(parD))
-
-##dev.new()
-#par(mfrow=c(3,2), mar=c(2,2,1.5,0.5), ps=10)
-#coda::traceplot(as.mcmc(test[[1]]))
-
-#dev.new()
-#par(mfrow=c(3,2), mar=c(2,2,1.5,0.5), ps=10)
-#coda::densplot(as.mcmc(test[[1]]))
 
 
