@@ -44,4 +44,5 @@
   Crawford, T.M., and Duchon, C.E. 1999. \emph{An improved parameterization for estimating effective atmospheric emissivity for use in calculating daytime downwelling longwave radiation}. Journal of Applied Meteorology 38: 474-480.
 }
 
-\keyword{GLEON}
+\keyword{methods}
+\keyword{math}
