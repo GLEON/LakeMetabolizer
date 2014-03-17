@@ -22,26 +22,28 @@ metab.optim = function(do.obs, irr, do.sat, z.mix, k.gas, timestep){
   }
   
   
-  to.optim <- function(iotaRhoDoinit){
-    calc.do.nll(iotaRhoDoinit[1], iotaRhoDoinit[2], iotaRhoDoinit[3], irr, do.sat, z.mix, k.gas, do.obs)
+  to.optim <- function(iotaRhoDoinitSigma){
+    calc.do.nll(iotaRhoDoinitSigma[1], iotaRhoDoinitSigma[2], iotaRhoDoinitSigma[3], iotaRhoDoinitSigma[4], irr, do.sat, z.mix, k.gas, do.obs)
   }
   
   rho     = range(do.obs)/n.obs
   iota    = rho
   doInit  = do.obs[1]
+  sigma   = sqrt(((range(do.obs)-mean(do.obs))^2/n.obs))
   
-  optimOut = optim(par = c(iota,rho,doInit), fn = to.optim)
+  optimOut = optim(par = c(iota,rho,doInit,sigma), fn = to.optim)
   
   iota.hat    <- optimOut$par[1]*(1440/timestep) #iota and rho to units of mg O2 L-1 day-1 
   rho.hat     <- optimOut$par[2]*(1440/timestep) #iota and rho to units of mg O2 L-1 day-1 
   do.init.hat <- optimOut$par[3] #initial DO estimate 
+  sigma.hat   <- optimOut$par[4] #sigma estimate 
   convergence <- optimOut$convergence  #did model converge or not (0=yes, 1=no)
   nll.val     <- optimOut$value #value of nll 
   gpp.hat     <- (iota.hat/(60*60*24))*sum(irr*timestep*60) #GPP in units of mg O2 L-1 d-1 
   
   
   return(list(iota=iota.hat, rho=rho.hat, gpp=gpp.hat,
-              mod.info=list(do.init=do.init.hat, convergence=convergence, nll=nll.val)))
+              mod.info=list(do.init=do.init.hat, sigma=sigma.hat, convergence=convergence, nll=nll.val)))
   
 }
 
@@ -76,15 +78,13 @@ calc.do.hat = function(iota, rho, doInit, irr, doSat, zMix, k.gas){
 # Authors: Gleon Student Fellows and Luke Winslow
 # 
 ################################################################################
-calc.do.nll <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs){
+calc.do.nll <- function(iota, rho, doInit, sigma, irr, doSat, zMix, kO2, doObs){
   
   modeled = calc.do.hat(iota, rho, doInit, irr, doSat, zMix, kO2)
   res 	= doObs - modeled
+  sigma = exp(sigma)
   
-  nRes 	= length(res)
-  SSE 	= sum(res^2)
-  sigma2 	= SSE/nRes
-  NLL 	= 0.5*((SSE/sigma2) + nRes*log(2*pi*sigma2))
+  NLL = -sum(dnorm(doObs,modeled,sigma,log=TRUE)) 
   
   return(NLL)
 }
@@ -96,7 +96,7 @@ calc.do.nll <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs){
 # 
 # Reference: Solomon et al. 2012?
 ################################################################################
-metab.bootstrap <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs, timestep, n=1000, ar1.resids=FALSE){
+metab.bootstrap <- function(iota, rho, doInit, sigma, irr, doSat, zMix, kO2, doObs, timestep, n=1000, ar1.resids=FALSE){
   
   n.obs = length(doObs)
   
@@ -111,8 +111,8 @@ metab.bootstrap <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs, tim
     ar1.sd    = sd(ar1.lm$residuals)
   }
   
-  toOptim <- function(iotaRhoDoinit){
-    calc.do.nll(iotaRhoDoinit[1], iotaRhoDoinit[2], iotaRhoDoinit[3], irr, doSat, zMix, kO2, doSim)
+  toOptim <- function(iotaRhoDoinitSigma){
+    calc.do.nll(iotaRhoDoinitSigma[1], iotaRhoDoinitSigma[2], iotaRhoDoinitSigma[3], iotaRhoDoinitSigma[4], irr, doSat, zMix, kO2, doSim)
   }
   
   #Pre-allocate the result data frame
@@ -120,6 +120,7 @@ metab.bootstrap <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs, tim
                        iota = rep(NA,n),
                        rho = rep(NA,n),
                        DOInit = rep(NA,n),
+                       sigma = rep(NA,n),
                        covergence = rep(NA,n),
                        nll = rep(NA,n),
                        GPP = rep(NA,n))
@@ -135,20 +136,26 @@ metab.bootstrap <- function(iota, rho, doInit, irr, doSat, zMix, kO2, doObs, tim
       }
        
     }else{ #Raw residual randomization
+<<<<<<< HEAD
       #Randomize residuals without replacement
       simRes = sample(resids, length(resids), replace=FALSE) # Should replace=TRUE? -RDB
+=======
+      #Randomize residuals with replacement
+      simRes = sample(resids, length(resids), replace=TRUE) 
+>>>>>>> FETCH_HEAD
     }
     
     doSim = doHat + simRes
     
     #Run optim again with new simulated DO signal
-    optimOut = optim(par = c(iota,rho,doInit), fn = toOptim)
+    optimOut = optim(par = c(iota,rho,doInit,sigma), fn = toOptim)
     
     result[i,2:3] <- optimOut$par[1:2]*(1440/timestep) #iota and rho to units of mg O2 L-1 day-1 
     result[i,4] <- optimOut$par[3] #initial DO estimate 
-    result[i,5] <- optimOut$convergence  #did model converge or not (0=yes, 1=no)
-    result[i,6] <- optimOut$value #value of nll 
-    result[i,7] <- (result[i,2]/(60*60*24))*sum(irr)*timestep*60 #GPP in units of mg O2 L-1 d-1 
+    result[i,5] <- optimOut$par[4] #sigma estimate 
+    result[i,6] <- optimOut$convergence  #did model converge or not (0=yes, 1=no)
+    result[i,7] <- optimOut$value #value of nll 
+    result[i,8] <- (result[i,2]/(60*60*24))*sum(irr)*timestep*60 #GPP in units of mg O2 L-1 d-1 
     
   }
   
