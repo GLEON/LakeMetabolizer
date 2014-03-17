@@ -1,52 +1,68 @@
-#This version not suited for forcing parameters to positive
-#Updated to print "non-finite" diagnostics
-#v8.0 has the artificial inflation of the likelihood when the optimizer guesses at negative values for Q (log(-x) = Inf)
-KFnllDO <- function(Params, DO, Aitch, PAR, Chla, Temp, Atm=FALSE, Wind=NA, Freq=360){
-	
-	#Pseudocode #1: Initial guesses for B, C, and Q t
-	Beta <- 1
-	LightGPPCoef <- Params[1] #PAR coeff; in Sea, for GPP
-	TempRCoef <- Params[2] #log(Temp) coeff; in Sea, for R
 
-	Sea <- matrix(c(LightGPPCoef,TempRCoef),nrow=1,ncol=2,byrow=TRUE) #Collecting coefficients to be fit into a matrix.  Elements that are a part of Params will be fit with nlm()  
-	Queue <- Params[3]
-		
+KFnllDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr){
 	
-	#Pseudocode #2: Set first true value equal to first observation
-	Alpha <- DO[1]#Let's give this model some starting values
+	# ===========================
+	# = Unpack and set initials =
+	# ===========================
+	#!Pseudocode #1: Initial guesses for B, C, and Q t
+	c1 <- Params[1] #PAR coeff
+	c2 <- Params[2] #log(Temp) coeff
+	Q <- Params[3] # Variance of the process error
+	H <- Params[4] # Variance of observation error
 	
-	#Pseudocode #3: Set process covariance, P, equal to Q
-	Pea <- Queue #starting value
+	# See KalmanDO_smooth.R comments for explanation of beta
+	kz <- K/Zmix # K and Zmix are both vector of length nobs
+	beta <- 1-kz # beta is a vector of length nobs
 	
-	NegLogLikes <- c(0,rep(NA,(length(DO)-1)))
+	# Set first true value equal to first observation
+	alpha <- do.obs[1]#Let's give this model some starting values
 	
-	Ewe <- matrix(nrow=length(DO),ncol=2)
-	Ewe[,1] <- PAR
-	Ewe[,2] <- Temp
+	# Set process covariance, P, equal to Q
+	P <- Q #starting value
+	
+	# Empty vector for nll's
+	nlls <- double(length(do.obs))
 		
-	#Pseudocode #4: Starting with 2nd time step, build a Time Series of α and P
-	for(i in 2:length(DO)){#Could just as well have been DO		
-		#Pseudocode #4a: Predictions
-		#Alpha <- Beta*Alpha + Sea[1,1]*Ewe[1] + Sea[1,2]*Ewe[2]
-		Alpha <- Beta*Alpha + Sea[1,1]*Ewe[i-1,1] + Sea[1,2]*log(Ewe[i-1,2])
-		#(Beta%*%Alpha) + (Sea%*%Ewe) #
-		Pea <- (Beta^2)*Pea + Queue #(Beta%*%Pea%*%t(Beta)) + Queue #
+	# ==================
+	# = Main Recursion =
+	# ==================
+	for(i in 2:length(do.obs)){
+		# ===============
+		# = Predictions =
+		# ===============
+		# Equations for Predictions from Harvey
+		# a[t|t-1] = T[t]*a[t-1] + c[t] Harvey pg 105 eq. 3.2.2a
+		# P[t|t-1] = T[t]*P[t-1]*T'[t] + R[t]*Q[t]*R'[t] Harvey pg 106 eq. 3.2.2b
 		
-		#Pseudocode #4b: Update Predictions
-		Eta <- DO[i] - Alpha
-		Eff <- Pea + Aitch
-		if(Eff<0){
-			return(1E10)
-		}
-
-		Alpha <- Alpha + Pea/Eff*Eta #Alpha+ (Pea%*%Finv_Eta)  # #Alpha <- Alpha +P/F(DO[i]-Alpha) == a[t] <- a[t|t-1] + P[t|t-1]%*%t(Z[t])%*%F[t]^-1 *(y[t]-Z[t]*a[t|t-1]-d[t]), where a=Alpha, P=Pea, Z=autoregressive coefficient in the process equation which I don't have, F=Eff, y=DO, and d=deterministic control vector in the measurement equation, which I don't have (Harvey 1989, pg. 106)
-		#Pea <- Pea - (Pea*(Pea/Eff)) #Pea- (Pea%*%Finv_Pea)        # 
-		Pea <- Pea*(1-(Pea/Eff))
+		# Predictions where gas flux not split into beta etc. (I'm pretty sure this is wrong):
+		# Uk <- K[i-1]*(do.sat[i-1] - alpha)/Zmix[i-1]
+		# alpha <- alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + Uk
+		# P <- (Uk*P*Uk) + Q
 		
-		#Pseudocode #5: Calculate the NLL
-		NegLogLikes[i] <- .5*log(2*pi) + log(Eff) + .5*Eta*Eta/Eff #0.5*log(2*pi) + 0.5*log(det(Eff)) + (0.5*t(Eta)%*%Finv_Eta)  # 
-		}
-	NLL <- sum(NegLogLikes)
-	return(NLL)
-	}
+		# Predictions where gas flux is split into beta:
+		alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
+		P <- (beta[i-1]*P*beta[i-1]) + Q
+		
+		# ======================
+		# = Updating Equations =
+		# ======================
+		# Updating Equations from Harvey
+		# a[t] = a[t|t-1] + P[t|t-1]*Z'[t]*F[t]^-1(y[t] - Z[t]*a[t|t-1] - d[t]). Harvey, page 106, 3.2.3a
+		# P[t] = P[t|t-1] - P[t|t-1]*Z'[t]*F[t]^-1*Z[t]*P[t|t-1] Harvey, page 106, eq. 3.2.3b
+		# F[t] = Z[t]*P[t|t-1]*Z'[t] + H[t] Harvey, page 106, eq. 3.2.3c
+				
+		eta <- do.obs[i] - alpha
+		Eff <- P + H
+		alpha <- alpha + P/Eff*eta
+		P <- P - P*P/Eff
+		
+		# =================
+		# = Calculate NLL =
+		# =================
+		nlls[i] <- 0.5*log(2*pi) + 0.5*log(Eff)+ 0.5*eta*eta/Eff
+		} # End recursion
+		
+		
+	return(sum(nlls)) # return the sum of nll's
+	}#End function
 	
