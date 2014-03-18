@@ -31,13 +31,26 @@
 }
 
 \examples{
-	# this is incomplete...
-  k.macintyre(wndZ=2, Kd=0.5, atm.press=1013, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par)
+  wndZ <- 2
+  Kd <- 2
+  atm.press <- 1013
+  dateTime <- as.POSIXct("2013-12-30 14:00")
+  wtr <- c(22.51, 22.42, 22.4, 22.4, 22.4, 22.36, 22.3, 22.21, 22.11, 21.23, 16.42)
+  depth <- c(0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8)
+  airT <- 20
+  Uz <- 6
+  RH <- 90
+  sw <- 800
+  lwnet <- -55
+  k500_macInytre <- k.macIntyre(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par)
 }
 
 \references{
-  MacIntyre, Sally, Werner Eugster, and George W. Kling. The critical importance of buoyancy flux for gas flux across the air-water interface. Geophysical monograph series 127 (2002): 135-139.
+ MACINTRYE, sALLY, ANDERS JONSSON, MATS JANSSON, JAN ABERG, DAMON E. TURNEY AND SCOTT D. MILLER.
+ 2010. Buoyancy flux, turbulence, and the gas transfer coefficient in a stratified lake.
+ Geophysical Research Letters. 37: L24604. doi:10.1029/2010GL044164 
 }
 
-\keyword{GLEON} 
+\keyword{methods}
+\keyword{math}
  
