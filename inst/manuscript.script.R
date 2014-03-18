@@ -68,6 +68,30 @@ metab.bayes(irr=data0[,"PAR"], z.mix=rep(1, length(Kvec)),
 #par(mfrow=c(3,2), mar=c(2,2,1.5,0.5), ps=10)
 #coda::densplot(as.mcmc(test[[1]]))
 
+
+################################################################################
+# Example use of KF
+################################################################################
+# install.packages("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer", repos=NULL, type="source")
+library("LakeMetabolizer")
+source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inProgress/ryanData.R")
+library("LakeMetabolizer")
+
+KFans <- metab.kalman(do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], k.gas=data[,"k.gas"], z.mix=data[,"z.mix"], irr=data[,"irr"], wtr=data[,"wtr"])
+
+# =========================================
+# = Plot smoothed and orginal time series =
+# =========================================
+dev.new(height=6, width=3.5)
+par(mfrow=c(2,1), mar=c(2,2.5,0.5,0.5), oma=c(0.5, 0, 0, 0), ps=9, mgp=c(1.5,0.2,0), tcl=-0.2, xpd=TRUE)
+plot(data[,"do.obs"], type="l", lwd=5, col="gray", xlab="", ylab=bquote(DO))
+legend("topleft", legend=c("obs", "smoothed"), col=c("gray","red"), lty=1, lwd=c(5, 1))
+lines(KFans$smoothDO, col="red")
+plot(diff(data[,"do.obs"]), type="l", lwd=5, col="gray", xlab="", ylab=bquote(italic(d)*DO))
+mtext("time",side=1, line=-0.5, outer=TRUE)
+lines(diff(KFans$smoothDO), col="red")
+
+
 ################################################################################
 # misc code
 ################################################################################
