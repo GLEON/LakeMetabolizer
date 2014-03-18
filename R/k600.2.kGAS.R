@@ -16,3 +16,15 @@ k600.2.kGAS	<-	function(k600,temperature,gas){
 	kGAS	<-	k600*(Sc600^-n)
 	return(kGAS)
 }
+
+
+k600.2.kGAS.ts = function(k600, temperature, gas){
+  all.data = k600
+  all.data = merge(all.data, temperature)
+  
+  kGAS = data.frame(datetime=all.data$datetime)
+  
+  kGAS$kGAS = k600.2.kGAS(all.data[,2], all.data[,3], gas)
+  
+  return(kGAS)
+}
