@@ -1,4 +1,4 @@
-KFsmoothDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr, Hfac=NULL){
+KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL){
 	nobs <- length(do.obs)
 	d0 <- double(nobs-1)
 	# beta <- 1-KO2zmix #do.obs_t = 1*do.obs_t-1 + -KO2zmix*do.obs_t-1 + Sea%*%Ewe + eta === (1-KO2zmix)*do.obs_t-1.....
@@ -26,7 +26,7 @@ KFsmoothDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr, Hfac=NULL){
 	# Or,
 	# alpha[t] = (1-kz[t-1])*alpha[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + kz[t-1]*do.sat[t-1]
 	# Defining kz and redefining (1-kz[t]) as beta[t]:
-	kz <- K/Zmix # K and Zmix are both vector of length nobs
+	kz <- k.gas/z.mix # K and Zmix are both vector of length nobs
 	# beta <- 1-kz # beta is a vector of length nobs (this beta is for difference equation form)
 	beta <- exp(-kz) # This beta is for using the differential equation form
 	

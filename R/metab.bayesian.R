@@ -77,7 +77,7 @@ bayesFit <- function(data, params, tend="median", ...){ #function that writes ja
 	GPPsd <- sqrt(sum(sdSim[1]^2*data$U[,1]^2))
 	Rsd <- sqrt(sum(sdSim[2]^2*data$U[,2]^2))
 	
-	return(list(jags.m, matrix(c(GPP,GPPsd,R,Rsd), nrow=2, dimnames=list(c("mu", "sd"), c("GPP", "R"))))) # need to clean up format, and maybe include a return of the sd's of the estimates
+	return(list("model"=jags.m, "params"=ctSim[1:2], "metab"=matrix(c(GPP,GPPsd,R,Rsd), nrow=2, dimnames=list(c("mu", "sd"), c("GPP", "R"))))) # need to clean up format, and maybe include a return of the sd's of the estimates
 }
 
 
@@ -112,11 +112,11 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
   
   
   # Put in final format supplied to jags
-  data <- list(Y=do.obs, N=length(Y), U=U, kP=kP, cP=cP, satO=do.sat, a0=do.obs[1], Zmix=z.mix)
+  data <- list(Y=do.obs, N=length(do.obs), U=U, kP=kP, cP=cP, satO=do.sat, a0=do.obs[1], Zmix=z.mix)
   params <- c("C", "sigmaV", "sigmaW")
   
   output <- bayesFit(data, params)
-  return(output[[2]])
+  return(output)
   
 }
 

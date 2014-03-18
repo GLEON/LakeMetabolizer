@@ -1,5 +1,5 @@
 
-KFnllDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr){
+KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	
 	# ===========================
 	# = Unpack and set initials =
@@ -11,7 +11,7 @@ KFnllDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr){
 	H <- exp(Params[4]) # Variance of observation error
 	
 	# See KalmanDO_smooth.R comments for explanation of beta
-	kz <- K/Zmix # K and Zmix are both vector of length nobs
+	kz <- k.gas/z.mix # K and Zmix are both vector of length nobs
 	# beta <- 1-kz # beta is a vector of length nobs (this beta is for difference equation form)
 	beta <- exp(-kz) # This beta is for using the differential equation form
 	
