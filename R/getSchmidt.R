@@ -3,27 +3,36 @@ getSchmidt	<-	function(temperature, gas){
 	# temperature can be a number or a vector of numbers
 	# gas must be a valid name. Code for more, but currently only in the supported data frame.
 	
-	# __Wanninkhof, Rik. "Relationship between wind speed and gas exchange over the ocean."__ 
-	# __Journal of Geophysical Research: Oceans (1978–2012) 97.C5 (1992): 7373-7382.__
+	# __Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, 
+	#__Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H. McDowell,
+	#__and Denis Newbold. "Scaling the gas transfer velocity and hydraulic 
+	#__geometry in streams and small rivers." Limnology & Oceanography: 
+	#__Fluids & Environments 2 (2012): 41-53.
 	
-	Schmidt	<-	data.frame("He"=c(377.09,19.154,0.50137,0.005669),
-		"O2"=c(1800.6,120.1,3.7818,0.047608),
-		"CO2"=c(1911.1,118.11,3.4527,0.04132),
-		"CH4"=c(1897.8,114.28,3.2902,0.039061),
-		"SF6"=c(3255.3,217.13,6.8370,0.086070),
-		"N2O"=c(2055.6,137.11,4.3173,0.05435),
-		"Ar"=c(1759.7,117.37,3.6959,0.046527))
+	range.t	<-	c(4,35) # supported temperature range
+	
+	Schmidt	<-	data.frame(
+		"He"=c(368,-16.75,0.374,-0.0036),
+		"O2"=c(1568,-86.04,2.142,-0.0216),
+		"CO2"=c(1742,-91.24,2.208,-0.0219),
+		"CH4"=c(1824,-98.12,2.413,-0.0241),
+		"SF6"=c(3255,-217.13,6.837,-0.0861),
+		"N2O"=c(2105,-130.08,3.486,-0.0365),
+		"Ar"=c(1799,-106.96,2.797,-0.0289),
+		"N2"=c(1615,-92.15,2.349,-0.0240))
 		
 	if (!is.character(gas)){stop(paste('gas must be a character. was given as',gas))}
 	if (length(gas)>1){stop("only one gas can be specified for this version")}
 	if (!any(names(Schmidt)==gas)){stop(paste(gas,'not found in list of coded gasses'))}
-
+	if (any(temperature < range.t[1] | temperature > range.t[2])){
+		warning("temperature out of range")
+	}
 	A	<-	unlist(Schmidt[gas])[1]
 	B	<-	unlist(Schmidt[gas])[2]
 	C	<-	unlist(Schmidt[gas])[3]
 	D	<-	unlist(Schmidt[gas])[4]
 
-	Sc = as.numeric(A-B*temperature+C*temperature^2-D*temperature^3)
+	Sc = as.numeric(A+B*temperature+C*temperature^2+D*temperature^3)
 
 	return(Sc)
 }
