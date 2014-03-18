@@ -7,8 +7,8 @@ KFnllDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr){
 	#!Pseudocode #1: Initial guesses for B, C, and Q t
 	c1 <- Params[1] #PAR coeff
 	c2 <- Params[2] #log(Temp) coeff
-	Q <- Params[3] # Variance of the process error
-	H <- Params[4] # Variance of observation error
+	Q <- exp(Params[3]) # Variance of the process error
+	H <- exp(Params[4]) # Variance of observation error
 	
 	# See KalmanDO_smooth.R comments for explanation of beta
 	kz <- K/Zmix # K and Zmix are both vector of length nobs

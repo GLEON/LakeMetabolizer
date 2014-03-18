@@ -1,4 +1,4 @@
-KFsmoothdo.obs <- function(Params, do.obs, Aitch, irr, do.sat, KO2zmix, lnTemp){
+KFsmoothDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr, Hfac=NULL){
 	nobs <- length(do.obs)
 	d0 <- double(nobs-1)
 	# beta <- 1-KO2zmix #do.obs_t = 1*do.obs_t-1 + -KO2zmix*do.obs_t-1 + Sea%*%Ewe + eta === (1-KO2zmix)*do.obs_t-1.....
@@ -7,7 +7,12 @@ KFsmoothdo.obs <- function(Params, do.obs, Aitch, irr, do.sat, KO2zmix, lnTemp){
 	c1 <- Params[1] # irr Coeff
 	c2 <- Params[2] # log(wtr) Coeff
 	Q <- Params[3] # Variance of the Process Error
-	H <- Params[4] # Variance of Observation Error
+	if(is.null(Hfac)){
+		H <- Params[4]
+	}else{
+		H <- Params[4]*Hfac
+	}
+	 # Variance of Observation Error
 	
 	# Need to define portion of K multiplied by state variable (DO)
 	# Gas flux = K[t-1](do.sat[t-1] - alpha[t-1])/Zmix[t-1]
@@ -95,7 +100,7 @@ KFsmoothdo.obs <- function(Params, do.obs, Aitch, irr, do.sat, KO2zmix, lnTemp){
 	# Pstar[t] = P[t]*T[t+1]/P[t+1|t]
 	# t is current time step, T is last time step (when in []), T contains AR parameters (when NOT in [])
 	
-	for(i in d0:1){
+	for(i in length(d0):1){
 		pStar <- pVec[i]*beta[i+1]/pHat[i+1]
 		aSmooth[i] <- aVec[i] + pStar*(aSmooth[i+1] - aHat[i+1])
 		

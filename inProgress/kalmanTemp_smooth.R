@@ -49,7 +49,7 @@ KFsmoothTemp <- function(Params, Temp, Watts, Aitch){
 	
 	for(i in (N-1):1){
 		Pstar <- Pvec[i]*Beta/PHatvec[i+1]
-		Asmooth[i] <- Avec[i] + Pstar*(Asmooth[i+1]-AHatvec[i+1])
+		Asmooth[i] <- Avec[i] + Pstar*(Asmooth[i+1]-AHatvec[i])
 		}
 	return(list(Asmooth, Errors))
 }
