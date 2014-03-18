@@ -15,7 +15,8 @@ getSchmidt	<-	function(temperature, gas){
 		"CH4"=c(1824,-98.12,2.413,-0.0241),
 		"SF6"=c(3255,-217.13,6.837,-0.0861),
 		"N2O"=c(2105,-130.08,3.486,-0.0365),
-		"Ar"=c(1799,-106.96,2.797,-0.0289))
+		"Ar"=c(1799,-106.96,2.797,-0.0289),
+		"N2"=c(1615,-92.15,2.349,-0.0240))
 		
 	if (!is.character(gas)){stop(paste('gas must be a character. was given as',gas))}
 	if (length(gas)>1){stop("only one gas can be specified for this version")}
