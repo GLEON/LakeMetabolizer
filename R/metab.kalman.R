@@ -1,6 +1,6 @@
 
 
-metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
+metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, ...){
 	# ==================
 	# = Filter and Fit =
 	# ==================
@@ -9,7 +9,7 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr){
 	# ==================
 	guesses <- c(1E-4,1E-4,log(5),log(5))
 	# KFnllDO(Params=c(1E-4,-1E-4,5,5), do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], K=data[,"K"], Zmix=data[,"Zmix"], irr=data[,"irr"], wtr=data[,"wtr"])
-	fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr)
+	fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr, ...)
 	pars0 <- fit$par
 	pars <- c(pars0[1], pars0[2], exp(pars0[3:4]))
 	
