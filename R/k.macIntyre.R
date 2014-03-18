@@ -162,9 +162,10 @@ k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH,
   
   KeNm = uSt^3
   SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z_aml))
+  SmE[SmE<0] = 0    # set negative to 0
   Sk   = SmE*kinV
   Sk   = Sk*100^4*3600^4 # Sally's K now in cm4/h4
-  Sk600= 1.2*600^(-0.5)*Sk^(1/4) # in cm/hr (Total)
+  Sk600 = 1.2*600^(-0.5)*Sk^(1/4) # in cm/hr (Total)
     
   k600 <- as.numeric(Sk600) # why is this not already numeric?
   k600 <- k600*24/100 #units in m d-1

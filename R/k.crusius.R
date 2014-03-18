@@ -1,11 +1,6 @@
 # ---Author: Hilary Dugan, 2013-10-20 --- 
 # Last update: 2014-02-01 
 
-# Uses power function from:
-# -- References 
-#CRUSIUS, JOHN, AND RIK WANNINKHOF. 2003
-#Gas transfer velocities measured at low wind speed over a lake.
-#Limnology and Oceanography. 48(3): 1010:1017.
 
 # INPUTS
 # wnd: wind value in metres/second
@@ -30,3 +25,9 @@ k.crusius <- function(wnd,method='power'){
   k600 <- k600*24/100 #units in m d-1
   return(k600)
 }
+
+
+# -- References 
+# CRUSIUS, JOHN, AND RIK WANNINKHOF. 2003
+# Gas transfer velocities measured at low wind speed over a lake.
+# Limnology and Oceanography. 48(3): 1010:1017.
