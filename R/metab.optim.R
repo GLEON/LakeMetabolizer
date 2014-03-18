@@ -26,10 +26,10 @@ metab.optim = function(do.obs, irr, do.sat, z.mix, k.gas, timestep){
 	   calc.do.nll(iotaRhoDoinitSigma[1], iotaRhoDoinitSigma[2], iotaRhoDoinitSigma[3], iotaRhoDoinitSigma[4], irr, do.sat, z.mix, k.gas, do.obs)
 	 }
  
-	rho     <- range(do.obs)/n.obs
+	rho     <- diff(range(do.obs))/n.obs
 	iota    <- rho
 	doInit  <- do.obs[1]
-	sigma   <- sqrt(((range(do.obs)-mean(do.obs))^2/n.obs))
+	sigma   <- sqrt(((diff(range(do.obs))-mean(do.obs))^2/n.obs))
 
 	optimOut <- optim(par = c(iota,rho,doInit,sigma), fn = to.optim)
 
