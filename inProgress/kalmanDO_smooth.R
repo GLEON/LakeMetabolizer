@@ -27,7 +27,8 @@ KFsmoothDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr, Hfac=NULL){
 	# alpha[t] = (1-kz[t-1])*alpha[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + kz[t-1]*do.sat[t-1]
 	# Defining kz and redefining (1-kz[t]) as beta[t]:
 	kz <- K/Zmix # K and Zmix are both vector of length nobs
-	beta <- 1-kz # beta is a vector of length nobs
+	# beta <- 1-kz # beta is a vector of length nobs (this beta is for difference equation form)
+	beta <- exp(-kz) # This beta is for using the differential equation form
 	
 	# Set first true value equal to first observation
 	alpha <- do.obs[1]
@@ -63,7 +64,14 @@ KFsmoothDO <- function(Params, do.obs, do.sat, K, Zmix, irr, wtr, Hfac=NULL){
 		# pHat[i] <- P
 		
 		# Predictions where gas flux is split into beta (see explanation above):
-		alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
+		
+		# Difference Equation Version:
+		# alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
+		
+		# Differential Equation Version (see kalmanDO_nll.R for explanation):
+		a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]	
+		alpha <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
+		
 		aHat[i] <- alpha
 		P <- (beta[i-1]*P*beta[i-1]) + Q
 		pHat[i] <- P
