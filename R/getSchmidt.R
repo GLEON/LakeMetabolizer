@@ -6,6 +6,8 @@ getSchmidt	<-	function(temperature, gas){
 	# __Wanninkhof, Rik. "Relationship between wind speed and gas exchange over the ocean."__ 
 	# __Journal of Geophysical Research: Oceans (1978–2012) 97.C5 (1992): 7373-7382.__
 	
+	range.t	<-	c(4,35)
+	
 	Schmidt	<-	data.frame(
 		"He"=c(377.09,19.154,0.50137,0.005669),
 		"O2"=c(1568,-86.04,2.142,-0.0216),
@@ -18,13 +20,15 @@ getSchmidt	<-	function(temperature, gas){
 	if (!is.character(gas)){stop(paste('gas must be a character. was given as',gas))}
 	if (length(gas)>1){stop("only one gas can be specified for this version")}
 	if (!any(names(Schmidt)==gas)){stop(paste(gas,'not found in list of coded gasses'))}
-
+	if (any(temperature < range.t[1] | temperature > range.t[2])){
+		warning("temperature out of range")
+	}
 	A	<-	unlist(Schmidt[gas])[1]
 	B	<-	unlist(Schmidt[gas])[2]
 	C	<-	unlist(Schmidt[gas])[3]
 	D	<-	unlist(Schmidt[gas])[4]
 
-	Sc = as.numeric(A-B*temperature+C*temperature^2+D*temperature^3)
+	Sc = as.numeric(A+B*temperature+C*temperature^2+D*temperature^3)
 
 	return(Sc)
 }
