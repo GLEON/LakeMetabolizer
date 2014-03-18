@@ -1,7 +1,7 @@
 \name{k.macIntyre}
 \alias{k.macIntyre}
 \title{k600 from MacIntyre et al. 2010}
-\description{k600 from MacIntyre et al. 2010, returns in m/day}
+\description{k600 from surface renewal model described in MacIntyre et al. 2010, returned in m/day}
 \usage{
   k.crusius(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par)
 }
@@ -20,7 +20,7 @@
   \item{par}{vector of par data in umol m-2 s-1 }
 }
 \value{
-  A number for k600 in m/day
+  A vector for k600 in m/day
 }
 \author{
   Hilary Dugan
@@ -42,7 +42,7 @@
   RH <- 90
   sw <- 800
   lwnet <- -55
-  k500_macInytre <- k.macIntyre(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par)
+  k500_macInytre <- k.macIntyre(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet)
 }
 
 \references{
