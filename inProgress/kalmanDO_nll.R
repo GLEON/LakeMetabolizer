@@ -101,5 +101,5 @@ KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 		
 		
 	return(sum(nlls)) # return the sum of nll's
-	}#End function
+}#End function
 	
