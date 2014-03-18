@@ -1,6 +1,39 @@
 metab.optim.ts = function(do.obs.ts, irr.ts, do.sat.ts, z.mix.ts, k.gas.ts, ...){
   
   
+  all.data = do.obs.ts
+  all.data = merge(all.data, irr.ts, by='datetime')
+  all.data = merge(all.data, do.sat.ts, by='datetime')
+  all.data = merge(all.data, z.mix.ts, by='datetime')
+  all.data = merge(all.data, k.gas.ts, by='datetime')
+  
+  #The order for this will be datetime, doobs, irr, do.sat, z.mix, k.gas
+  timesteps = as.numeric(diff(all.data[,1]), units="mins")
+  
+  # code to get the data mode. I can't believe R doesn't have a function for "mode"
+  ux <- unique(timesteps)
+  timestep = ux[which.max(tabulate(match(timesteps, ux)))]
+  
+  #Now split by day
+  
+  days = trunc(all.data[,1], units="days")
+  
+  u.days = unique(days)
+  
+  output = data.frame()
+  
+  #The order for this will be 1.datetime, 2.doobs, 3.irr, 4.do.sat, 5.z.mix, 6.k.gas
+  
+  for(i in 1:length(u.days)){
+    
+    d.I = days == u.days[i]
+    
+    tmp = metab.optim(all.data[d.I,2], all.data[d.I,3], all.data[d.I,4], 
+                      all.data[d.I,5], all.data[d.I,6], timestep)
+    
+    output = rbind(output, data.frame(tmp))
+  }
+  return(output)
 }
 
 ################################################################################
