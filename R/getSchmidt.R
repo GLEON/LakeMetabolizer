@@ -9,7 +9,7 @@ getSchmidt	<-	function(temperature, gas){
 	#__geometry in streams and small rivers." Limnology & Oceanography: 
 	#__Fluids & Environments 2 (2012): 41-53.
 	
-	range.t	<-	c(4,35)
+	range.t	<-	c(4,35) # supported temperature range
 	
 	Schmidt	<-	data.frame(
 		"He"=c(368,-16.75,0.374,-0.0036),
