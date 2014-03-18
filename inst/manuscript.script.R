@@ -16,7 +16,7 @@
 #source("getSchmidt.R")
 #source("date2doy.R")
 #source("o2.saturation.R")
-source("longestRun.R")
+# source("longestRun.R")
 
 # ====================
 # = Read in Raw Data =
@@ -73,9 +73,9 @@ metab.bayes(irr=data0[,"PAR"], z.mix=rep(1, length(Kvec)),
 # Example use of KF
 ################################################################################
 # install.packages("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer", repos=NULL, type="source")
-library("LakeMetabolizer")
-source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inProgress/ryanData.R")
-library("LakeMetabolizer")
+# library("LakeMetabolizer")
+# source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inProgress/ryanData.R")
+# library("LakeMetabolizer")
 
 KFans <- metab.kalman(do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], k.gas=data[,"k.gas"], z.mix=data[,"z.mix"], irr=data[,"irr"], wtr=data[,"wtr"])
 

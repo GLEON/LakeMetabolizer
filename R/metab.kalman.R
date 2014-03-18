@@ -37,5 +37,5 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, ...
 }
 
 
-
+# KFans <- metab.kalman(do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], k.gas=data[,"k.gas"], z.mix=data[,"z.mix"], irr=data[,"irr"], wtr=data[,"wtr"])
 # BayesAns <- metab.bayesian(do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], k.gas=data[,"k.gas"], z.mix=data[,"z.mix"], irr=data[,"irr"], wtr=data[,"wtr"])

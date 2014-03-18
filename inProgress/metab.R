@@ -10,4 +10,9 @@
 metab <- function(data, method){
 	require("plyr")
 	
+	data0 <- LakeMetabolizer:::ryanData()
+	data0[,"Year"] <- as.integer(format.Date(data0[,"date"], "%Y"))
+	data <- addNA(data0)
+	
+	
 }
