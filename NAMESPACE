@@ -1,4 +1,4 @@
 export(k.read, k.crusius, k.cole, k.macIntyre, 
        metab.optim, metab.bookkeep, metab.bayesian,
-	   k600.2.kGAS,
+	   k600.2.kGAS,getSchmidt,
 	   sun.rise.set, manuscript.code, scale.exp.wind)

@@ -47,15 +47,15 @@
 	# data0 <- d3[longestRun(d3[d3[,"DateTime"]>130&d3[,"DateTime"]<240,]),]
 	# data0 <- d3[d3[,"DateTime"]>125&d3[,"DateTime"]<240,]
 	# data0 <- d3[d3[,"DateTime"]>=136&d3[,"DateTime"]<137,]
-	data0 <- d3[d3[,"DateTime"]>=137&d3[,"DateTime"]<138,]
-	# data0 <- d3[d3[,"DateTime"]>=319&d3[,"DateTime"]<320,]
+	# data0 <- d3[d3[,"DateTime"]>=137&d3[,"DateTime"]<138,]
+	data0 <- d3[d3[,"DateTime"]>=319&d3[,"DateTime"]<320,]
 	# plot(data0[,c(1,3)], type="l")
 	# plot(data0[1500:2500,c(1,3)], type="l")
 	names(data0) <- c("DoY", "Temp", "DO", "Wind", "PAR") # rename columns while still data frame
 	data0 <- as.matrix(data0) # convert to matrix
 	row.names(data0) <- NULL # remove row names left over from d3
 
-	data0[44, "Temp"] <- 10.635
+	# data0[44, "Temp"] <- 10.635
 
 	Freq <- median(diff(data0[,"DoY"])) # determine the sampling frequency; i have a function for mode if we are worried about it
 
@@ -63,7 +63,7 @@
 	Kvec <- k600.2.kGAS(LakeMetabolizer:::k.cole(wind)*Freq, data0[,"Temp"], "O2") # calculate K for relevant sampling frequency
 
 
-	data <- matrix(c(data0[,"DO"], LakeMetabolizer:::o2.at.sat(data0[,"Temp"], baro=716), Kvec, rep(1, dim(data0)[1]), data0[,"PAR"], data0[,"Temp"]), nrow=dim(data0)[1], dimnames=list(NULL, c("do.obs", "do.sat", "K", "Zmix", "irr", "wtr")))
+	data <- matrix(c(data0[,"DO"], LakeMetabolizer:::o2.at.sat(data0[,"Temp"], baro=716), Kvec, rep(1, dim(data0)[1]), data0[,"PAR"], data0[,"Temp"]), nrow=dim(data0)[1], dimnames=list(NULL, c("do.obs", "do.sat", "k.gas", "z.mix", "irr", "wtr")))
 
 	# return(data)
 	rm(list=ls()[!ls()%in%c(origList,"data")])
