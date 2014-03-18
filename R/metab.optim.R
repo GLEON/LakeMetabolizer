@@ -26,7 +26,7 @@ metab.optim.ts = function(do.obs.ts, irr.ts, do.sat.ts, z.mix.ts, k.gas.ts, ...)
   
   for(i in 1:length(u.days)){
     
-    d.I = days == u.days[i]
+    d.I = days == u.days[i]    
     
     tmp = metab.optim(all.data[d.I,2], all.data[d.I,3], all.data[d.I,4], 
                       all.data[d.I,5], all.data[d.I,6], timestep)
@@ -159,11 +159,10 @@ metab.bootstrap <- function(iota, rho, doInit, sigma, irr, doSat, zMix, kO2, doO
 	for(i in 1:n){
 		#Randomize the residuals using one of two methods
 		if(ar1.resids){ #residual randomization keeping the ar1 data structure
-			simRes <- rep(NA, n.obs)
-			simRes[1] <- sample(resids,1)
-			for(j in 2:n.obs){
-				simRes[j] <- ar1.coeff*simRes[j-1] + rnorm(n=1, sd=ar1.sd)
-			}
+			
+      simRes = as.numeric(arima.sim(n=n.obs, model=list(ar=ar1.coeff), 
+                                    innov=sample(resids, size=n.obs, replace=TRUE))
+      
 		}else{ #Raw residual randomization
 			#Randomize residuals without replacement
 			# simRes = sample(resids, length(resids), replace=FALSE) # Should replace=TRUE? -RDB
