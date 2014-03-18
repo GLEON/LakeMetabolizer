@@ -6,7 +6,7 @@
 # library("LakeMetabolizer")
 # source("/Users/Battrd/Documents/School&Work/WiscResearch/LakeMetabolizer/inProgress/ryanData.R")
 # library("LakeMetabolizer")
-
+data <- LakeMetabolizer:::ryanData()
 metab <- function(data, method){
 	require("plyr")
 	
