@@ -135,7 +135,7 @@ metab.bootstrap <- function(iota, rho, doInit, sigma, irr, doSat, zMix, kO2, doO
 			#Randomize residuals without replacement
 			# simRes = sample(resids, length(resids), replace=FALSE) # Should replace=TRUE? -RDB
 			#Randomize residuals with replacement
-			simRes = sample(resids, length(resids), replace=TRUE) 
+			simRes <- sample(resids, length(resids), replace=TRUE) 
 		}
 
 		doSim <- doHat + simRes
