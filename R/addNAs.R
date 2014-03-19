@@ -1,5 +1,5 @@
 #rdb
-addNA <- function(x){
+addNAs <- function(x){
 	rdig <- 4
 	Mode <- function(x){
 			ux <- unique(x)

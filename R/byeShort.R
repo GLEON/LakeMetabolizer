@@ -1,5 +1,5 @@
 #rdb
-byeShort <- function(X, percentReqd=0.80, Expected=288, ToCount="doy", TruncToCount=TRUE, By=c("Year","doy")){#there is almost certainly a better way to do this
+byeShort <- function(X, percentReqd=0.80, Expected=288, ToCount="doy", TruncToCount=TRUE, By=c("year","doy")){#there is almost certainly a better way to do this
 	#in addition to checking for missing values, also checks for duplicates (checks duplicates first, removes those, then checks for missing)
 	dups <- function(x) x[!duplicated(round(x[,ToCount],9)),]
 	X <- ddply(X, setdiff(By, ToCount), dups)

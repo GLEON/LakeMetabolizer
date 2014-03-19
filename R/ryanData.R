@@ -138,9 +138,10 @@ ryanData <- function(lake = "troutbog"){
 	# data <- matrix(c(data0[,"DO"], LakeMetabolizer:::o2.at.sat(data0[,"Temp"], baro=716), Kvec, rep(1, dim(data0)[1]), data0[,"PAR"], data0[,"Temp"]), nrow=dim(data0)[1], dimnames=list(NULL, c("do.obs", "do.sat", "k.gas", "z.mix", "irr", "wtr")))
 		data <- data.frame(
 			"date"=data0[,"date"],
+			"year"= as.integer(format.Date(data0[,"date"], "%Y")),
 			"doy"=data0[,"doy"],
 			"do.obs"=data0[,"do.obs"], 
-			"do.sat"=o2.at.sat(data0[,"wtr"], baro=716), 
+			"do.sat"=o2.at.sat(data0[,"wtr"], baro=716),
 			"k.gas"=Kvec, 
 			"z.mix"=rep(1, dim(data0)[1]), 
 			"irr"=data0[,"irr"], 
