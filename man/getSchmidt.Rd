@@ -1,82 +1,44 @@
 \name{getSchmidt}
 \alias{getSchmidt}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Delete this text.%%  ~~function to do ... ~~
+Returns Schmidt number for a specific gas at a given temperature
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Schmidt number is temperature dependant, and is the ratio of the 
+kinematic viscosity of water to a diffusion coefﬁcient. Coefficients
+are included for He, O2, CO2, CH4, SF6, N2O, Ar, and N2.
 }
+
 \usage{
 getSchmidt(temperature, gas)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{temperature}{
-%%     ~~Describe \code{temperature} here~~
+  \item{temperature}{Numeric vector of water temperatures in deg. Celsius}
+  \item{gas}{String for gas code. Valid inputs include: 'He', 'O2', 'CO2', 
+    'CH4', 'SF6', 'N2O', 'Ar', and 'N2'}
 }
-  \item{gas}{
-%%     ~~Describe \code{gas} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
+
+\value{Schmidt number (unitless)}
+
 \references{
-%% ~put references to the literature/web site here ~
+  Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, 
+  Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H. McDowell,
+	and Denis Newbold. "Scaling the gas transfer velocity and hydraulic 
+	geometry in streams and small rivers." Limnology & Oceanography: 
+	Fluids & Environments 2 (2012): 41-53.
 }
 \author{
-%%  ~~who you are~~
+Jordan Read
 }
 \note{
-%%  ~~further notes~~
+Temperature range is only valid from 4-35 deg Celsius
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (temperature, gas) 
-{
-    Schmidt <- data.frame(He = c(377.09, 19.154, 0.50137, 0.005669), 
-        O2 = c(1800.6, 120.1, 3.7818, 0.047608), CO2 = c(1911.1, 
-            118.11, 3.4527, 0.04132), CH4 = c(1897.8, 114.28, 
-            3.2902, 0.039061), SF6 = c(3255.3, 217.13, 6.837, 
-            0.08607), N2O = c(2055.6, 137.11, 4.3173, 0.05435), 
-        Ar = c(1759.7, 117.37, 3.6959, 0.046527))
-    if (!is.character(gas)) {
-        stop(paste("gas must be a character. was given as", gas))
-    }
-    if (length(gas) > 1) {
-        stop("only one gas can be specified for this version")
-    }
-    if (!any(names(Schmidt) == gas)) {
-        stop(paste(gas, "not found in list of coded gasses"))
-    }
-    A <- unlist(Schmidt[gas])[1]
-    B <- unlist(Schmidt[gas])[2]
-    C <- unlist(Schmidt[gas])[3]
-    D <- unlist(Schmidt[gas])[4]
-    Sc = as.numeric(A - B * temperature + C * temperature^2 - 
-        D * temperature^3)
-    return(Sc)
-  }
+getSchmidt(temperature=12, gas="O2")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{methods}
+\keyword{math}
