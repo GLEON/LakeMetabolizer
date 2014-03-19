@@ -161,7 +161,7 @@ metab.bootstrap <- function(iota, rho, doInit, sigma, irr, doSat, zMix, kO2, doO
 		if(ar1.resids){ #residual randomization keeping the ar1 data structure
 			
       simRes = as.numeric(arima.sim(n=n.obs, model=list(ar=ar1.coeff), 
-                                    innov=sample(resids, size=n.obs, replace=TRUE))
+                                    innov=sample(resids, size=n.obs, replace=TRUE)))
       
 		}else{ #Raw residual randomization
 			#Randomize residuals without replacement
