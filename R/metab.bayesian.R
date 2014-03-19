@@ -47,7 +47,7 @@ j2Mod <- function(){
 	# ================================
 	bayesFit <- function(data, params, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
 
-	jags.m <- jags(data, NULL, parameters.to.save=params, modfile, n.chains=3, n.iter=1E4, n.burnin=5E3)
+	jags.m <- jags(data, NULL, parameters.to.save=params, modfile, n.chains=3, n.iter=5E3, n.burnin=5E2)
 
 	tF <- function(x, tend){ # tendency function
 		switch(tend,

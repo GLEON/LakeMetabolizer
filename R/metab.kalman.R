@@ -1,6 +1,6 @@
 
 
-metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, ...){
+metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# ==================
 	# = Filter and Fit =
 	# ==================
@@ -11,7 +11,7 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, ...
 	# KFnllDO(Params=c(1E-4,-1E-4,5,5), do.obs=data[,"do.obs"], do.sat=data[,"do.sat"], K=data[,"K"], Zmix=data[,"Zmix"], irr=data[,"irr"], wtr=data[,"wtr"])
 	fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr, ...)
 	pars0 <- fit$par
-	pars <- c(pars0[1], pars0[2], exp(pars0[3:4]))
+	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]), "H"=exp(pars0[4]))
 	
 	# ====================
 	# = Fit 2: DEoptim() =
@@ -30,8 +30,8 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, ...
 	# ====================================
 	# = Use fits to calculate metabolism =
 	# ====================================
-	GPP <- sum(pars[1]*data[,"irr"])
-	R <- sum(pars[2]*log(data[,"wtr"]))
+	GPP <- sum(pars[1]*data[,"irr"], na.rm=TRUE)
+	R <- sum(pars[2]*log(data[,"wtr"]), na.rm=TRUE)
 	
 	return(list("smoothDO"=smoothDO,"params"=pars, "metab"=c("GPP"=GPP,"R"=R)))
 }

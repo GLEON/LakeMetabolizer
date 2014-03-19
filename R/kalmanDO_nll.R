@@ -22,7 +22,7 @@ KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	P <- Q #starting value
 	
 	# Empty vector for nll's
-	nlls <- double(length(do.obs))
+	nlls <- rep(NA,length(do.obs))
 		
 	# ==================
 	# = Main Recursion =
@@ -87,19 +87,17 @@ KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 		# a[t] = a[t|t-1] + P[t|t-1]*Z'[t]*F[t]^-1(y[t] - Z[t]*a[t|t-1] - d[t]). Harvey, page 106, 3.2.3a
 		# P[t] = P[t|t-1] - P[t|t-1]*Z'[t]*F[t]^-1*Z[t]*P[t|t-1] Harvey, page 106, eq. 3.2.3b
 		# F[t] = Z[t]*P[t|t-1]*Z'[t] + H[t] Harvey, page 106, eq. 3.2.3c
-				
 		eta <- do.obs[i] - alpha
 		Eff <- P + H
 		alpha <- alpha + P/Eff*eta
 		P <- P - P*P/Eff
-		
+	
 		# =================
 		# = Calculate NLL =
 		# =================
 		nlls[i] <- 0.5*log(2*pi) + 0.5*log(Eff)+ 0.5*eta*eta/Eff
-		} # End recursion
+	}
 		
-		
-	return(sum(nlls)) # return the sum of nll's
+	return(sum(nlls, na.rm=TRUE)) # return the sum of nll's
 }#End function
 	

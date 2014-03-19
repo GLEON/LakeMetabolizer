@@ -1,5 +1,23 @@
 #rdb
-addNAs <- function(x){
+addNAs <- function(x, ...){
+	dL <- grepl("^[dD][oO][yY]$", names(x)) # matches doy, regardless of case
+	yL <- grepl("^[yY]ear4?$", names(x))# matches Year, year, year4, Year4
+	dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
+	if(any(dL)){
+		names(x)[dL] <- "doy"
+	}else{
+		warning("No 'doy' column found")
+	}
+	if(any(yL)){
+		names(x)[yL] <- "year"
+	}else{
+		warning("No 'year' column found")
+	}
+	if(any(dateL)){
+		names(x)[dateL] <- "date"
+	}else{
+		warning("No 'date' column found")
+	}
 	rdig <- 4
 	Mode <- function(x){
 			ux <- unique(x)
@@ -9,7 +27,7 @@ addNAs <- function(x){
 	mins <- 1/ex*24*60
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){abs(x - round(x)) < tol}
 	if(!is.wholenumber(mins)){warning("Time between samples not whole number")}
-	x1 <- byeShort(X=x, Expected=ex, ToCount="doy", TruncToCount=TRUE)
+	x1 <- byeShort(X=x, Expected=ex, ToCount="doy", TruncToCount=TRUE, ...)
 	if(nrow(x1)==0){
 		return(x1)
 	}
@@ -21,6 +39,8 @@ addNAs <- function(x){
 	print(paste("NA's added to fill in time series:",dim(Ideal)[1]-dim(x1)[1], sep=" "))
 	flush.console()
 	x2 <- merge(x1, Ideal, all.x=TRUE, all.y=TRUE)
-	x3 <- x2[,names(x2)[names(x2)!="RoundDoY"]]
-	return(x3)
+	if(any(yL)){x2[,"year"] <- approx(x2[,"date"], x2[,"year"], xout=Ideal[,1])$y}
+	if(any(dL)){x2[,"doy"] <- approx(x2[,"date"], x2[,"doy"], xout=Ideal[,1])$y}
+	
+	return(x2)
 }
