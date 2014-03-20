@@ -19,12 +19,15 @@ getSchmidt	<-	function(temperature, gas){
 		"SF6"=c(3255,-217.13,6.837,-0.0861),
 		"N2O"=c(2105,-130.08,3.486,-0.0365),
 		"Ar"=c(1799,-106.96,2.797,-0.0289),
-		"N2"=c(1615,-92.15,2.349,-0.0240))
+		"N2"=c(1615,-92.15,2.349,-0.0240)
+	)
+		
+	obsT <- is.finite(temperature) # logical for observed (not NA or NaN [or Inf or -Inf]) -RDB
 		
 	if (!is.character(gas)){stop(paste('gas must be a character. was given as',gas))}
 	if (length(gas)>1){stop("only one gas can be specified for this version")}
 	if (!any(names(Schmidt)==gas)){stop(paste(gas,'not found in list of coded gasses'))}
-	if (any(temperature < range.t[1] | temperature > range.t[2])){
+	if (any(temperature[obsT] < range.t[1] | temperature[obsT] > range.t[2])){ # This logical threw an error if any temperature were NA (or NaN, etc.) -RDB
 		warning("temperature out of range")
 	}
 	A	<-	unlist(Schmidt[gas])[1]
