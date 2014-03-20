@@ -1,3 +1,14 @@
+# Given these "time series data frames", calculate K and prepare a data frame for metab(). The ".ts" indicates that the first column must be in a POSIXct date format, and the second+ columns contain data. The date column should have the header "datetime".
+
+# 1) do.ts contains observed oxygen values in the 2nd column in units of mg/L. Header name is not referenced.
+# 2) wtrAll.ts contains depth profile data. The 2nd column should be at the sonde depth. All columns (after 1st) should have format of wtr_x, where x is the depth in meters, such that a 10 m thermistor would have the header wtr_10.
+# 3) wnd.ts contains wind speed in meters per second (2nd column). Header name is not referenced.
+# 4) irr.ts contains PAR values. Current the unit are unimportant for metabolism values (but is probably important for some of the physics...). Header name (2nd column) should be "irr".
+# 5) atmPress is a scale (or numeric vector) of atmospheric pressures in units of mBar. Conversion from mmHg to mbar is "mbar = mmHg/0.75006168".
+# 6) wndHeight is the height of the anemometer in meters.
+
+# NOTE: Output from this function is suitable to be directly supplied to metab()
+# NOTE: This function currently uses k.cole, and does not accept an argument for other methods. This needs to be modified.
 
 metabData <- function(do.ts, wtrAll.ts, wnd.ts, irr.ts, atmPress=716/0.75006168, wndHeight){
 	require("rLakeAnalyzer")

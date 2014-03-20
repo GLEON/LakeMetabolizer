@@ -41,7 +41,8 @@ metab <- function(data, method){
 	# = Prepare to apply metab to data =
 	# ==================================
 	ids <- id(list(data2[,"year"],trunc(data2[,"doy"]))) # ID chunks to be analyzed
-	nid <- attributes(ids)$n
+	ids <- as.integer(ids - (min(ids)-1))
+	nid <- length(unique(ids))#attributes(ids)$n
 	# metabArgs <- as.list(data[1:10,c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr")])
 	results <- vector("list", nid)
 	
