@@ -59,10 +59,12 @@ metab.optim = function(do.obs, irr, do.sat, z.mix, k.gas, timestep){
 	   calc.do.nll(iotaRhoDoinitSigma[1], iotaRhoDoinitSigma[2], iotaRhoDoinitSigma[3], iotaRhoDoinitSigma[4], irr, do.sat, z.mix, k.gas, do.obs)
 	 }
  
-	rho     <- diff(range(do.obs))/n.obs
+ 	#added na.rm=TRUE so that this doesn't get held up on NA values that may be input - JAZ; may want to revist 
+ 	# this later if we discuss more what to do with input data 
+	rho     <- diff(range(do.obs,na.rm=T))/n.obs
 	iota    <- rho
 	doInit  <- do.obs[1]
-	sigma   <- sqrt(((diff(range(do.obs))-mean(do.obs))^2/n.obs))
+	sigma   <- sqrt(((diff(range(do.obs,na.rm=T))-mean(do.obs,na.rm=T))^2/n.obs))
 
 	optimOut <- optim(par = c(iota,rho,doInit,sigma), fn = to.optim)
 
