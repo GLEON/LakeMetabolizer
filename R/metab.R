@@ -15,12 +15,12 @@ metab <- function(data, method){
 	# ===================
 	# = Identify method =
 	# ===================
-	possibleMethods <- c("bayesian", "bookkeep", "kalman", "optim", "ols", "mle")
-	mtd <- possibleMethods[agrep(method, possibleMethods, max.distance=0.2, ignore.case=TRUE)]
+	possibleMethods <- c("bayesian", "bookkeep", "kalman", "optim", "ols", "mle", "mle2")
+	mtd <- possibleMethods[which.min(adist(method, possibleMethods, ignore.case=TRUE))]
 	if(!method%in%possibleMethods){
 		warning(paste("method '",method,"' matched to '",mtd,"'. Supply perfect match to avoid warning.", sep=""))
-		stopifnot(length(mtd)==1)
 	}
+	stopifnot(length(mtd)==1)
 	mtdCall <- paste("metab",mtd, sep=".")
 	
 	# ==============
