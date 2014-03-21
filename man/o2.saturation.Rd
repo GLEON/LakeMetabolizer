@@ -36,9 +36,9 @@ o2.at.sat(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "we
 	The equilibration concentration at the supplied conditions in mg/L of oxygen.
 }
 \references{
-Benson, B. B., & Krause, D. (1984). \emph{The concentration and isotopic fractionation of oxygen dissolved in freshwater and seawater in equilibrium with the atmosphere.} Limnology and Oceanography, 29(3), 620–632. doi:10.4319/lo.1984.29.3.0620
+Benson, B. B., & Krause, D. (1984). \emph{The concentration and isotopic fractionation of oxygen dissolved in freshwater and seawater in equilibrium with the atmosphere.} Limnology and Oceanography, 29(3), 620-632. doi:10.4319/lo.1984.29.3.0620
 
-Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water and seawater.} Deep Sea Research and Oceanographic Abstracts, 17(4), 721–735. doi:10.1016/0011-7471(70)90037-9
+Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water and seawater.} Deep Sea Research and Oceanographic Abstracts, 17(4), 721-735. doi:10.1016/0011-7471(70)90037-9
 
 }
 \author{
