@@ -27,7 +27,7 @@ Returns metabolism estimates based on a bayesian model based on XXXX
 }
 
 \examples{
-  
+  library(rLakeAnalyzer)
   doobs = load.ts('inst//extdata/Sparkling.doobs')
   wtr = load.ts('inst//extdata/Sparkling.wtr')
   wnd = load.ts('inst//extdata/Sparkling.wnd')
