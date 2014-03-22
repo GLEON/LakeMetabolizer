@@ -23,10 +23,13 @@
 }
 
 \examples{
-  
-  doobs = load.ts('inst//extdata/Sparkling.doobs')
-  wtr = load.ts('inst//extdata/Sparkling.wtr')
-  wnd = load.ts('inst//extdata/Sparkling.wnd')
+  library(rLakeAnalyzer)
+  doobs = load.ts(system.file('extdata', 
+			'Sparkling.doobs', package="LakeMetabolizer"))
+  wtr = load.ts(system.file('extdata', 
+			'Sparkling.wtr', package="LakeMetabolizer"))
+  wnd = load.ts(system.file('extdata', 
+			'Sparkling.wnd', package="LakeMetabolizer"))
   
   #Subset a day
   mod.date = as.POSIXct('2009-08-12')

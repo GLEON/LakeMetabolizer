@@ -57,40 +57,7 @@ metab.optim(do.obs, irr, do.sat, z.mix, k.gas, timestep)
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (do.obs, irr, do.sat, z.mix, k.gas, timestep) 
-{
-    n.obs = length(do.obs)
-    if (n.obs != length(irr) || n.obs != length(do.sat) || n.obs != 
-        length(z.mix) || n.obs != length(k.gas)) {
-        stop("All input data to metab.optim must be the same length")
-    }
-    if (n.obs < 4) {
-        stop("You must supply at least 4 observations to metab.optim.")
-    }
-    to.optim <- function(iotaRhoDoinit) {
-        calc.do.nll(iotaRhoDoinit[1], iotaRhoDoinit[2], iotaRhoDoinit[3], 
-            irr, do.sat, z.mix, k.gas, do.obs)
-    }
-    rho = range(do.obs)/n.obs
-    iota = rho
-    doInit = do.obs[1]
-    optimOut = optim(par = c(iota, rho, doInit), fn = to.optim)
-    iota.hat <- optimOut$par[1] * (1440/timestep)
-    rho.hat <- optimOut$par[2] * (1440/timestep)
-    do.init.hat <- optimOut$par[3]
-    convergence <- optimOut$convergence
-    nll.val <- optimOut$value
-    gpp.hat <- (iota.hat/(60 * 60 * 24)) * sum(irr * timestep * 
-        60)
-    return(list(iota = iota.hat, rho = rho.hat, gpp = gpp.hat, 
-        mod.info = list(do.init = do.init.hat, convergence = convergence, 
-            nll = nll.val)))
-  }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

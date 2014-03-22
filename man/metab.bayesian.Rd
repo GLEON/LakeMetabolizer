@@ -28,10 +28,14 @@ Returns metabolism estimates based on a bayesian model based on XXXX
 
 \examples{
   library(rLakeAnalyzer)
-  doobs = load.ts('inst//extdata/Sparkling.doobs')
-  wtr = load.ts('inst//extdata/Sparkling.wtr')
-  wnd = load.ts('inst//extdata/Sparkling.wnd')
-  irr = load.ts('inst/extdata/Sparkling.par')
+  doobs = load.ts(system.file('extdata', 
+			'Sparkling.doobs', package="LakeMetabolizer"))
+  wtr = load.ts(system.file('extdata', 
+			'Sparkling.wtr', package="LakeMetabolizer"))
+  wnd = load.ts(system.file('extdata', 
+			'Sparkling.wnd', package="LakeMetabolizer"))
+  irr = load.ts(system.file('extdata', 
+			'Sparkling.irr', package="LakeMetabolizer"))
   
   #Subset a day
   mod.date = as.POSIXct('2009-08-12')
