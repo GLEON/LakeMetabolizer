@@ -1,4 +1,4 @@
-# library("rjags")
+library("rjags")
 require("R2jags")
 require("R2WinBUGS")
 

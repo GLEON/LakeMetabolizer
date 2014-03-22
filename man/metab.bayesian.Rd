@@ -1,5 +1,5 @@
-\name{metab.bayes}
-\alias{metab.bayes}
+\name{metab.bayesian}
+\alias{metab.bayesian}
 \title{
 Returns metabolism estimates based on a bayesian model based on XXXX
 }
@@ -9,7 +9,7 @@ Returns metabolism estimates based on a bayesian model based on XXXX
   estimates of metabolism along with uncertainty around the parameters.
   }
 \usage{
-  metab.bayes(
+  metab.bayesian(
 }
 \arguments{
   \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), POSIXct format}
@@ -28,6 +28,8 @@ Returns metabolism estimates based on a bayesian model based on XXXX
 
 \examples{
   library(rLakeAnalyzer)
+  
+  \dontrun{
   doobs = load.ts(system.file('extdata', 
 			'Sparkling.doobs', package="LakeMetabolizer"))
   wtr = load.ts(system.file('extdata', 
@@ -35,7 +37,7 @@ Returns metabolism estimates based on a bayesian model based on XXXX
   wnd = load.ts(system.file('extdata', 
 			'Sparkling.wnd', package="LakeMetabolizer"))
   irr = load.ts(system.file('extdata', 
-			'Sparkling.irr', package="LakeMetabolizer"))
+			'Sparkling.par', package="LakeMetabolizer"))
   
   #Subset a day
   mod.date = as.POSIXct('2009-08-12')
@@ -47,10 +49,10 @@ Returns metabolism estimates based on a bayesian model based on XXXX
   k.gas = k600.2.kGAS(k.cole(wnd[,2]), wtr[,3], 'O2')
   do.sat = o2.at.sat(wtr[,3], altitude=300)
   
-  metab.bayes(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
+  metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
             do.sat=do.sat, wtr=wtr[,2],
             k.gas=k.gas, do.obs=doobs[,2])
-  
+  }
   
 }
 

@@ -4,11 +4,10 @@
 \docType{package}
 \title{
 Tools for the analysis of ecosystem metabolism
-~~ package title ~~
 }
 \description{
 A collection of tools for the calculation of freewater metabolism. 
-~~ A concise (1-5 lines) description of the package ~~
+
 }
 \details{
 \tabular{ll}{
@@ -50,24 +49,22 @@ o2.at.sat               Calculates the equilibrium saturation
 scale.exp.wind          replace this text.
 sun.rise.set            replace this text.
 }
-~~ An overview of how to use the package, including the most important functions ~~
+
 }
 \author{
 Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 
 Maintainer: Luke Winslow <lawinslow@gmail.com>
-~~ The author and/or maintainer of the package ~~
+
 }
 \references{
-~~ Literature or other references for background information ~~
+
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation ~~
-~~ directory ~~
+
 \keyword{ package }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+ \code{\link[rLakeAnalyzer:rLakeAnalyzer-package]{rLakeAnalyzer}} 
 }
 \examples{
-~~ simple examples of the most important functions ~~
+
 }

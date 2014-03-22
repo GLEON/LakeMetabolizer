@@ -55,7 +55,7 @@ Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water an
 	sal.range = 1:25
 	
 	par(mfrow=c(1,2))
-	plot(temp.range, o2.at.sat(temps), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
+	plot(temp.range, o2.at.sat(temp.range), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
 	plot(o2.at.sat(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
