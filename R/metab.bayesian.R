@@ -1,4 +1,4 @@
-library("rjags")
+#library("rjags")
 require("R2jags")
 require("R2WinBUGS")
 
@@ -46,7 +46,8 @@ j2Mod <- function(){
 	# = Supply Data and run bayesFit =
 	# ================================
 	bayesFit <- function(data, params, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
-
+	
+	require(rjags)
 	jags.m <- jags(data, NULL, parameters.to.save=params, modfile, n.chains=3, n.iter=5E3, n.burnin=5E2)
 
 	tF <- function(x, tend){ # tendency function
