@@ -1,5 +1,5 @@
 export(k.read, k.crusius, k.cole, k.macIntyre, 
-       metab.mle, metab.bookkeep, metab.bayesian, metab.kalman
+       metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,
 	   k600.2.kGAS, getSchmidt, o2.at.sat,
 	   calc.zeng, calc.lw.net, sun.rise.set,
 	   manuscript.code, scale.exp.wind)
