@@ -38,6 +38,12 @@ mle2NLL <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	alpha <- rep(0, length(do.obs))
 	alpha[1] <- do.obs[1]#Let's give this model some starting values
 
+	#R version of C loop
+	#for(i in 2:length(do.obs)){
+	#	a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
+	#	alpha[i] <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha[i-1] # NOTE: beta==exp(-kz); kz=K/Zmix
+	#}
+	
 	alpha <- mleLoopR(alpha=alpha, doobs=do.obs, c1=c1, c2=c2, beta=beta, irr=irr, wtr=wtr, kz=kz, dosat=do.sat)
 	return(-sum(dnorm(do.obs, alpha, sd=sqrt(Q), log=TRUE), na.rm=TRUE))
 }#End function
