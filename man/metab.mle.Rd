@@ -1,5 +1,5 @@
-\name{metab.optim}
-\alias{metab.optim}
+\name{metab.mle}
+\alias{metab.mle}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 replace this text.%%  ~~function to do ... ~~
@@ -8,7 +8,7 @@ replace this text.%%  ~~function to do ... ~~
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-metab.optim(do.obs, irr, do.sat, z.mix, k.gas, timestep)
+metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,7 +27,7 @@ metab.optim(do.obs, irr, do.sat, z.mix, k.gas, timestep)
   \item{k.gas}{
 %%     ~~Describe \code{k.gas} here~~
 }
-  \item{timestep}{
+  \item{...}{
 %%     ~~Describe \code{timestep} here~~
 }
 }
