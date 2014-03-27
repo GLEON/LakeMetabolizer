@@ -24,8 +24,9 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# ====================================
 	# = Use fits to calculate metabolism =
 	# ====================================
-	GPP <- sum(pars[1]*irr, na.rm=TRUE)
-	R <- sum(pars[2]*log(wtr), na.rm=TRUE)
+	GPP <- sum(pars[1]*irr)
+	# GPP <- mean(pars[1]*irr, na.rm=TRUE)*Freq # Use a line like this if we are going to have missing values; (	Freq <- round(Mode(1/diff(do.doy)))  from metabData, line 21)
+	R <- sum(pars[2]*log(wtr))
 	
 	return(list("params"=pars, "metab"=c("GPP"=GPP,"R"=R)))
 }
