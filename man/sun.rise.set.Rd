@@ -1,13 +1,10 @@
 \name{sun.rise.set}
 \alias{sun.rise.set}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-replace this text.%%  ~~function to do ... ~~
-}
-\description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
-\usage{
+\title{Calculates the time of sunrise and sunset}
+\description{Takes lattitude (deg south should be negative, north positive) and a
+matlab datenum (days since year 0) and returns the time of sunrise as a
+day fraction (e.g., 0.5 would be noon, 0 would be midnight)\usage{
 sun.rise.set(lat, datetimes)
 }
 %- maybe also 'usage' for other objects documented here.

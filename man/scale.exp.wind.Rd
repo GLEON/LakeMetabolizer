@@ -1,56 +1,43 @@
 \name{scale.exp.wind}
 \alias{scale.exp.wind}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-replace this text.%%  ~~function to do ... ~~
+\title{Wind Scaling U10 - true 10m wind speed  [m/s]
 }
-\description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+\description{Limits of wind speed at 10m in m/s
 }
 \usage{
 scale.exp.wind(wnd, wndHeight)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{wnd}{
-%%     ~~Describe \code{wnd} here~~
-}
-  \item{wndHeight}{
-%%     ~~Describe \code{wndHeight} here~~
-}
+  
+  \item{wnd= measured wind speed [m/s]}
+  \item{wndHeight=anemometer height in [m]
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
 }
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
+\value
+\item{U10 wind speed in 10 m [m/s]}
 \references{
-%% ~put references to the literature/web site here ~
+Saucier, W. 2003.Principles of Meteorological Analysis.Dover Publications. New York. p433
 }
-\author{
-%%  ~~who you are~~
+\author{Aline Jaimes
 }
 \note{
-%%  ~~further notes~~
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+http://www.atmos.washington.edu/academics/classes/2013Q2/547/lect5.pdf
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+% Ex. 1
+test = read.table("scale.exp.wind_Example.csv")  % read file 
+U10 <- wnd=(1:10) * (10/wndHeight=3)^1/7
+% %%%%%
+% Ex. 2
+wnd->1:10
+wndHeight->3
 
-## The function is currently defined as
-function (wnd, wndHeight) 
+% Run Function
 {
     U10 <- wnd * (10/wndHeight)^1/7
     return(U10)
@@ -58,5 +45,5 @@ function (wnd, wndHeight)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{WindScale}
+\keyword{GLEON}% __ONLY ONE__ keyword per line
