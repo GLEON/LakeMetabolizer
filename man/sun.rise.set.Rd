@@ -30,7 +30,7 @@ Aline Jaimes
 
 }
 \examples{
-
+sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31 12:40:00',tz='GMT'))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
