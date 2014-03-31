@@ -51,6 +51,10 @@ ss = 12 + sunriseHourAngle/15;
 rise = trunc(datetimes, 'day') + sr*60*60
 set = trunc(datetimes, 'day') + ss*60*60
 
+##Note, this does weird things. It *is* a matrix, but it doesn't print like one because it is viewed 
+# as POSIXct. I will leave it this way for now, though if someone knows how to get it to show up as
+# a matrix *and* a POSIXct value, that would be super cool.
+
 return(as.POSIXct(matrix(c(rise, set), ncol=2), origin='1970-01-01'))
 
 }
