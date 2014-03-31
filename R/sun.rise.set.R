@@ -1,4 +1,3 @@
-
 is.day = function(lat, datetime){
   sr.ss = sun.rise.set(lat, datetime)
   
@@ -24,7 +23,7 @@ sun.rise.set = function(lat, datetimes){
 # matlab datenum (days since year 0) and returns the time of sunrise as a
 # day fraction (e.g., 0.5 would be noon, 0 would be midnight)
 
-doy = as.POSIXlt(datetimes)$yday
+doy = as.POSIXlt(datetimes)$yday+1 # POSIX functions treat January 1 as day of year 0, so add 1 to compensate
 
 
 #TODO: Add leap-year fix
