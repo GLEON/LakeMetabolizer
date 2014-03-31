@@ -9,9 +9,9 @@ sun.rise.set(lat, datetimes)
 }
 
 \arguments{
-  \item{lat}{lat - The latitude for the desired location on earth
+  \item{lat}{The latitude for the desired location on earth}
 }
-  \item{datetimes}{ Either Matlab datenum or day-of-year (Jan 1st is 1)
+  \item{datetimes}{Either Matlab datenum or day-of-year (Jan 1st is 1)}
 
 }
 }
@@ -31,8 +31,9 @@ Aline Jaimes
 }
 \examples{
 
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{sunrise }
-\keyword{sunset}
+\keyword{manip}
+\keyword{arith}
