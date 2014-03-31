@@ -87,7 +87,7 @@ j2Mod <- function(){
 
 
 
-	metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)){
+	metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)){
  
  
 	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
