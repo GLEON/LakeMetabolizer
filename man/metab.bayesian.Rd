@@ -1,29 +1,38 @@
 \name{metab.bayesian}
 \alias{metab.bayesian}
 \title{
-Returns metabolism estimates based on a bayesian model based on XXXX
+	Metabolism model based on a bayesian parameter estimation framework.
 }
 \description{
-  This function runs the bayesian metabolism model on the supplied 
-  gas concentration and other supporting data. This allows for both 
-  estimates of metabolism along with uncertainty around the parameters.
+	This function runs the bayesian metabolism model on the supplied 
+	gas concentration and other supporting data. This allows for both 
+	estimates of metabolism along with uncertainty around the parameters.
   }
 \usage{
-  metab.bayesian(
+	metab.bayesian(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, priors)
 }
 \arguments{
-  \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), POSIXct format}
+  \item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
+  \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \code{\link{o2.at.sat}}}
+  \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}}
+  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}}
+  \item{irr}{Vector of photosynthetically active radiation in umoles/m2/s}
+  \item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
+  \item{priors}{Parameter priors supplied as a named list (example: \code{c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}}
 }
 
 \value{
-  Matrix of four values. 
+	A named list of parameter estimates.
+	
+	\item{GPP}{Estimated Gross Primary Productivity}
+	\item{R}{Estimated ecosystem respiration}
 }
 \author{
-  Luke Winslow, Ryan Batt
+	Luke Winslow, Ryan Batt
 }
 
 \seealso{
-  \code{\link{metab.bootstrap}}, \code{\link{metab.optim}}, \code{\link{meta.bookkeeping}}
+	\code{\link{metab.bootstrap}}, \code{\link{metab.mle}}, \code{\link{meta.bookkeep}}
 }
 
 \examples{
@@ -52,16 +61,15 @@ Returns metabolism estimates based on a bayesian model based on XXXX
   metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
             do.sat=do.sat, wtr=wtr[,2],
             k.gas=k.gas, do.obs=doobs[,2])
-  }
-  
+  }#dontrun
 }
 
 \references{
-  Read, J.S., Hamilton, D.P., Desai, A.R., Rose, K.C., MacIntyre, S.,
-  Lenters, J.D., Smyth, R.L., Hanson, P. .C., Cole, J.J., Staehr, P.A.,
-  Rusak, J.A., Pierson, D.C., Brookes, J.D., Laas, A., Wu, C.H. 2012.
-  \emph{Lake-size dependency of wind shear and convection as controls on gas
-  exchange}. Geophysical Research Letters 39, DOI: 10.1029/2012GL051886.
+	Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A’mar. 2010. 
+	\emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration Using a Bayesian 
+	Statistical Model of Oxygen Dynamics.} Limnology and Oceanography 55 (3): 1047–1062. 
+	doi:10.4319/lo.2010.55.3.1047. http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
 }
 
-\keyword{GLEON}
+\keyword{methods}
+\keyword{math}

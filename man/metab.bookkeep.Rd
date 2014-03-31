@@ -1,25 +1,34 @@
 \name{metab.bookkeep}
 \alias{metab.bookkeep}
-\title{Returns metabolism estimates for observed system based on Cole et al, 2010}
-\description{Returns metabolism estimates for observed system based on Cole et al, 2010 
-  in units of concentration/(timeStep) (i.e. 30 minute sampling interval will return 
-  kO2 in units of m/(1/48) - converts to fraction of day}
+\title{Metabolism model based on simple day/night summation NEP-interpreted changes in DO.}
+\description{
+	This model is a simple model based on the assumption that movements in DO during the day 
+	are due to NEP and gas exchange. Respiration is estimated from night-time decreases. 
+	GPP is calculated from the algebraic manipulation of NEP and R. Based on Cole et al 2000.
+}
 \usage{
-  k.read <- function(wndZ,Kd,lat,lake.area,atm.press,dateTime,wtr,airT,Uz,RH,sw,lwnet,par,lw)
+	metab.bookkeep(do.obs, do.sat, k.gas, z.mix, date.times, lake.lat)
 }
 \arguments{
-  \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), POSIXct format}
+  \item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
+  \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \code{\link{o2.at.sat}}}
+  \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}}
+  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}}
+  \item{date.times}{Vector of timestamps for above observations in \code{\link{POSIXct}} format}
 }
 
 \value{
-  Numeric value of gas exchange velocity for O2 in units of m/(timeStep*min)
+	A named list of parameter estimates.
+	
+	\item{GPP}{Estimated Gross Primary Productivity}
+	\item{R}{Estimated ecosystem respiration}
 }
 \author{
   R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
 }
 
 \seealso{
-  \code{\link{k.cole}}, \code{\link{k.crusius}}, \code{\link{k.macIntyre}}
+  \code{\link{metab.bayesian}}, \code{\link{metab.mle}}, \code{\link{meta.bookkeep}}
 }
 
 \examples{
@@ -42,15 +51,13 @@
   
   metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, doobs[,1], 45)
   
-  
 }
 
 \references{
-  Read, J.S., Hamilton, D.P., Desai, A.R., Rose, K.C., MacIntyre, S.,
-  Lenters, J.D., Smyth, R.L., Hanson, P. .C., Cole, J.J., Staehr, P.A.,
-  Rusak, J.A., Pierson, D.C., Brookes, J.D., Laas, A., Wu, C.H. 2012.
-  \emph{Lake-size dependency of wind shear and convection as controls on gas
-  exchange}. Geophysical Research Letters 39, DOI: 10.1029/2012GL051886.
+	Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell. 2000. 
+	\emph{Persistence of Net Heterotrophy in Lakes during Nutrient Addition and Food Web Manipulations.} 
+	Limnology and Oceanography 45 (8): 1718–1730. doi:10.4319/lo.2000.45.8.1718.
 }
 
-\keyword{GLEON}
+\keyword{methods}
+\keyword{math}
