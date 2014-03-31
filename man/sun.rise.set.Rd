@@ -1,36 +1,34 @@
 \name{sun.rise.set}
 \alias{sun.rise.set}
-\title{sun.rise.set:Calculates the time of sunrise and sunset}
-\description{Takes lattitude (deg south should be negative, north positive) and a
-matlab datenum (days since year 0) and returns the time of sunrise as a
-day fraction (e.g., 0.5 would be noon, 0 would be midnight)
+\title{
+Calculates the time of sunrise and sunset
+}
+
+\description{
+Calculates the time of sunrise and sunset based on latitude and date.
+}
 \usage{
 sun.rise.set(lat, datetimes)
 }
 
 \arguments{
-  \item{lat}{The latitude for the desired location on earth}
-}
-  \item{datetimes}{Either Matlab datenum or day-of-year (Jan 1st is 1)}
-
-}
+	\item{lat}{Single latitude value of site. South should be negative, north positive}
+	\item{datetimes}{Vector of dates as POSIXct or POSIXlt (see \link{\code{DateTimeClasses}}) format}
 }
 
 \value{
-\item{is.daytime}{time of sunrise and sunset}
-
+	A 2-column matrix, first column sunrise, second column sunset, as \link{\code{POSIXct}} format.
 }
 \references{
-%% ~put references to the literature/web site here ~
+	Iqbal, Muhammad. 1983. \emph{An Introduction to Solar Radiation}. Elsevier.
 }
 \author{
-Aline Jaimes
+	Aline Jaimes, Luke Winslow
 }
-\note{
 
-}
 \examples{
-sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31 12:40:00',tz='GMT'))
+
+sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31'))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
