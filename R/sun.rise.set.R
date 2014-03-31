@@ -17,7 +17,7 @@ sun.rise.set = function(lat, datetimes){
 #
 # Input:
 #   lat - The latitude for the desired location on earth.
-#   day - Either Matlab datenum or day-of-year (Jan 1st is 1)
+#   day - date
 #
 # takes lattitude (deg south should be negative, north positive) and a
 # matlab datenum (days since year 0) and returns the time of sunrise as a
