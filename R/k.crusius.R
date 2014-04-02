@@ -24,7 +24,7 @@ k.crusius <- function(wnd,method='power'){
   # Note, the linear model equation is not included here as neither the fitted linear model
   # nor the linear model forced through the origin have slope values in the MS.
   } else {
-    stop('method must be one of three options {power, constant, and bilinear')
+    stop('method must be one of three options {power, constant, and bilinear}')
   }
   
   k600 <- k600*24/100 #units in m d-1
