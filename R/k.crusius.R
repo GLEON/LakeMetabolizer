@@ -13,7 +13,7 @@
 k.crusius <- function(wnd,method='power'){
 
   U10 = wnd  #This function uses just the wind speed it is supplied. 
-  method = lower(method)
+  method = tolower(method)
   if (method=="constant"){
     k600 <- ifelse(U10<3.7,1,5.14*U10-17.9)
   } else if (method=="bilinear") {
