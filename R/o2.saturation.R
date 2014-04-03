@@ -11,13 +11,14 @@
 #
 # Reference: Benson & Krause (1984)
 #            Weiss 1970
+#            Garcia and Gordon 1992
 #            USGS memo #81.11 1981
 #            USGS memo #81.15 1981
 #
 # Initial Author: Luke Winslow
 ###########################################################################
 
-o2.at.sat <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='weiss'){
+o2.at.sat <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
   
   if(!missing(baro)){#Calc using barometric pressure
@@ -27,14 +28,25 @@ o2.at.sat <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), mode
   }
   
   
-  if(tolower(model) == 'weiss'){
+  if(tolower(model) == 'garcia'){
+  #Garcia, HE, and LI Gordon. 1992. “Oxygen Solubility in Seawater: Better Fitting Equations.” 
+  #Limnology and Oceanography 37 (6). 
+    
+    Ts = log((298.15 - temp)/(273.15 + temp))
+    
+    lnC = 2.00856 + 3.22400 *Ts + 3.99063*Ts^2 + 4.80299*Ts^2 + 4.80299*Ts^3 + 9.78188e-1*Ts^4 + 
+      1.71069*Ts^5 - salinity*(6.24097e-3 + 6.93498e-3*Ts + 6.90358e-3*Ts^2 + 4.29155e-3*Ts^3) - 3.1168e-7*salinity^2
+    
+    o2.sat = exp(lnC)  * 1.423 #convert from ml/l to mg/l
+    
+  }else if(tolower(model) == 'weiss'){
     tempk = temp + 273.15
     
-    c = -173.4292 + 249.6339 * (100 / tempk) + 143.3483 *
+    lnC = -173.4292 + 249.6339 * (100 / tempk) + 143.3483 *
           log(tempk / 100) - 21.8492 * (tempk / 100) + 
           salinity * (-0.033096 + 0.014259 * (tempk / 100) - 0.0017000 * (tempk / 100)^2)
                         
-    o2.sat = exp(c) * 1.423
+    o2.sat = exp(lnC) * 1.423 #convert from ml/l to mg/l
   
   }else if(tolower(model) == 'benson'){
     ## TODO: Fix this to include salinity
