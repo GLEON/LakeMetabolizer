@@ -56,11 +56,7 @@ Luke Winslow, Ryan Batt, GLEON Fellows
 			'Sparkling.wnd', package="LakeMetabolizer"))
   irr = load.ts(system.file('extdata', 
                           'Sparkling.par', package="LakeMetabolizer"))
-  rh = load.ts(system.file('extdata', 
-                          'Sparkling.rh', package="LakeMetabolizer"))
-  airT = load.ts(system.file('extdata', 
-                          'Sparkling.airT', package="LakeMetabolizer"))			
-  
+                          
   #Subset a day
   mod.date = as.POSIXct('2009-08-12')
   doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
