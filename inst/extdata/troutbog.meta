@@ -1,0 +1,9 @@
+Value	ID	units
+2	windZ	meters
+7.9	maxDepth	meters
+5.6	meanDepth	meters
+1.1	lakeArea	hectare
+494	elevation	meters
+46.008	latitude	degrees
+-89.686	longitude	degrees
+2.89	averageKd	m^-1
