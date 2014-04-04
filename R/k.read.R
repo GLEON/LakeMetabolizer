@@ -16,6 +16,10 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
   mnWnd <- 0.2 # minimum wind speed
+  Kelvin <- 273.15 # temp mod for deg K   
+  emiss <- 0.972 # emissivity;
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
+  
   
   # Get short wave radiation data 
   if(!missing(sw)){ 
