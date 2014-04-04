@@ -31,6 +31,8 @@ load.all.data = function(lake.name, data.path){
   
   for(i in 2:length(files)){
     tmp = load.ts(files[i])
+    #Hmm, if datetime in a file is screwed up, this blows up
+    # I wonder if I could devise a good check. Hmm.
     data = merge(data, tmp, all=TRUE, by='datetime')
   }
   
