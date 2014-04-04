@@ -2,8 +2,9 @@
 
 load.meta = function(fPath){
   
-  fid = file(fPath, 'rt')
+  fid = file(fPath, 'rt', warn=FALSE)
   tmp = readLines(fid, 100)
+  close(fid)
   
   tmp = strsplit(tmp, '[\t,]') #splits on tabs *and* commas
   
