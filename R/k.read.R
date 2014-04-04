@@ -21,9 +21,10 @@ k.read <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, ai
   if(!missing(sw)){ 
     sw <- sw
   } else if (!missing(par)){
-    sw <- par
-    parMult <- 0.4957
-    sw <- sw*parMult
+    #sw <- par
+    #parMult <- 0.4957
+    sw = par.to.sw(par)
+    #sw <- sw*parMult
   } else {  
     stop("no SW equivalent file available\n")
   }
