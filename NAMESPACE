@@ -2,5 +2,5 @@ export(k.read, k.crusius, k.cole, k.macIntyre,
        metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,
 	   k600.2.kGAS, getSchmidt, o2.at.sat, 
 	   calc.zeng, calc.lw.net, sw.to.par, par.to.sw, sun.rise.set, 
-	   load.meta, manuscript.code, scale.exp.wind)
+	   load.all.data, load.meta, manuscript.code, scale.exp.wind)
 useDynLib(LakeMetabolizer)
