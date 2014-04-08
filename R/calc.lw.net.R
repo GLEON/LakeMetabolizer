@@ -1,4 +1,24 @@
-calc.lw.net <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
+calc.lw.net = function(x, ...) UseMethod("calc.lw.net")
+
+calc.lw.net.data.frame = function(ts.data, lat, atm.press){
+  
+  if(has.vars(ts.data, 'sw')){
+    sw = get.vars(ts.data, 'sw')
+  }else if(has.vars(ts.data,'par')){
+    sw = par.to.sw(get.vars(ts.data, 'par'))
+  }else{
+    stop('calc.lw.net needs PAR or SW in the supplied data.')
+  }
+  
+  
+  lw.calc = calc.lw.net(ts.data$datetime, sw[,2], get.vars(ts.data,'wtr')[,2], lat, atm.press, 
+                        get.vars(ts.data,'airt')[,2], get.vars(ts.data,'rh')[,2])
+  
+  return(data.frame(datetime=ts.data$datetime, lwnet=lw.calc))
+}
+
+
+calc.lw.net.default <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   
   # estimate clear sky short wave radiation
   clearsky <- calc.clearsky(dateTime,lat,atm.press,airT,RH)
@@ -55,9 +75,9 @@ calc.clearsky <- function(dateTime,lat,atm.press,airT,RH){
   
   #resize vectors
   if(length(dateTime)>length(lat)) {
-    lat <- rep(1,length(dateTime))*lat
+    lat.vec <- rep(1,length(dateTime))*lat
   } else {
-    lat <- matrix(lat,length(lat),1)
+    lat.vec <- matrix(lat,length(lat),1)
   }
   if(length(dateTime)>length(atm.press)) {
     atm.press <- rep(1,length(dateTime))*atm.press
@@ -92,9 +112,9 @@ calc.clearsky <- function(dateTime,lat,atm.press,airT,RH){
   
   
   #- - cosine of solar zenith angle - -
-  sin1 = sin(lat*2*pi/360);
+  sin1 = sin(lat.vec*2*pi/360);
   sin2 = sin(sigma*2*pi/360);
-  cos1 = cos(lat*2*pi/360);
+  cos1 = cos(lat.vec*2*pi/360);
   cos2 = cos(sigma*2*pi/360);
   cos3 = cos(H);
   cosZ = sin1*sin2+cos1*cos2*cos3
@@ -186,7 +206,7 @@ GetSmithGamma <- function(latitude,dateTime){
   }
   
   gamma = rep(1,length(season))
-  latitude= rep(latitude,length(season))
+  latitude= rep(latitude,length(season))  #whoa, this is exploding in size, changed code above
   for (i in 1:length(gamma)) {
     gamma[i] = gammatable[latitude[i],season[i]]
   }

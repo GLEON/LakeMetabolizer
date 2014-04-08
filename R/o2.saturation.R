@@ -18,7 +18,21 @@
 # Initial Author: Luke Winslow
 ###########################################################################
 
-o2.at.sat <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
+o2.at.sat = function(x, ...) UseMethod("o2.at.sat")
+
+o2.at.sat.data.frame = function(temp, baro, altitude=0, salinity=0, model='garcia'){
+  if(ncol(temp) > 2){
+    stop('Temp can only have two columns, "datetime" and temperature')
+  }
+  
+  dosat = o2.at.sat(temp[,2], baro, altitude, salinity, model)
+  
+  return(data.frame(datetime=temp$datetime, dosat=dosat)) 
+  
+}
+
+
+o2.at.sat.default <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
   
   if(!missing(baro)){#Calc using barometric pressure

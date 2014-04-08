@@ -18,7 +18,79 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet, par){
+k.macIntyre = function(x, ...) UseMethod("k.macIntyre")
+
+k.macIntyre.data.frame = function(ts.data, wndZ, Kd, atm.press){
+  # Get short wave radiation data 
+  if(has.vars(ts.data, 'sw')){ 
+    sw <- get.vars(ts.data, 'sw')
+    
+  } else if (has.vars(ts.data, 'par')){
+    #sw <- par
+    #parMult <- 0.4957
+    tmp.par = get.vars(ts.data, 'par')
+    sw = par.to.sw(tmp.par)
+    #sw <- sw*parMult
+  } else {  
+    stop("Data must have PAR or SW column\n")
+  }
+  
+  # Get water temperature data
+  if(has.vars(ts.data, 'wtr')){ 
+    wtr <- get.vars(ts.data, 'wtr')
+    Ts <- wtr[,2] #grab what I hope is surface temperature
+    
+  } else {
+    stop("No 'wtr' column in supplied data\n")
+  }
+  
+  # Get air temperature
+  if(has.vars(ts.data, 'airt')){ 
+    airT <- get.vars(ts.data, 'airt')
+  } else {  
+    stop("no air temp data available")
+  }
+  
+  # Get relative humidity data
+  if(has.vars(ts.data, 'rh')){ 
+    RH <- get.vars(ts.data, 'rh')
+  } else {  
+    stop("no relative humidity data available")
+  }
+  
+  # Get long wave radiation data
+  if(has.vars(ts.data, 'lwnet')){ 
+    lwnet <- get.vars(ts.data,'lwnet')
+    
+  } else if(has.vars(ts.data, 'lw')){
+    lw_in <- get.vars(ts.data, 'lw') # long wave in
+    Tk <- Ts+Kelvin # water temperature in Kelvin
+    LWo <- S_B*emiss*Tk^4 # long wave out
+    lwnet <- lw_in[,2]-LWo
+    
+    lwnet = data.frame(datetime=lw_in$datetime, lwnet=lwnet)
+    
+  } else {  
+    stop("no longwave radiation available")
+  }
+  
+  # Get wind speed data
+  if(has.vars(ts.data, 'wnd')){
+    wnd <- get.vars(ts.data, 'wnd')
+  } else{
+    stop("no wind speed data available")
+  }
+  
+  m.d = ts.meta.depths(wtr)
+  
+  k600 = k.macIntyre(wndZ, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
+                airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
+  
+  return(data.frame(datetime=ts.data$datetime, k600=k600))
+  
+}
+
+k.macIntyre.default <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
   
   require(rLakeAnalyzer)
   #Constants
@@ -43,12 +115,12 @@ k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH,
   }
   
   # Get water temperature data
-  if(!missing(wtr)){ 
-    wtr <- wtr
-    Ts <- wtr[[1]]
-  } else {  
-    stop("no wtr file available\n")
-  }
+  #if(!missing(wtr)){ 
+  #wtr <- wtr
+  Ts <- surf.temp
+  #} else {  
+  #  stop("no wtr file available\n")
+  #}
   
   # Get air temperature
   if(!missing(airT)){ 
@@ -114,12 +186,13 @@ k.macIntyre <- function(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH,
   
   
   # find Z_aml
-  if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
-    z_aml <- depth[length(depth)]
-  } else {
-    zI <- depth[wtr[1] - dT > wtr]
-    z_aml <- zI[1]
-  }
+  #if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
+  #  z_aml <- depth[length(depth)]
+  #} else {
+  #  zI <- depth[wtr[1] - dT > wtr]
+  #  z_aml <- zI[1]
+  #}
+  z_aml = z.mix
   
   # calculate the effective heat flux
   q1 <- 2-2*exp(z_aml*-Kd)

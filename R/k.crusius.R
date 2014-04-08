@@ -1,6 +1,21 @@
 # ---Author: Hilary Dugan, 2013-10-20 --- 
 # Last update: 2014-02-01 
 
+k.crusius = function(x, ...) UseMethod("k.crusius")
+
+
+k.crusius.data.frame = function(ts.data, method='power'){
+  
+  if(!has.vars(ts.data, 'wnd')){
+    stop('k.crusius requires a "wnd" (wind speed) column in the supplied data')
+  }
+  
+  wind = get.vars(ts.data, 'wnd')
+  
+  k600 = k.crusius(wind[,2], method)
+  
+  return(data.frame(datetime=ts.data$datetime, k600=k600))
+}
 
 # INPUTS
 # wnd: wind value in metres/second
@@ -10,7 +25,7 @@
 # OUTPUT: returns the gas exchange velocity for k600 in units 
 # of m/day.
 
-k.crusius <- function(wnd,method='power'){
+k.crusius.default <- function(wnd,method='power'){
 
   U10 = wnd  #This function uses just the wind speed it is supplied. 
   method = tolower(method)
