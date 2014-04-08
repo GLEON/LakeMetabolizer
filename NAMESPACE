@@ -2,5 +2,24 @@ export(k.read, k.crusius, k.cole, k.macIntyre,
        metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,
 	   k600.2.kGAS, getSchmidt, o2.at.sat, 
 	   calc.zeng, calc.lw.net, sw.to.par, par.to.sw, sun.rise.set, 
-	   load.all.data, load.meta, manuscript.code, scale.exp.wind)
+	   load.all.data, load.meta, manuscript.code, scale.exp.wind,
+	   get.vars, has.vars, var.indx)
+	
 useDynLib(LakeMetabolizer)
+
+S3method(k.read, default)
+S3method(k.read, data.frame)
+S3method(k.crusius, default) 
+S3method(k.crusius, data.frame) 
+S3method(k.cole, default)
+S3method(k.cole, data.frame)
+S3method(k.macIntyre, default)
+S3method(k.macIntyre, data.frame)
+S3method(calc.lw.net, default)
+S3method(calc.lw.net, data.frame)
+S3method(sw.to.par, default)
+S3method(sw.to.par, data.frame)
+S3method(k600.2.kGAS, default)
+S3method(k600.2.kGAS, data.frame)
+S3method(o2.at.sat, default)
+S3method(o2.at.sat, data.frame)
