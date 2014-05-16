@@ -1,19 +1,17 @@
 # ---Author: Jake Zwart, 2013-09-30 --- 
 # cleaned from previous script - original author: Arianto Santoso 
 
-k.cole = function(x, ...) UseMethod("k.cole")
+k.cole <- function(x, ...) UseMethod("k.cole")
 
 
-k.cole.data.frame = function(ts.data){
-  if(!has.vars(ts.data, 'wnd')){
-    stop('k.cole requires a "wnd" column in the supplied data')
-  }
-  
-  wnd = get.vars(ts.data, 'wnd')
-  
-  k600 = k.cole(wnd[,2])
-  
-  return(data.frame(datetime=ts.data$datetime, k600=k600))
+k.cole.data.frame <- function(ts.data){
+	if(!has.vars(ts.data, 'wnd')){
+		stop('k.cole requires a "wnd" column in the supplied data')
+	}
+	wnd <- get.vars(ts.data, 'wnd')
+	k600 <- k.cole(wnd[,2])
+
+	return(data.frame(datetime=ts.data$datetime, k600=k600))
 }
 
 
