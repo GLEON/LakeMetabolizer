@@ -22,6 +22,7 @@ load.all.data <- function(lake.name, data.path){
 		}else{
 					metadata <- NA
 		}
+	}
  
 	 #Drop bathy if we find it (could maybe handle this if we wanted)
 	 files <- files[!grepl('.bth', files)]
