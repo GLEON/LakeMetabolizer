@@ -1,5 +1,5 @@
 
-load.all.data <- function(lake.name, data.path){
+load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
 	require(rLakeAnalyzer)
  
 	files <- dir(data.path)
@@ -35,6 +35,14 @@ load.all.data <- function(lake.name, data.path){
 		# Hmm, if datetime in a file is screwed up, this blows up
 		# I wonder if I could devise a good check. Hmm.
 		# See pred.Merge in helper.functions.R ~RDB
+		merge.out <- pred.merge(data, tmp, all=TRUE)
+		if(merge.out$merge > 1.5*merge.out$desired){
+			if(checkMerge){
+				stop("a data frame to be merged contains many duplicated values in merge column")
+			}else{
+				warning("a data frame to be merged contains many duplicated values in merge column")
+			}
+		}
 
 		data <- merge(data, tmp, all=TRUE, by='datetime')
 	}
