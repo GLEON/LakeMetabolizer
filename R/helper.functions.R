@@ -70,8 +70,15 @@ var.indx = function(data, var.name){
 # 'all' argument corresponds to the argument of the same name in merge()
 pred.merge <- function(x1, x2, all=FALSE){
 	common.names <- intersect(names(x1), names(x2))
-	fact1 <- do.call(paste, as.list(x1[,common.names])) #'factors' from x1
-	fact2 <- do.call(paste, as.list(x2[,common.names])) # factors from x2
+	
+	if(length(common.names)>1){
+		fact1 <- do.call(paste, as.list(x1[,common.names])) #'factors' from x1
+		fact2 <- do.call(paste, as.list(x2[,common.names])) # factors from x2	
+	}else{
+		fact1 <- x1[,common.names]
+		fact2 <- x2[,common.names]
+	}
+
 
 	fInt <- intersect(fact1, fact2) # common elements of fact1 and fact2, same as desired.aF (see below)
 
