@@ -29,7 +29,7 @@
   \item{lat}{Latitude, degrees north}
   \item{lake.area}{Lake area, m^2}
   \item{atm.press}{Atmospheric pressure, (Units: millibar)}  
-  \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), (Format: \link{\code{POSIXct)}}}
+  \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct)}}}
   \item{wtr}{Numeric vector of water temperature, (Units(\u00B0C)}
   \item{depths}{Numeric vector of depths. Must be the same length as the wtr parameter}  
   \item{airT}{Numeric value of air temperature, Units(\u00B0C)}
