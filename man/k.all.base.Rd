@@ -75,9 +75,11 @@
   
   k600_crusius <- k.crusius.base(U10)
   
-  k600_read <- k.read.base(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet)
+  k600_read <- k.read.base(wndZ, Kd, lat, lake.area, 
+                  atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet)
   
-  k600_macInytre <- k.macIntyre.base(wndZ, Kd, atm.press, dateTime, wtr, depth, airT, Uz, RH, sw, lwnet)
+  k600_macInytre <- k.macIntyre.base(wndZ, Kd, atm.press, 
+                      dateTime, wtr, depth, airT, Uz, RH, sw, lwnet)
   
 }
 

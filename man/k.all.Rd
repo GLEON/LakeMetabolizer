@@ -26,6 +26,12 @@
 }
 \arguments{
   \item{ts.data}{Object of class \code{data.frame} }
+  \item{method}{Only for \code{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}
+  \item{wndZ}{Height of wind measurement, (Units: m)}
+  \item{Kd}{Light attenuation coefficient (Units: m^-1)}
+  \item{atm.press}{Atmospheric pressure, (Units: millibar)}  
+  \item{lat}{Latitude, degrees north}
+  \item{lake.area}{Lake area, m^2}
 }
 
 \value{
