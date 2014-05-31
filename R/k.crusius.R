@@ -10,7 +10,7 @@ k.crusius = function(ts.data, method='power'){
   
   wind = get.vars(ts.data, 'wnd')
   
-  k600 = k.crusius(wind[,2], method)
+  k600 = k.crusius.base(wind[,2], method)
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
 }

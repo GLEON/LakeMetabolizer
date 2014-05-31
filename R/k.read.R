@@ -66,7 +66,7 @@ k.read = function(data, wndZ, Kd, lat, lake.area, atm.press){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.read(wndZ, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
+  k600 = k.read.base(wndZ, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=data$datetime, k600=k600))

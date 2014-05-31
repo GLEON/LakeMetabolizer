@@ -81,7 +81,7 @@ k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.macIntyre(wndZ, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
+  k600 = k.macIntyre.base(wndZ, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))

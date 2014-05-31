@@ -7,7 +7,7 @@ k.cole <- function(ts.data){
 		stop('k.cole requires a "wnd" column in the supplied data')
 	}
 	wnd <- get.vars(ts.data, 'wnd')
-	k600 <- k.cole(wnd[,2])
+	k600 <- k.cole.base(wnd[,2])
 
 	return(data.frame(datetime=ts.data$datetime, k600=k600))
 }
