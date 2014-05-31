@@ -2,10 +2,10 @@
 \alias{k.read.base}
 \alias{k.cole.base}
 
-\title{Returns the gas exchange velocity for O2 based on Read et al, 2012}
-\description{Returns the gas exchange velocity for O2 based on Read et al, 2012 
+\title{Returns the gas exchange velocity (k600) for the specified model}
+\description{Returns the gas exchange velocity based on the chosen model 
   in units of m/(timeStep*min) (i.e. 30 minute sampling interval will return 
-  kO2 in units of m/(1/48) - converts to fraction of day}
+  k600 in units of m/(1/48) - converts to fraction of day}
 \usage{
   ## Method for Cole and Caraco, 1998
   k.cole.base <- function(wnd)
@@ -25,14 +25,14 @@
   \item{method}{Only for \code{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}
   
   \item{wndZ}{Height of wind measurement, (Units: m)}
-  \item{Kd}{Light attenuation coefficient (Units: m^{-1})}
+  \item{Kd}{Light attenuation coefficient (Units: \eqn{m^{-1}})}
   \item{lat}{Latitude, degrees north}
   \item{lake.area}{Lake area, m^2}
   \item{atm.press}{Atmospheric pressure, (Units: millibar)}  
   \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct)}}}
-  \item{wtr}{Numeric vector of water temperature, (Units(\u00B0C)}
+  \item{wtr}{Numeric vector of water temperature, (Units(deg C)}
   \item{depths}{Numeric vector of depths. Must be the same length as the wtr parameter}  
-  \item{airT}{Numeric value of air temperature, Units(\u00B0C)}
+  \item{airT}{Numeric value of air temperature, Units(deg C)}
   
   \item{RH}{Numeric value of relative humidity, \%}
   \item{sw}{Numeric value of short wave radiation, W/m2} 
