@@ -9,16 +9,16 @@
 \description{Returns the gas exchange velocity based on the chosen model in units of m/day}
 \usage{
   ## Method for Cole and Caraco, 1998
-  k.cole.base <- function(wnd)
+  k.cole.base(wnd)
   
   ## Method for Crusius and Wanninkhof 2003
-  k.crusius.base <- function(wnd, method='power')
+  k.crusius.base(wnd, method='power')
   
   ## Method for Read et al 2012
-  k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, airT, Uz, RH, sw, lwnet, par, lw)
+  k.read.base(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, airT, Uz, RH, sw, lwnet, par, lw)
   
   ## Method for Macintyre et al 2010
-  k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet)
+  k.macIntyre.base(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet)
 }
 \arguments{
 
