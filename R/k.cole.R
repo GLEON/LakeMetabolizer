@@ -1,8 +1,6 @@
 # ---Author: Jake Zwart, 2013-09-30 --- 
 # cleaned from previous script - original author: Arianto Santoso 
 
-k.cole <- function(x, ...) UseMethod("k.cole")
-
 
 k.cole.data.frame <- function(ts.data){
 	if(!has.vars(ts.data, 'wnd')){

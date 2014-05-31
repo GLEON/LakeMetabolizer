@@ -1,8 +1,6 @@
 # ---Author: Hilary Dugan, 2013-10-20 --- 
 # Last update: 2014-02-01 
 
-k.crusius = function(x, ...) UseMethod("k.crusius")
-
 
 k.crusius.data.frame = function(ts.data, method='power'){
   
@@ -25,7 +23,7 @@ k.crusius.data.frame = function(ts.data, method='power'){
 # OUTPUT: returns the gas exchange velocity for k600 in units 
 # of m/day.
 
-k.crusius.default <- function(wnd,method='power'){
+k.crusius.base <- function(wnd, method='power'){
 
   U10 = wnd  #This function uses just the wind speed it is supplied. 
   method = tolower(method)

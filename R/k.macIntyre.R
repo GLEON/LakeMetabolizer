@@ -18,9 +18,7 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-k.macIntyre = function(x, ...) UseMethod("k.macIntyre")
-
-k.macIntyre.data.frame = function(ts.data, wndZ, Kd, atm.press){
+k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
   # Get short wave radiation data 
   if(has.vars(ts.data, 'sw')){ 
     sw <- get.vars(ts.data, 'sw')
@@ -90,7 +88,7 @@ k.macIntyre.data.frame = function(ts.data, wndZ, Kd, atm.press){
   
 }
 
-k.macIntyre.default <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
+k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
   
   require(rLakeAnalyzer)
   #Constants

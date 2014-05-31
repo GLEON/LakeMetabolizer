@@ -1,10 +1,6 @@
 #calculateK600 R script - conversion from MatLab 'calculateK600.m' by Jordan Read
 #author: Hilary Dugan 
 #Edits 2013-09-10: Luke Winslow
-#updated: R.I.Woolway Oct 2013
-
-k.read = function(x, ...) UseMethod("k.read")
-
 
 k.read.data.frame = function(data, wndZ, Kd, lat, lake.area, atm.press){
   
@@ -77,7 +73,7 @@ k.read.data.frame = function(data, wndZ, Kd, lat, lake.area, atm.press){
 }
 
 
-k.read.default <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){ 
+k.read.default <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
   
   require(rLakeAnalyzer)
   # define constants used in function
@@ -142,8 +138,8 @@ k.read.default <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.t
   }
   
   # Get wind speed data
-  if(!missing(Uz)){ 
-    wnd <- Uz
+  if(!missing(wnd)){ 
+    #do nothingnow
   } else{  
     stop("no wind speed data available")
   }
