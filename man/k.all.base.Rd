@@ -1,11 +1,12 @@
 \name{k.read.base}
 \alias{k.read.base}
 \alias{k.cole.base}
+\alias{k.crusius.base}
+\alias{k.macIntyre.base}
 
 \title{Returns the gas exchange velocity (k600) for the specified model}
-\description{Returns the gas exchange velocity based on the chosen model 
-  in units of m/(timeStep*min) (i.e. 30 minute sampling interval will return 
-  k600 in units of m/(1/48) - converts to fraction of day}
+
+\description{Returns the gas exchange velocity based on the chosen model in units of m/day}
 \usage{
   ## Method for Cole and Caraco, 1998
   k.cole.base <- function(wnd)
@@ -25,7 +26,7 @@
   \item{method}{Only for \code{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}
   
   \item{wndZ}{Height of wind measurement, (Units: m)}
-  \item{Kd}{Light attenuation coefficient (Units: \eqn{m^{-1}})}
+  \item{Kd}{Light attenuation coefficient (Units: m^-1)}
   \item{lat}{Latitude, degrees north}
   \item{lake.area}{Lake area, m^2}
   \item{atm.press}{Atmospheric pressure, (Units: millibar)}  
@@ -35,21 +36,21 @@
   \item{airT}{Numeric value of air temperature, Units(deg C)}
   
   \item{RH}{Numeric value of relative humidity, \%}
-  \item{sw}{Numeric value of short wave radiation, W/m2} 
-  \item{lwnet}{Numeric value net long wave radiation, W/m2}  
-  \item{par}{Numeric value of photosynthetically active radiation, umol m-2 s-1 (if sw not available)}  
-  \item{lw}{Numeric value of incoming long wave radiation, W/m2}  
+  \item{sw}{Numeric value of short wave radiation, W m^-2} 
+  \item{lwnet}{Numeric value net long wave radiation, W m^-2}  
+  \item{par}{Numeric value of photosynthetically active radiation, umol m^-2 s^-1 (if sw not available)}  
+  \item{lw}{Numeric value of incoming long wave radiation, W m^-2}  
 }
 
 \value{
-  Numeric value of gas exchange velocity for O2 in units of m/(timeStep*min)
+  Numeric value of gas exchange velocity (k600) in units of m/day. Before use, should be converted to appropriate gas using \code{\link{k600.2.kGAS}}. 
 }
 \author{
   R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
 }
 
 \seealso{
-  \code{\link{k.cole}}, \code{\link{k.crusius}}, \code{\link{k.macIntyre}}
+  \code{\link{k.cole}}, \code{\link{k.crusius}}, \code{\link{k.macIntyre}}, \code{\link{k.read}}
 }
 
 \examples{

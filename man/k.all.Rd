@@ -14,8 +14,15 @@
   ## Method for Cole and Caraco, 1998
   k.cole(ts.data)
   
+  ## Method for Crusius and Wanninkhof 2003
+  k.crusius(ts.data, method='power')
+  
+  ## Method for Read et al 2012
+  k.read(ts.data, wndZ, Kd, atm.press, lat, lake.area)
+  
   ## Method for from MacIntyre et al. 2010
-  k.macIntyre = function(ts.data, wndZ, Kd, atm.press)
+  k.macIntyre(ts.data, wndZ, Kd, atm.press)
+  
 }
 \arguments{
   \item{ts.data}{Object of class \code{data.frame} }

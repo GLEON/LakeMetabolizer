@@ -2,8 +2,9 @@
 #author: Hilary Dugan 
 #Edits 2013-09-10: Luke Winslow
 
-k.read = function(data, wndZ, Kd, lat, lake.area, atm.press){
+k.read = function(ts.data, wndZ, Kd, atm.press, lat, lake.area){
   
+  data = ts.data
   # Get short wave radiation data 
   if(has.vars(data, 'sw')){ 
     sw <- get.vars(data, 'sw')
