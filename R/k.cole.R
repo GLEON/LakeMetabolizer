@@ -2,7 +2,7 @@
 # cleaned from previous script - original author: Arianto Santoso 
 
 
-k.cole.data.frame <- function(ts.data){
+k.cole <- function(ts.data){
 	if(!has.vars(ts.data, 'wnd')){
 		stop('k.cole requires a "wnd" column in the supplied data')
 	}

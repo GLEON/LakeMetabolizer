@@ -2,7 +2,7 @@
 #author: Hilary Dugan 
 #Edits 2013-09-10: Luke Winslow
 
-k.read.data.frame = function(data, wndZ, Kd, lat, lake.area, atm.press){
+k.read = function(data, wndZ, Kd, lat, lake.area, atm.press){
   
   # Get short wave radiation data 
   if(has.vars(data, 'sw')){ 
@@ -73,7 +73,7 @@ k.read.data.frame = function(data, wndZ, Kd, lat, lake.area, atm.press){
 }
 
 
-k.read.default <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
+k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
   
   require(rLakeAnalyzer)
   # define constants used in function

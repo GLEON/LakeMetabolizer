@@ -2,7 +2,7 @@
 # Last update: 2014-02-01 
 
 
-k.crusius.data.frame = function(ts.data, method='power'){
+k.crusius = function(ts.data, method='power'){
   
   if(!has.vars(ts.data, 'wnd')){
     stop('k.crusius requires a "wnd" (wind speed) column in the supplied data')
