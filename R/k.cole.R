@@ -17,7 +17,7 @@ k.cole <- function(ts.data){
 
 # OUTPUT: returns the gas exchange velocity for k600 in units of m/day
 
-k.cole.default <- function(wnd){
+k.cole.base <- function(wnd){
   U10 <- wnd  #This function uses just the wind speed it is supplied. 
   k600 <- 2.07 + (0.215 * (U10^1.7)) # units in cm h-1
   k600 <- k600*24/100 #units in m d-1
