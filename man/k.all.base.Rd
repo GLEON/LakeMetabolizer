@@ -22,7 +22,7 @@
 \arguments{
 
   \item{wnd}{Numeric value of wind speed, (Units:m/s)}
-  \item{method}{Only for \code{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}}
+  \item{method}{Only for \code{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}
   
   \item{wndZ}{Height of wind measurement, (Units: m)}
   \item{Kd}{Light attenuation coefficient (Units: m^{-1})}
