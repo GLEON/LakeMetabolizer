@@ -51,7 +51,7 @@ Hilary Dugan, Jake Zwart, Luke Winslow
 }
 
 \examples{
-k.cole(wnd=4.3)
+
 }
 
 \references{
