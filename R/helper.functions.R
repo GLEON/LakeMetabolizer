@@ -45,6 +45,24 @@ get.vars = function(data, var.names){
   return(data[, varI | datetimeI])
 }
 
+rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
+	if(ignore.offset){
+		varI = var.indx(data, var.name)
+	}else{
+		varI = grep(var.name, names(data), ignore.case=TRUE)
+	}
+	
+	if(length(varI) > 0){
+		varI = varI * -1
+		return(data[, varI])
+	}else{
+		if(!ignore.missing){
+			stop('No variable by that name found')
+		}
+	}
+
+}
+
 
 var.indx = function(data, var.name){
   if(length(var.name) != 1){

@@ -35,15 +35,11 @@
 }
 
 \value{
-## When called on a numeric vector
-Numeric vector of gas exchange velocities for O2 in units of m/(timeStep*min)
-
-## When called on a \code{data.frame}
-data.frame with 
+Returns a data.frame with a \code{datetime} column and a \code{k600} column. k600 is in units of meters per day (m/d).
 }
 
 \author{
-Hilary Dugan, Jake Zwart, Luke Winslow
+Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway
 }
 
 \seealso{
@@ -51,12 +47,42 @@ Hilary Dugan, Jake Zwart, Luke Winslow
 }
 
 \examples{
-
+  data.path = system.file('extdata', '', package="LakeMetabolizer")
+  
+  tb.data = load.all.data('sparkling', data.path)
+  
+  ts.data = tb.data$data #pull out just the timeseries data
+  
+  #calculate U10 and add it back onto the original 
+  
+  u10 = scale.exp.wind(ts.data)
+  ts.data = rmv.var(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
+  ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset  
+  
+  
+  k600_cole = k.cole(ts.data)
+  
+  k600_crusius = k.crusius(ts.data)
+  
+  kd        = tb.data$metadata$averagekd
+  wndZ      = 10   #because we converted to u10
+  atm.press	= 1018
+  lat       = tb.data$metadata$latitude
+  lake.area = tb.data$metadata$lakearea
+  
+  #for k.read and k.macIntyre, we need LW_net. Calculate because we don't have obs
+  lwnet = calc.lw.net(ts.data, lat, atm.press)
+  
+  ts.data = merge(ts.data, lwnet)
+  
+  k600_read = k.read(ts.data, wndZ=wndZ, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+  
+  k600_macIntyre = k.macIntyre(ts.data, wndZ=wndZ, Kd=kd, atm.press=atm.press)
+  
 }
 
 \references{
-  Cole, J.J. and Caraco, N.F. 1998. Atmospheric exchange of carbon dioxide in a low-wind oligotrophic 
-  lake measured by the addition of SF6. Limnology and Oceanography. 43(4): 647-656. 
+	See \code{\link{k.cole}} for references.
 }
 
 \keyword{methods}
