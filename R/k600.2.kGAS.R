@@ -18,15 +18,14 @@ k600.2.kGAS.base	<-	function(k600,temperature,gas){
 }
 
 
-k600.2.kGAS = function(k600, ts.data, gas="O2"){
-  all.data = k600
+k600.2.kGAS = function(ts.data, gas="O2"){
+  
+	k600 = get.vars(ts.data, 'k600')
   temperature = get.vars(ts.data,'wtr')[,1:2]
   
-  all.data = merge(all.data, temperature, by='datetime')
+  kGAS = data.frame(datetime=ts.data$datetime)
   
-  kGAS = data.frame(datetime=all.data$datetime)
-  
-  kGAS$kGAS = k600.2.kGAS(all.data[,2], all.data[,3], gas)
+  kGAS$kGAS = k600.2.kGAS.base(k600[,2], temperature[,2], gas)
   
   return(kGAS)
 }
