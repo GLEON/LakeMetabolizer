@@ -1,6 +1,6 @@
 
 scale.exp.wind <- function(ts.data, wndZ){
-	wnd = get.vars(tb.data$data, 'wnd')
+	wnd = get.vars(ts.data, 'wnd')
 	
 	if(missing(wndZ)){
 		wndZ = get.offsets(wnd)
