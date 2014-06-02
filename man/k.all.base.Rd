@@ -69,7 +69,7 @@
   lwnet <- -55
   timeStep <- 30
   
-  U10 <- scale.exp.wind(Uz, wndZ)
+  U10 <- scale.exp.wind.base(Uz, wndZ)
   
   k600_cole <- k.cole.base(U10)
   
