@@ -70,9 +70,10 @@ Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway
   lat       = tb.data$metadata$latitude
   lake.area = tb.data$metadata$lakearea
   
-  #for k.read and k.macIntyre, we need LW_net. Calculate because we don't have obs
-  lwnet = calc.lw.net(ts.data, lat, atm.press)
+  #for k.read and k.macIntyre, we need LW_net. 
+  #Calculate from the observations we have available. 
   
+  lwnet = calc.lw.net(ts.data, lat, atm.press)
   ts.data = merge(ts.data, lwnet)
   
   k600_read = k.read(ts.data, wndZ=wndZ, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
