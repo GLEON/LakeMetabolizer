@@ -33,6 +33,7 @@
 
 \examples{
   library(rLakeAnalyzer)
+  
   doobs = load.ts(system.file('extdata', 
 			'Sparkling.doobs', package="LakeMetabolizer"))
   wtr = load.ts(system.file('extdata', 
@@ -41,12 +42,12 @@
 			'Sparkling.wnd', package="LakeMetabolizer"))
   
   #Subset a day
-  mod.date = as.POSIXct('2009-08-12')
+  mod.date = as.POSIXct('2009-07-12', 'GMT')
   doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
   wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
   wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
   
-  k.gas = k600.2.kGAS(k.cole(wnd[,2]), wtr[,3], 'O2')
+  k.gas = k600.2.kGAS.base(k.cole.base(wnd[,2]), wtr[,3], 'O2')
   do.sat = o2.at.sat(wtr[,3], altitude=300)
   
   metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, doobs[,1], 45)

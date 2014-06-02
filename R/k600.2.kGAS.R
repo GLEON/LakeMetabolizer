@@ -7,7 +7,7 @@
 
 # OUTPUT:
 # kGAS: gas transfer velocity for the specified gas (in same units as k600 input)
-k600.2.kGAS.default	<-	function(k600,temperature,gas){
+k600.2.kGAS.base	<-	function(k600,temperature,gas){
 	
 	n	<-	0.5
 	schmidt	<-	getSchmidt(temperature,gas)
@@ -17,10 +17,8 @@ k600.2.kGAS.default	<-	function(k600,temperature,gas){
 	return(kGAS)
 }
 
-k600.2.kGAS = function(x, ...) UseMethod("k600.2.kGAS")
 
-
-k600.2.kGAS.data.frame = function(k600, ts.data, gas="O2"){
+k600.2.kGAS = function(k600, ts.data, gas="O2"){
   all.data = k600
   temperature = get.vars(ts.data,'wtr')[,1:2]
   
