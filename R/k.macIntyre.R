@@ -173,10 +173,13 @@ k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, ai
   rho_w <- water.density(Ts)
   
   # calculate u*
-  if (wndZ != 10) {
+  if (wndZ != 10) { ## ok, WTF is this. It's late, but I don't think I know this conversion
     e1 <- sqrt(C_D)
     u10 <- wnd/(1-e1/vonK*log(10/wndZ))
+  }else{
+  	u10 = wnd
   }
+  
   rhoAir <- 1.2 #  air density
   vonK <- 0.41 # von Karman  constant
   tau <- C_D*u10^2*rhoAir
