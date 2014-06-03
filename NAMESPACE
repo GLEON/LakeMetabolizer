@@ -21,7 +21,6 @@ S3method(o2.at.sat, default)
 S3method(o2.at.sat, data.frame)
 
 import(rLakeAnalyzer)
-import(rjags)
 import(R2jags)
 import(R2WinBUGS)
 import(plyr)
