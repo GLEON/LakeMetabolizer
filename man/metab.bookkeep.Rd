@@ -33,6 +33,7 @@
 
 \examples{
   library(rLakeAnalyzer)
+  Sys.setenv(TZ='GMT')
   
   doobs = load.ts(system.file('extdata', 
 			'Sparkling.doobs', package="LakeMetabolizer"))

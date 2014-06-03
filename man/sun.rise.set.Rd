@@ -13,11 +13,11 @@ sun.rise.set(lat, datetimes)
 
 \arguments{
 	\item{lat}{Single latitude value of site. South should be negative, north positive}
-	\item{datetimes}{Vector of dates as POSIXct or POSIXlt (see \link{\code{DateTimeClasses}}) format}
+	\item{datetimes}{Vector of dates as POSIXct or POSIXlt (see \code{\link{DateTimeClasses}}) format}
 }
 
 \value{
-	A 2-column matrix, first column sunrise, second column sunset, as \link{\code{POSIXct}} format.
+	A 2-column matrix, first column sunrise, second column sunset, as \code{\link{POSIXct}} format.
 }
 \references{
 	Iqbal, Muhammad. 1983. \emph{An Introduction to Solar Radiation}. Elsevier.

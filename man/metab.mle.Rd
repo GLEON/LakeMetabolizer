@@ -65,7 +65,8 @@ Luke Winslow, Ryan Batt, GLEON Fellows
   irr = irr[trunc(irr$datetime, 'day') == mod.date, ]
   z.mix = ts.thermo.depth(wtr)
   
-  k.gas = k600.2.kGAS(k.cole(wnd[,2]), wtr[,3], 'O2')
+  k600 = k.cole.base(wnd[,2])
+  k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
   do.sat = o2.at.sat(wtr[,3], altitude=300)
   
   metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
