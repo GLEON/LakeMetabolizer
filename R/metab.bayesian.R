@@ -1,53 +1,55 @@
 #library("rjags")
-require("R2jags")
-require("R2WinBUGS")
 
 
 # =========================
 # = Define the Jags Model =
 # =========================
-j2Mod <- function(){
-	# model process
-	for(i in 2:N){	
-		Y[i] ~ dnorm(a[i], tauV) # observations (Y) are distributed with mean equivalent to true values, and precision tauV (1/tauV is variance of observation error)
-		K[i] ~ dnorm(kP[i-1, 1], 1/kP[i-1, 2]) #distributin on K
-		Uk[i] <- (K[i]*(satO[i-1] - a[i-1]))/Zmix[i-1] # exchange
-		aHat[i] <- a[i-1] + U[i,]%*%C + Uk[i] #U[i,]%*%C #+ Uk # the process
-		a[i] ~ dnorm(aHat[i], tauW) # true values have a mean equivalent to estimated values, but accompanied by process error (process precision is tauW)
+bayes.makeModel <- function(){
+	require("R2jags")
+	require("R2WinBUGS")
+	#Step 1: use a function to define the model
+	bayes.mod <- function(){
+		# model process
+		for(i in 2:N){	
+			Y[i] ~ dnorm(a[i], tauV) # observations (Y) are distributed with mean equivalent to true values, and precision tauV (1/tauV is variance of observation error)
+			K[i] ~ dnorm(kP[i-1, 1], 1/kP[i-1, 2]) #distributin on K
+			Uk[i] <- (K[i]*(satO[i-1] - a[i-1]))/Zmix[i-1] # exchange
+			aHat[i] <- a[i-1] + U[i,]%*%C + Uk[i] #U[i,]%*%C #+ Uk # the process
+			a[i] ~ dnorm(aHat[i], tauW) # true values have a mean equivalent to estimated values, but accompanied by process error (process precision is tauW)
+		}
+
+		# K <- kP[1:N,1] #distributin on K
+
+		# Starting values
+		# a[1] <- Y[1] # set the first true value equal to first observed value
+		a[1] <- a0
+		C[1] ~ dnorm(cP[1,1], 1/cP[1,2])
+		C[2] ~ dnorm(cP[2,1], 1/cP[2,2])
+		#Priors on regression coefficients
+		# C[1,1] ~ dnorm(cP[1,1], 1/cP[1,2]) # GPP coefficient
+		# C[2,1] ~ dnorm(cP[2,1], 1/cP[2,2]) # R coefficient
+		# C[3,1] <- 1 # dummy 1 for exchange
+
+		#Prior on errors
+		tauV ~ dgamma(1.0E-3, 1.0E-3)
+		tauW ~ dgamma(1.0E-3, 1.0E-3)
+		sigmaV <- 1/sqrt(tauV)
+		sigmaW <- 1/sqrt(tauW)	
 	}
-
-	# K <- kP[1:N,1] #distributin on K
-
-	# Starting values
-	# a[1] <- Y[1] # set the first true value equal to first observed value
-	a[1] <- a0
-	C[1] ~ dnorm(cP[1,1], 1/cP[1,2])
-	C[2] ~ dnorm(cP[2,1], 1/cP[2,2])
-	#Priors on regression coefficients
-	# C[1,1] ~ dnorm(cP[1,1], 1/cP[1,2]) # GPP coefficient
-	# C[2,1] ~ dnorm(cP[2,1], 1/cP[2,2]) # R coefficient
-	# C[3,1] <- 1 # dummy 1 for exchange
-
-	#Prior on errors
-	tauV ~ dgamma(1.0E-3, 1.0E-3)
-	tauW ~ dgamma(1.0E-3, 1.0E-3)
-	sigmaV <- 1/sqrt(tauV)
-	sigmaW <- 1/sqrt(tauW)	
-	}
-
-	modfile = tempfile('j2mod')
-	write.model(j2Mod, modfile)
-
-
-
-
-
-	# ================================
-	# = Supply Data and run bayesFit =
-	# ================================
-	bayesFit <- function(data, params, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
 	
-	require(rjags)
+	# Step 2: write the bayesian model into a temporary file
+	modfile <- tempfile('jags.metab.bayes')
+	write.model(bayes.mod, modfile)
+}
+
+
+
+
+# ================================
+# = Supply Data and run bayesFit =
+# ================================
+bayesFit <- function(data, params, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
+	
 	jags.m <- jags(data, NULL, parameters.to.save=params, modfile, n.chains=3, n.iter=5E3, n.burnin=5E2)
 
 	tF <- function(x, tend){ # tendency function
@@ -83,19 +85,24 @@ j2Mod <- function(){
 		"params"=ctSim[1:2], 
 		"metab"=matrix(c(GPP,GPPsd,R,Rsd), nrow=2, dimnames=list(c("mu", "sd"), c("GPP", "R")))
 	)) # need to clean up format, and maybe include a return of the sd's of the estimates
-	}
+}
 
 
 
-	metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)){
- 
- 
+metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)){
+	
 	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
 	           is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
    
 	   error('All inputs to metab.bayes must be numeric vectors')
 	 }
-
+	
+	require("R2jags")
+	require("R2WinBUGS")
+	
+	# Define model and write to file
+	bayes.makeModel() # might need to put this in bayesFit() if jags() can't find the model file. Trying here b/c it will be called less.
+	
 	# ===========================================
 	# = Define objects to be used in jags model =
 	# ===========================================
@@ -128,7 +135,7 @@ j2Mod <- function(){
 
 	output <- bayesFit(data, params)
 	return(output)
-  
+	
 }
 
 
