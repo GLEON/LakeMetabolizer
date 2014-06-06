@@ -31,7 +31,7 @@ o2.at.sat.data.frame <- function(temp, baro, altitude=0, salinity=0, model='garc
 }
 
 
-o2.at.sat.default <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
+o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
 
 	if(!missing(baro)){#Calc using barometric pressure
