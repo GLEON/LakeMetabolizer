@@ -84,13 +84,13 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	return(list(
 		"model"=jags.m, 
 		"params"=ctSim[1:2], 
-		"metab"=matrix(c(GPP,GPPsd,R,Rsd), nrow=2, dimnames=list(c("mu", "sd"), c("GPP", "R")))
+		"metab"=matrix(c(GPP, R, GPPsd, Rsd), nrow=1, dimnames=list(NULL, c("GPP", "R", "GPPsd", "Rsd")))
 	)) # need to clean up format, and maybe include a return of the sd's of the estimates
 }
 
 
 
-metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)){
+metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA), ...){
 	
 	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
 	           is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){

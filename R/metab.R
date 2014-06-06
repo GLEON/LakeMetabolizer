@@ -15,7 +15,7 @@ metab <- function(data, method){
 	# ===================
 	# = Identify method =
 	# ===================
-	possibleMethods <- c("bayesian", "bookkeep", "kalman", "kalman2", "optim", "ols", "mle", "mle2")
+	possibleMethods <- c("bayesian", "bookkeep", "kalman", "ols", "mle")
 	mtd <- possibleMethods[which.min(adist(method, possibleMethods, ignore.case=TRUE))]
 	if(!method%in%possibleMethods){
 		warning(paste("method '",method,"' matched to '",mtd,"'. Supply perfect match to avoid warning.", sep=""))
@@ -89,6 +89,14 @@ metab <- function(data, method){
 	# ==================================
 	for(i in unique(ids)){
 		# do.obs, do.sat, k.gas, z.mix, irr, wtr
+		
+		bk.args <- do.obs, do.sat, k.gas, z.mix, date.times, lake.lat, ...
+		ols.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr, ...
+		mle.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
+		kal.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
+		bayes.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
+		
+		
 		largs <- as.list(data2[i==ids,c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr")])
 		
 		results[[i]] <- do.call(mtdCall, largs)

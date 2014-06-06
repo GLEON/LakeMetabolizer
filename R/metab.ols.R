@@ -1,4 +1,4 @@
-metab.ols <- function(do.obs, do.sat, irr, k.gas, z.mix){
+metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
 	n.obs <- length(do.obs)
 
@@ -16,22 +16,22 @@ metab.ols <- function(do.obs, do.sat, irr, k.gas, z.mix){
 
 	
 	noflux.do.diff <- do.diff - flux/z.mix
+	
+	lntemp <- log(wtr)
+	mod <- lm(noflux.do.diff ~ irr + lntemp -1) # note that if we decied to use resp=rho*log(Temp), you would do lm(do~irr+lntemp-1) (mind the -1)
 
-	mod <- lm(noflux.do.diff ~ irr) # note that if we decied to use resp=rho*log(Temp), you would do lm(do~irr+lntemp-1) (mind the -1)
-
-	# also note that this model has different structure than Bayes, mle, Kalman 
-	# these have resp as rho*log(Temp), rather than just an intercept – no prob, just need to pick one, easy to change once we get there
-	rho <- mod[[1]][1] * length(irr) 
-	iota <- mod[[1]][2]
-	gpp <- iota + sum(irr)
-	nep <- rho+gpp
+	rho <- mod[[1]][2] 
+	iota <- mod[[1]][1]
+	mod.matrix <- model.matrix(mod)
+	gpp <- sum(iota*mod.matrix[,1]) # should have been multiplied by coefficient, not added to it
+	resp <- sum(rho*mod.matrix[,2])
 	#other ways to get nep:
 	# nep = rho + gpp
 	# nep = sum(fitted(mod), na.rm=TRUE) # even if there are NA's in the response variable, they shouldn't be included in fitted() ....
 	# sum(noflux.do.diff) # i think this should be the same as sum(fitted(mod)) b/c model residuals sum to 0 ... right?
 	# also note that NEP is gpp+rho (rho is negative by this convention, which is consistent w/ Kalman, Bayes, mle – unsure of BK)
 
-	results <- data.frame("GPP"=gpp, "R"=rho, "NEP"=nep) 
+	results <- data.frame("GPP"=gpp, "R"=resp) 
 	attr(results, "lm.mod") <- mod
 	return(results)
 	
