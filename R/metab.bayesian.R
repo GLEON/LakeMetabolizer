@@ -40,6 +40,7 @@ bayes.makeModel <- function(){
 	# Step 2: write the bayesian model into a temporary file
 	modfile <- tempfile('jags.metab.bayes')
 	write.model(bayes.mod, modfile)
+	return(modfile)
 }
 
 
@@ -48,9 +49,9 @@ bayes.makeModel <- function(){
 # ================================
 # = Supply Data and run bayesFit =
 # ================================
-bayesFit <- function(data, params, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
+bayesFit <- function(data, params, mf, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
 	
-	jags.m <- jags(data, NULL, parameters.to.save=params, modfile, n.chains=3, n.iter=5E3, n.burnin=5E2)
+	jags.m <- jags(data, NULL, parameters.to.save=params, mf, n.chains=3, n.iter=5E3, n.burnin=5E2)
 
 	tF <- function(x, tend){ # tendency function
 		switch(tend,
@@ -101,7 +102,7 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppM
 	require("R2WinBUGS")
 	
 	# Define model and write to file
-	bayes.makeModel() # might need to put this in bayesFit() if jags() can't find the model file. Trying here b/c it will be called less.
+	modfile <- bayes.makeModel() # might need to put this in bayesFit() if jags() can't find the model file. Trying here b/c it will be called less.
 	
 	# ===========================================
 	# = Define objects to be used in jags model =
@@ -133,7 +134,7 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppM
 	data <- list(Y=do.obs, N=length(do.obs), U=U, kP=kP, cP=cP, satO=do.sat, a0=do.obs[1], Zmix=z.mix)
 	params <- c("C", "sigmaV", "sigmaW")
 
-	output <- bayesFit(data, params)
+	output <- bayesFit(data, params, mf = modfile)
 	return(output)
 	
 }

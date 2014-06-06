@@ -17,7 +17,7 @@ S3method(calc.lw.net, default)
 S3method(calc.lw.net, data.frame)
 S3method(sw.to.par, default)
 S3method(sw.to.par, data.frame)
-S3method(o2.at.sat, default)
+S3method(o2.at.sat, base)
 S3method(o2.at.sat, data.frame)
 
 import(rLakeAnalyzer)
