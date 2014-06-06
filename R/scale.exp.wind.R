@@ -21,6 +21,6 @@ scale.exp.wind <- function(ts.data, wndZ){
 #Reference for this
 #Arya 1988 (Introduction to micrometeorology)
 scale.exp.wind.base <- function(wnd, wndZ){
-	U10 <- wnd * (10/wndZ)^(1/7) 
+	U10 <- wnd * (10/wndZ)^(0.15) # I'm pretty sure that (1/7) should be 0.15.  (1/7) used to be 1.7, but I think it was incorrectly copied from the U10^1.7 of k.cole.R. I have other code that has this value as 0.15.
 	return(U10)
 }
