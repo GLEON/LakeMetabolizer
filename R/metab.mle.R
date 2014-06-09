@@ -2,8 +2,8 @@
 
 metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
-	n.obs = length(do.obs)
-	chk.list = list(do.obs, irr, do.sat, z.mix, k.gas, wtr)
+	n.obs <- length(do.obs)
+	chk.list <- list(do.obs, irr, do.sat, z.mix, k.gas, wtr)
 	
 	if(!all(sapply(chk.list, is.numeric)) || !all(sapply(chk.list, is.vector))){
 		stop('All metab.mle inputs must be numeric vectors.')
@@ -24,11 +24,11 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# ====================================
 	# = Use fits to calculate metabolism =
 	# ====================================
-	GPP <- sum(pars[1]*irr)
+	GPP <- mean(pars[1]*irr, na.rm=TRUE) * n.obs
 	# GPP <- mean(pars[1]*irr, na.rm=TRUE)*Freq # Use a line like this if we are going to have missing values; (	Freq <- round(Mode(1/diff(do.doy)))  from metabData, line 21)
-	R <- sum(pars[2]*log(wtr))
+	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * n.obs
 	
-	return(list("params"=pars, "metab"=c("GPP"=GPP,"R"=R)))
+	return(list("params"=pars, "metab"=c("GPP"=GPP,"R"=R,"NEP"=GPP+R)))
 }
 
 # double *alpha, double *doobs, double *c1, double *c2, double *beta, double *irr, double *wtr, double *kz, double *dosat, int *nobs

@@ -227,8 +227,9 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	smoothDO <- KFsmoothDO(pars, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr)
 	
 	# Use fits to calculate metabolism
-	GPP <- sum(pars[1]*irr, na.rm=TRUE)
-	R <- sum(pars[2]*log(wtr), na.rm=TRUE)
+	n.obs <- length(do.obs)
+	GPP <- mean(pars[1]*irr, na.rm=TRUE) * n.obs
+	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * n.obs
 	
-	return(list("smoothDO"=smoothDO,"params"=pars, "metab"=c("GPP"=GPP,"R"=R)))
+	return(list("smoothDO"=smoothDO,"params"=pars, "metab"=c("GPP"=GPP,"R"=R, "NEP"=GPP+R)))
 }
