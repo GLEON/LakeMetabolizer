@@ -59,7 +59,7 @@ metab <- function(data, method){
 		stopifnot(length(u1)==s1*s2)
 		
 		# return value from ldply() if it will work (e.g., if each element of list x contains a row of a data frame)
-		if(s2==1 & (!is.data.frame(x)|!is.list(x))){
+		if(s2==1 & (is.data.frame(x[[1]]) & is.list(x))){
 			return(ldply(x))
 		}
 		
@@ -88,13 +88,6 @@ metab <- function(data, method){
 	# = Apply metab to subsets of data =
 	# ==================================
 	for(i in unique(ids)){
-		# do.obs, do.sat, k.gas, z.mix, irr, wtr
-
-		# bk.args <- do.obs, do.sat, k.gas, z.mix, date.times, lake.lat, ...
-		# ols.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr, ...
-		# mle.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
-		# kal.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
-		# bayes.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
 		
 		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "priors") # column names that could correspond to arguments in a metab.xx() function
 		used.args <- poss.args[poss.args%in%names(data2)] # assuming that arguments are used if they are found in column names
