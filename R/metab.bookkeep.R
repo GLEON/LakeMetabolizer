@@ -1,5 +1,5 @@
 
-metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, ...){
+metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   #do.obs     - Concentration units
   #do.sat     - concentration units
   #k.gas      - piston velocity (m/day)
