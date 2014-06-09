@@ -86,8 +86,8 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	return(list(
 		"model"=jags.m, 
 		"params"=ctSim[1:2], 
-		"metab.sd" = matrix(c(GPPsd, Rsd, NEPsd), nrow=1, dimnames=list(NULL, c("GPPsd", "Rsd", "NEPsd")))
-		"metab"=matrix(c(GPP, R, GPP+R), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP")))
+		"metab.sd" = matrix(c(GPPsd, Rsd, NEPsd), nrow=1, dimnames=list(NULL, c("GPPsd", "Rsd", "NEPsd"))),
+		"metab"= matrix(c(GPP, R, GPP+R), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP")))
 	)) # need to clean up format, and maybe include a return of the sd's of the estimates
 }
 
