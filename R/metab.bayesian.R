@@ -75,7 +75,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	# apply(jags.m$BUGSoutput$sims.matrix, 2, tF, tend="mode2")
 
 	#Figure out the order of the sims.matrix columns ...
-	n.obs <- dim(data)[2]
+	n.obs <- length(data$U[,1])
 	GPP <- mean(ctSim[1]*data$U[,1], na.rm=TRUE) * n.obs # gpp coef * par, then sum
 	R <- mean(ctSim[2]*data$U[,2], na.rm=TRUE) * n.obs # r coef * log(temp), then sum
 
@@ -84,10 +84,10 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	NEPsd <- GPPsd^2 + Rsd^2
 
 	return(list(
-		"model"=jags.m, 
-		"params"=ctSim[1:2], 
+		"model" = jags.m, 
+		"params" = ctSim[1:2], 
 		"metab.sd" = matrix(c(GPPsd, Rsd, NEPsd), nrow=1, dimnames=list(NULL, c("GPPsd", "Rsd", "NEPsd"))),
-		"metab"= matrix(c(GPP, R, GPP+R), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP")))
+		"metab" = matrix(c(GPP, R, GPP+R), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP")))
 	)) # need to clean up format, and maybe include a return of the sd's of the estimates
 }
 

@@ -42,7 +42,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, ...){
   nobs <- length(do.obs)
   R <- mean(nep.night, na.rm=TRUE) * nobs # should be negative
   NEP <- mean(delta.do.metab, na.rm=TRUE) * nobs # can be positive or negative
-  GPP <- mean(nep.day, na.rm=TRUE) * nobs - R # should be positive
+  GPP <- mean(nep.day, na.rm=TRUE) * sum(dayI) - R # should be positive
   
   metab <- c("GPP"=GPP, "R"=R, "NEP"=NEP)
   return(metab)
