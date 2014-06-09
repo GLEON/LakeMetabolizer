@@ -97,7 +97,7 @@ metab <- function(data, method){
 		# bayes.args <- do.obs, do.sat, k.gas, z.mix, irr, wtr
 		
 		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "priors") # column names that could correspond to arguments in a metab.xx() function
-		used.args <- poss.args[poss.args%in%names(data.2)] # assuming that arguments are used if they are found in column names
+		used.args <- poss.args[poss.args%in%names(data2)] # assuming that arguments are used if they are found in column names
 		# note that all metab.xx() have the ... argument, so it is OK to supply extra arguments. However, it is important to keep the order in poss.args and in the metab functions as-is
 		largs <- as.list(data2[i==ids, used.args])
 		
