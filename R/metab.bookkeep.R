@@ -44,7 +44,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   NEP <- mean(delta.do.metab, na.rm=TRUE) * nobs # can be positive or negative
   GPP <- mean(nep.day, na.rm=TRUE) * sum(dayI) - R # should be positive
   
-  # metab <- list("metab"=matrix(c(GPP, R, NEP), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP"))))
+  # metab <- matrix(c(GPP, R, NEP), nrow=1, dimnames=list(NULL, c("GPP", "R", "NEP")))
   metab <- data.frame("GPP"=GPP, "R"=R, "NEP"=NEP)
   return(metab)
   

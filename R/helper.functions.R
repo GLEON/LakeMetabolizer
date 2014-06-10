@@ -231,3 +231,52 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 	rounded <- trunc.POSIXt(x, trunc.unit) + switch(unit, sec = 1, min = 60, hour = 3600, day = 86400)*after
 	format.Date(rounded, format=output.format)
 }
+
+
+
+# ==================
+# = Conquer a List =
+# ==================
+conquerList <- function(x, naming=NULL){
+	# If x is not a list, don't bother
+	if(!is.list(x)){return(x)}
+	
+	s1 <- length(x)
+	s2 <- length(x[[1]])
+	u1 <- unlist(x, recursive=FALSE)
+	stopifnot(length(u1)==s1*s2)
+	
+	
+	if(is.data.frame(x[[1]])){
+		single.row <- nrow(x[[1]]) == 1L
+	}else{
+		single.row <- FALSE
+	}
+	
+	# return value from ldply() if it will work (e.g., if each element of list x contains a row of a data frame)
+	if(single.row & is.list(x)){ # the checking for is.list() is a bit redundant with earlier check
+		return(cbind(naming, ldply(x)))
+	}
+	
+	#
+	s2C <- unlist(lapply(x[[1]], class))
+	cqd <- vector("list", s2)
+	for(i in 1:s2){
+		ti <- seq(i, s1*s2, s2)
+		tl <- vector("list", s1)
+		for(j in 1:s1){
+			tl[[j]] <- u1[[ti[j]]]
+		}
+		if(is.data.frame(tl[[1]])|!is.list(tl[[1]])){
+			if(!is.null(naming)){
+				cqd[[i]] <- cbind(naming,ldply(tl))
+			}else{
+				cqd[[i]] <- ldply(tl)
+			}
+		}else{
+			cqd[[i]] <- llply(tl)
+		}
+	}
+	return(cqd)
+}
+

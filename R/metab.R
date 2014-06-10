@@ -46,44 +46,6 @@ metab <- function(data, method){
 	# metabArgs <- as.list(data[1:10,c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr")])
 	results <- vector("list", nid)
 	
-	# ==================
-	# = Conquer a List =
-	# ==================
-	conquerList <- function(x, naming=NULL){
-		# If x is not a list, don't bother
-		if(!is.list(x)){return(x)}
-		
-		s1 <- length(x)
-		s2 <- length(x[[1]])
-		u1 <- unlist(x, recursive=FALSE)
-		stopifnot(length(u1)==s1*s2)
-		
-		# return value from ldply() if it will work (e.g., if each element of list x contains a row of a data frame)
-		if(s2==1 & (is.data.frame(x[[1]]) & is.list(x))){
-			return(ldply(x))
-		}
-		
-		#
-		s2C <- unlist(lapply(x[[1]], class))
-		cqd <- vector("list", s2)
-		for(i in 1:s2){
-			ti <- seq(i, s1*s2, s2)
-			tl <- vector("list", s1)
-			for(j in 1:s1){
-				tl[[j]] <- u1[[ti[j]]]
-			}
-			if(is.data.frame(tl[[1]])|!is.list(tl[[1]])){
-				if(!is.null(naming)){
-					cqd[[i]] <- cbind(naming,ldply(tl))
-				}else{
-					cqd[[i]] <- ldply(tl)
-				}
-			}else{
-				cqd[[i]] <- llply(tl)
-			}
-		}
-		return(cqd)
-	}
 	# ==================================
 	# = Apply metab to subsets of data =
 	# ==================================
