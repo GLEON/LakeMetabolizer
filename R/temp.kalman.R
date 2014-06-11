@@ -93,12 +93,12 @@ kalmanLoopTempR <- function(nlls, alpha, c1,  P, Q, H, beta, watts, wtr){
 # ==========================================================================
 # = Wrapper function to return a smoothed time series of water temperature =
 # ==========================================================================
-temp.kalman <- function(wtr, watts, ...){
+temp.kalman <- function(wtr, watts, ampH=1, ...){
 	# Filter and fit
 	guesses <- c(0.9, 1E-4, log(5), log(5))
 	fit <- optim(guesses, fn=KFnllTemp, wtr=wtr, watts=watts, ...)
 	pars0 <- fit$par
-	pars <- c("ar1"=pars0[1], "c1"=pars0[2], "Q"=exp(pars0[3]), "H"=exp(pars0[4]))
+	pars <- c("ar1"=pars0[1], "c1"=pars0[2], "Q"=exp(pars0[3]), "H"=exp(pars0[4])*ampH)
 	
 	# Smooth
 	# smoothTemp <- 
