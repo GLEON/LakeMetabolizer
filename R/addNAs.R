@@ -18,6 +18,9 @@ addNAs <- function(x, ...){
 	}else{
 		warning("No 'date' column found")
 	}
+	if(!"POSIXct"%in%class(x[,"date"])){
+		stop("date column must be POSIXct")
+	}
 	rdig <- 4
 	Mode <- function(x){
 			ux <- unique(x)
