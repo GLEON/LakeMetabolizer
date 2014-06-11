@@ -280,3 +280,16 @@ conquerList <- function(x, naming=NULL){
 	return(cqd)
 }
 
+# =======================================================
+# = Simple way of estimating watts entering water layer =
+# =======================================================
+watts.in <- function(top, bot, irr, z1perc){
+	# top = the top of the layer in meters (e.g., 2)
+	# bottom = the bottom of the layer in meters (e.g., 4)
+	# irr = PAR, measured in uE
+	# z1perc = depth of 1 percent surface light, measured in meters (e.g., 4)
+	
+	watts <- 0.2174*irr # convert PAR to watts/m^2 (0.2174)
+    kd <- log(0.01)/-z1perc # calculate an average kd for the photic zone
+    watts*exp(-kd*top) - watts*exp(-kd*bot) # Estimate watts gained as the difference between watts entering at the top and exiting at the bottom
+}
