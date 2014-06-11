@@ -1,60 +1,60 @@
-is.day = function(lat, datetime){
-  sr.ss = sun.rise.set(lat, datetime)
+is.day <- function(lat, datetime){
+  sr.ss <- sun.rise.set(lat, datetime)
   
-  is.daytime = xor(sr.ss[,1] > datetime, sr.ss[,2] > datetime)
+  is.daytime <- xor(sr.ss[,1] > datetime, sr.ss[,2] > datetime)
   return(is.daytime)
 }
 
 
-is.night = function(lat, datetime){
-  return(!is.daytime(lat, datetime))
+is.night <- function(lat, datetime){
+  return(!is.day(lat, datetime))
 }
 
 
 
-sun.rise.set = function(lat, datetimes){
-#SUNRISESET Calculates the time of sunrise and sunset
-#
-# Input:
-#   lat - The latitude for the desired location on earth.
-#   day - date
-#
-# takes lattitude (deg south should be negative, north positive) and a
-# matlab datenum (days since year 0) and returns the time of sunrise as a
-# day fraction (e.g., 0.5 would be noon, 0 would be midnight)
+sun.rise.set <- function(lat, datetimes){
+	#SUNRISESET Calculates the time of sunrise and sunset
+	#
+	# Input:
+	#   lat - The latitude for the desired location on earth.
+	#   day - date
+	#
+	# takes lattitude (deg south should be negative, north positive) and a
+	# matlab datenum (days since year 0) and returns the time of sunrise as a
+	# day fraction (e.g., 0.5 would be noon, 0 would be midnight)
 
-doy = as.POSIXlt(datetimes)$yday+1 # POSIX functions treat January 1 as day of year 0, so add 1 to compensate
-
-
-#TODO: Add leap-year fix
-dayAngle = 2*pi*(doy-1)/365;
+	doy <- as.POSIXlt(datetimes)$yday+1 # POSIX functions treat January 1 as day of year 0, so add 1 to compensate
 
 
-degToRad = 2*pi/360;
-radToDeg = 180/pi;
+	#TODO: Add leap-year fix
+	dayAngle <- 2*pi*(doy-1)/365;
 
-#Declination of the sun "delta" (radians). Iqbal 1983 Eq. 1.3.1
-dec = 0.006918 - 0.399912*cos(dayAngle) + 0.070257*sin(dayAngle) - 0.006758*cos(2*dayAngle) +  0.000907*sin(2*dayAngle) - 0.002697*cos(3*dayAngle) + 0.00148*sin(3*dayAngle);
 
-#Sunrise hour angle "omega" (degrees). Iqbal 1983 Eq. 1.5.4
-latRad = lat*degToRad;
-sunriseHourAngle = acos(-tan(latRad)*tan(dec))*radToDeg;
+	degToRad <- 2*pi/360;
+	radToDeg <- 180/pi;
 
-#If we don't have a sunrise, then sunriseHourAngle is imaginary, replace with NaN
-sunriseHourAngle[is.complex(sunriseHourAngle)] = NA;
+	#Declination of the sun "delta" (radians). Iqbal 1983 Eq. 1.3.1
+	dec <- 0.006918 - 0.399912*cos(dayAngle) + 0.070257*sin(dayAngle) - 0.006758*cos(2*dayAngle) +  0.000907*sin(2*dayAngle) - 0.002697*cos(3*dayAngle) + 0.00148*sin(3*dayAngle);
 
-#Sunrise and sunset times (decimal hours, relative to solar time) Iqbal 1983 Ex. 1.5.1
-sr = 12 - sunriseHourAngle/15;
-ss = 12 + sunriseHourAngle/15;
+	#Sunrise hour angle "omega" (degrees). Iqbal 1983 Eq. 1.5.4
+	latRad <- lat*degToRad;
+	sunriseHourAngle <- acos(-tan(latRad)*tan(dec))*radToDeg;
 
-#convert to seconds into day
-rise = trunc(datetimes, 'day') + sr*60*60
-set = trunc(datetimes, 'day') + ss*60*60
+	#If we don't have a sunrise, then sunriseHourAngle is imaginary, replace with NaN
+	sunriseHourAngle[is.complex(sunriseHourAngle)] = NA;
 
-##Note, this does weird things. It *is* a matrix, but it doesn't print like one because it is viewed 
-# as POSIXct. I will leave it this way for now, though if someone knows how to get it to show up as
-# a matrix *and* a POSIXct value, that would be super cool.
+	#Sunrise and sunset times (decimal hours, relative to solar time) Iqbal 1983 Ex. 1.5.1
+	sr <- 12 - sunriseHourAngle/15;
+	ss <- 12 + sunriseHourAngle/15;
 
-return(as.POSIXct(matrix(c(rise, set), ncol=2), origin='1970-01-01'))
+	#convert to seconds into day
+	rise <- trunc(datetimes, 'day') + sr*60*60
+	set <- trunc(datetimes, 'day') + ss*60*60
+
+	##Note, this does weird things. It *is* a matrix, but it doesn't print like one because it is viewed 
+	# as POSIXct. I will leave it this way for now, though if someone knows how to get it to show up as
+	# a matrix *and* a POSIXct value, that would be super cool.
+
+	return(as.POSIXct(matrix(c(rise, set), ncol=2), origin='1970-01-01'))
 
 }
