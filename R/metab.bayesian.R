@@ -9,20 +9,47 @@ bayes.makeModel <- function(){
 	require("R2WinBUGS")
 	#Step 1: use a function to define the model
 	bayes.mod <- function(){
+		
 		# model process
 		for(i in 2:N){	
 			Y[i] ~ dnorm(a[i], tauV) # observations (Y) are distributed with mean equivalent to true values, and precision tauV (1/tauV is variance of observation error)
-			K[i] ~ dnorm(kP[i-1, 1], 1/kP[i-1, 2]) #distributin on K
-			Uk[i] <- (K[i]*(satO[i-1] - a[i-1]))/Zmix[i-1] # exchange
-			aHat[i] <- a[i-1] + U[i,]%*%C + Uk[i] #U[i,]%*%C #+ Uk # the process
+			K[i-1] ~ dnorm(kP[i-1, 1], 1/kP[i-1, 2]) #distributin on K
+			
+			# old lines before gigantic workaround to incorporate the between-time-step calculus for K, 
+			# which involves dividing by 0 when K is 0
+			
+			# Uk[i-1] <- (K[i-1]*(satO[i-1] - a[i-1]))/Zmix[i-1] # exchange
+			# aHat[i] <- a[i-1] + U[i-1,]%*%C + Uk[i-1] #U[i,]%*%C #+ Uk # the process
+			
+			
+			# jags cannot handle an expression that includes division by 0 (so can't do blah <- ifelse(kz==0, 1, 1/kz), b/c it'll do 1/kz even when kz==0)
+			# so to avoid division by 0 when k.gas==0, have to make a "safe" kz that is 1 if kz is 0
+			# when kzSafe is 1 (to avoid division by 0), that means that we just want aHat to be the bio process
+			# so we have to cancel out all math that is done by a kzSafe==1 (b/c it is bogus) by multiplying by 0, and add bio process
+			# but if kzSafe!=0, we should multiply the math involving kzSafe by 1 (to keep it), and multiply the added bio process by 0 (to remove it)
+			# this is a pretty hacked solution, but I don't see another choice (the only control flow in jags is ifelse, no if(){}else{})
+				
+			kz[i-1] <- K[i-1]/Zmix[i-1]
+			kzSafe[i-1] <- ifelse(kz[i-1]==0, 1, kz[i-1]) # if kz is 0, change to 1
+			kzCancel[i-1] <- ifelse(kzSafe[i-1]==1, 0, 1) # if kzSafe is 1 (meaning kz is 0), kzCancel needs to be 0
+			pCancel[i-1] <- ifelse(kzSafe[i-1]==1, 1, 0) # if kzSafe is just kz, then math involving kzSafe is not bogus, and need to cancel the added process
+			
+			a1[i] <- U[i-1,]%*%C + kz[i-1]*satO[i-1]
+			aHat[i] <- (a1[i]/kzSafe[i-1] + -exp(-1*kzSafe[i-1])*a1[i]/kzSafe[i-1] + exp(-kzSafe[i-1])*a[i-1])*kzCancel[i-1] + (a[i-1] + a1[i])*pCancel[i-1]
+			
+			
+			
+			
+			
 			a[i] ~ dnorm(aHat[i], tauW) # true values have a mean equivalent to estimated values, but accompanied by process error (process precision is tauW)
 		}
-
-		# K <- kP[1:N,1] #distributin on K
+		
 
 		# Starting values
-		# a[1] <- Y[1] # set the first true value equal to first observed value
+		# a[1] ~ dnorm(Y[1], tauV) # the first true value is the firt observation + OE
+		# aHat[1] ~ dnorm(a[1], tauW) # trying to say that the *first* estimate is the first observation + OE + PE, not sure if this is right
 		a[1] <- a0
+		
 		C[1] ~ dnorm(cP[1,1], 1/cP[1,2])
 		C[2] ~ dnorm(cP[2,1], 1/cP[2,2])
 		#Priors on regression coefficients
@@ -121,7 +148,9 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppM
 	# variances for K
 	kP[,1] <- k.gas # means for K
 	if(is.na(priors["kSig2"])){
-		kP[,2] <- sum(k.gas)/length(k.gas)*0.1
+		k0.logic <- !is.finite(1/kP[,1]) # test for when k is 0
+		kP[,2] <- sum(k.gas)/sum(!k0.logic)*0.1 # k variance = mean of the non-zero K, times 0.1
+		kP[k0.logic,2] <- 1E-9
 	}else{
 		kP[,2] <- priors["kSig2"]
 	}

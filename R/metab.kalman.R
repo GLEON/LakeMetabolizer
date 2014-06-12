@@ -153,8 +153,17 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		# alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
 		
 		# Differential Equation Version (see kalmanDO_nll.R for explanation):
-		a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]	
-		alpha <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
+		if(is.finite(1/kz[i-1])){
+			
+			a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]	
+			alpha <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
+			
+		}else{
+			
+			alpha <- c1*irr[i-1] + c2*log(wtr[i-1])
+			
+		}
+
 		
 		aHat[i] <- alpha
 		P <- (beta[i-1]*P*beta[i-1]) + Q
