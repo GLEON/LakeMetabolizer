@@ -78,7 +78,7 @@ bayes.makeModel <- function(){
 # ================================
 bayesFit <- function(data, params, mf, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
 	
-	jags.m <- jags(data, NULL, parameters.to.save=params, mf, n.chains=3, n.iter=5E3, n.burnin=5E2)
+	jags.m <- jags(data, NULL, parameters.to.save=params, mf, n.chains=3, n.iter=2E3)
 
 	tF <- function(x, tend){ # tendency function
 		switch(tend,
