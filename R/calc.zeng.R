@@ -1,24 +1,39 @@
-calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
-  
-  # INPUTS
-  #   dateTime = datetime, YYYY-mm-dd HH:MM
-  #   Ts = surface water temperature, degC
-  #   Uz = wind speed, m/s
-  #   rh = relative humidity, %
-  #   airT = air temperature, degC
-  #   wnd.z: height of wind measurement
-  #   airt.z: height of temperature measurement
-  #   rh.z: height of humidity measurement
-  #   atm.press: atmospheric pressure (mb)
-  #
-  # OUTPUTS:
-  #   mm: matrix of sensible and latent heat fluxes
-  #                mm also contains other variables used in calculating 
-  #                these fluxes. 
-  
-  # Author R.Iestyn Woolway
 
-  # define functions used in script
+#'@title Estimate sensible and latent heat fluxes
+#'@description 
+#'Returns the sensible and latent heat fluxed based on Zeng et al, 1998'
+#'@usage
+#'calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z)
+#'
+#'@param dateTime vector of datetime in POSIXct format
+#'@param Ts numeric value of surface water temperature, degC
+#'@param airT numeric value of air temperature, degC
+#'@param Uz numeric value of wind speed, m/s
+#'@param RH numeric value of relative humidity, %
+#'@param atm.press atmospheric pressure in mb
+#'@param wnd.z height of wind measurement, m
+#'@param airT.z height of air temperature measurement, m (optional)
+#'@param RH.z height of relative humidity measurement, m (optional)
+#'@return A data.frame including sensible and latent heat flux estimates, and other variables used in calculating these fluxes.
+#'@keywords methods math
+#'@references
+#'Zeng, X., M. Zhao., and Dickinson, R.E. 1998. \emph{Intercomparison of bulk aerodynamic algorithms 
+#'for the computation of sea surface fluxes using TOGA COARE and TAO data}. Journal of Climate 11: 2628-2644.
+#'@author
+#'R. Iestyn. Woolway
+#'@seealso \link{k.read}
+#'@examples 
+#'dateTime <- as.POSIXct("2013-12-30 23:00")
+#'Ts <- 22.51
+#'airT <- 20
+#'Uz <- 3  
+#'RH <- 90
+#'atm.press <- 1013
+#'wnd.z <- 2
+#'calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z)
+#'@export
+calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
+  
   psi <- function(k,zeta){
     chik <- (1 - 16*zeta)^0.25
     if (k == 1){
