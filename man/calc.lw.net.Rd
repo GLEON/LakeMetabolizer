@@ -60,7 +60,7 @@ calc.lw.net.base(dateTime,sw,Ts,lat,atm.press,airT,RH)
   474-480.
 }
 \seealso{
-  k.read
+  \link{k.read}
 }
 \keyword{math}
 \keyword{methods}
