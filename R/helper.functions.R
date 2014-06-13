@@ -314,7 +314,7 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 # ==================
 conquerList <- function(x, naming=NULL){
 	# If x is not a list, don't bother
-	if(!is.list(x)){return(x)}
+	if(!is.list(x) | is.data.frame(x)){return(x)}
 	
 	s1 <- length(x)
 	s2 <- length(x[[1]])

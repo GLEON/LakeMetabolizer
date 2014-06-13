@@ -9,7 +9,10 @@
 
 
 
-metab <- function(data, method){
+metab <- function(data, method, ...){
+	
+	m.args <- list(...)
+	
 	# ===================
 	# = Identify method =
 	# ===================
@@ -48,14 +51,16 @@ metab <- function(data, method){
 	# ==================================
 	for(i in unique(ids)){
 		
-		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "priors") # column names that could correspond to arguments in a metab.xx() function
-		used.args <- poss.args[poss.args%in%names(data2)] # assuming that arguments are used if they are found in column names
-		# note that all metab.xx() have the ... argument, so it is OK to supply extra arguments. However, it is important to keep the order in poss.args and in the metab functions as-is
-		largs <- as.list(data2[i==ids, used.args])
+		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "datetime") # data2 columns that could correspond to arguments
+		used.args <- poss.args[poss.args%in%names(data2)] # assuming arguments are used if they are in data2
+		largs0 <- as.list(data2[i==ids, used.args]) # subsetting columns of data2 to used.args (just a safety check, probably not needed)
+		largs <- c(largs0, m.args[!names(m.args)%in%names(largs0)]) # adding on any other arguments supplied via ...
+		# note that in largs, argument supplied through data/data2/poss.args take precedent over arguments from ...
 		
 		results[[i]] <- do.call(mtdCall, largs)
 	}
-	answer <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
+	answer0 <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
+	
 	return(answer)
 }
 
