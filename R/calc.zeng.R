@@ -48,7 +48,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
                     Ts = Ts,
                     airT = airT,
                     Uz = Uz,
-                    rh = rh)
+                    RH = RH)
   
   # remove duplicated time stamps
   dat$dateTime <- as.POSIXct(strptime(dat$dateTime,"%Y-%m-%d %H:%M")) # ensure times are POSIXct
@@ -64,11 +64,11 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
   Ts <- dat$Ts
   airT <- dat$airT
   Uz <- dat$Uz
-  rh <- dat$rh
+  RH <- dat$RH
   
   # if temperature and humidity height are missing, assume same as wind
   if (missing(airt.z)){airt.z <- wnd.z}
-  if (missing(rh.z)){rh.z <- wnd.z}
+  if (missing(RH.z)){RH.z <- wnd.z}
 
   # define constants
   const_vonKarman <- 0.41 # von Karman constant
@@ -83,7 +83,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
 
   # calculate humidity values
   e_s <- 6.11*exp(17.27*airT/(237.3 + airT)) # saturated vapour pressure at airT, mb
-  e_a <- rh*e_s/100 # vapour pressure, mb
+  e_a <- RH*e_s/100 # vapour pressure, mb
   q_z <- 0.622*e_a/atm.press # specific humidity, kg kg-1 
   e_sat <- 6.11*exp(17.27*Ts/(237.3 + Ts)) # saturated vapour pressure at Ts, mb
   q_s <- 0.622*e_sat/atm.press # humidity at saturation, kg kg-1
@@ -185,16 +185,16 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log(obu[idx]/zot[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
 
     # calculate qstar
-    zeta <- rh.z/obu
+    zeta <- RH.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log((zetat*obu[idx])/zoq[idx]) - psi(2,zetat)) + 0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) - psi(2,zeta[idx]))
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(RH.z/zoq[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) + 5*zeta[idx])
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(RH.z/zoq[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log(obu[idx]/zoq[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
@@ -240,7 +240,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
   
   # store results in data.frame and merge with original dateTime
   mm <- data.frame(dateTime = dat$dateTime,
-                   Ts = Ts,airT = airT,rh = rh,Uz = Uz,
+                   Ts = Ts,airT = airT,RH = RH,Uz = Uz,
                    C_D = C_D,C_E = C_E,C_H = C_H,zo = zo,zot = zot,
                    zoq = zoq,ustar = ustar,alh = alh,ash = ash)
   mm <- merge(mm,original_dates,all = TRUE)
