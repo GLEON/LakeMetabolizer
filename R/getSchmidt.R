@@ -10,7 +10,7 @@
 #'@param \code{gas} String for gas code. Valid inputs include: 'He', 'O2', 'CO2', 'CH4', 'SF6', 'N2O', 'Ar', and 'N2'
 #'@return Schmidt number (unitless)
 #'@note Temperature range is only valid from 4-35 deg Celsius
-#'@keywords Schmidt, methods, math
+#'@keywords Schmidt methods math
 #'@references
 #'Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, Jody Potter, Patrick Mulholland, 
 #'Andrew E. Laursen, William H. McDowell, and Denis Newbold. Scaling the gas transfer velocity and hydraulic 
