@@ -9,7 +9,7 @@
 #'@param Ts numeric value of surface water temperature, degC
 #'@param airT numeric value of air temperature, degC
 #'@param Uz numeric value of wind speed, m/s
-#'@param RH numeric value of relative humidity, %
+#'@param RH numeric value of relative humidity, \%
 #'@param atm.press atmospheric pressure in mb
 #'@param wnd.z height of wind measurement, m
 #'@param airT.z height of air temperature measurement, m (optional)

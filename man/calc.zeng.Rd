@@ -14,7 +14,7 @@
 
   \item{Uz}{numeric value of wind speed, m/s}
 
-  \item{RH}{numeric value of relative humidity, %}
+  \item{RH}{numeric value of relative humidity, \%}
 
   \item{atm.press}{atmospheric pressure in mb}
 
