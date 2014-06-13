@@ -52,9 +52,6 @@
 
   \item{lwnet}{Numeric value net long wave radiation, W
   m^-2}
-
-  \item{par}{Numeric value of photosynthetically active
-  radiation, umol m^-2 s^-1 (if sw not available)}
 }
 \value{
   Numeric value of gas exchange velocity (k600) in units of

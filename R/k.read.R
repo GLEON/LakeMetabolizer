@@ -1,5 +1,6 @@
 #'@name k.read
 #'@aliases 
+#'k.read
 #'k.cole
 #'k.macIntyre
 #'k.crusius
@@ -7,19 +8,20 @@
 #'@description 
 #'Returns the gas exchange velocity based on the chosen model in units of m/day
 #'@usage
-#'## Method for Cole and Caraco, 1998
+#'# Method for Cole and Caraco, 1998
 #'k.cole(ts.data)
 #'
-#'## Method for Crusius and Wanninkhof 2003
+#'# Method for Crusius and Wanninkhof 2003
 #'k.crusius(ts.data, method='power')
 #'
-#'## Method for Read et al 2012
+#'# Method for Read et al 2012
 #'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
 #'## Method for from MacIntyre et al. 2010
 #'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
 #'
 #'@param ts.data vector of datetime in POSIXct format
+#'@param method Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"
 #'@param wnd.z height of wind measurement, m
 #'@param Kd numeric value of air temperature, degC
 #'@param atm.press atmospheric pressure in mb
@@ -90,11 +92,8 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     sw <- get.vars(data, 'sw')
     
   } else if (has.vars(data, 'par')){
-    #sw <- par
-    #parMult <- 0.4957
     tmp.par = get.vars(data, 'par')
     sw = par.to.sw(tmp.par)
-    #sw <- sw*parMult
   } else {  
     stop("Data must have PAR or SW column\n")
   }
@@ -155,6 +154,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 
 #'@name k.read.base
 #'@aliases 
+#'k.read.base
 #'k.cole.base
 #'k.macIntyre.base
 #'k.crusius.base
@@ -187,7 +187,6 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
 #'@param lwnet Numeric value net long wave radiation, W m^-2
-#'@param par Numeric value of photosynthetically active radiation, umol m^-2 s^-1 (if sw not available)
 #'@return Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
 #'should be converted to appropriate gas using \link{k600.2.kGAS}.
 #'@keywords methods math

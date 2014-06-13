@@ -5,12 +5,12 @@
 \alias{k.read}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
-  ## Method for Cole and Caraco, 1998 k.cole(ts.data)
+  # Method for Cole and Caraco, 1998 k.cole(ts.data)
 
-  ## Method for Crusius and Wanninkhof 2003
+  # Method for Crusius and Wanninkhof 2003
     k.crusius(ts.data, method='power')
 
-  ## Method for Read et al 2012 k.read(ts.data, wnd.z, Kd,
+  # Method for Read et al 2012 k.read(ts.data, wnd.z, Kd,
     atm.press, lat, lake.area)
 
   ## Method for from MacIntyre et al. 2010
@@ -18,6 +18,9 @@
 }
 \arguments{
   \item{ts.data}{vector of datetime in POSIXct format}
+
+  \item{method}{Only for \link{k.crusius}. String of valid
+  method . Either "linear", "bilinear", or "power"}
 
   \item{wnd.z}{height of wind measurement, m}
 

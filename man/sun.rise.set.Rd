@@ -1,37 +1,37 @@
 \name{sun.rise.set}
 \alias{sun.rise.set}
-\title{
-Calculates the time of sunrise and sunset
-}
-
-\description{
-Calculates the time of sunrise and sunset based on latitude and date.
-}
+\title{Calculates the time of sunrise and sunset}
 \usage{
-sun.rise.set(lat, datetimes)
+  sun.rise.set(datetimes, lat)
 }
-
 \arguments{
-	\item{lat}{Single latitude value of site. South should be negative, north positive}
-	\item{datetimes}{Vector of dates as POSIXct or POSIXlt (see \code{\link{DateTimeClasses}}) format}
-}
+  \item{datetimes}{Vector of dates as \code{POSIXct} or
+  \code{POSIXlt} (see \code{\link{DateTimeClasses}})
+  format}
 
-\value{
-	A 2-column matrix, first column sunrise, second column sunset, as \code{\link{POSIXct}} format.
+  \item{lat}{Single latitude value of site. South should be
+  negative, north positive}
 }
-\references{
-	Iqbal, Muhammad. 1983. \emph{An Introduction to Solar Radiation}. Elsevier.
+\value{
+  A 2-column matrix, first column sunrise, second column
+  sunset, as \link{POSIXct} format.
+}
+\description{
+  Calculates the time of sunrise and sunset based on
+  latitude and date.
+}
+\examples{
+sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31'))
 }
 \author{
-	Aline Jaimes, Luke Winslow
+  Luke A. Winslow
 }
-
-\examples{
-
-sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31'))
-
+\references{
+  Iqbal, Muhammad. 1983. An Introduction to Solar
+  Radiation. Elsevier.
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{manip}
-\keyword{arith}
+\seealso{
+  \link{is.night} \link{is.day}
+}
+\keyword{methods}
+
