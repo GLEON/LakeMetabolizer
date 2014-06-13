@@ -1,12 +1,85 @@
-#calculateK600 R script - conversion from MatLab 'calculateK600.m' by Jordan Read
-#author: Hilary Dugan 
-#Edits 2013-09-10: Luke Winslow
-
-Kelvin <- 273.15 # temp mod for deg K   
-emiss <- 0.972 # emissivity;
-S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
-
-k.read = function(ts.data, wndZ, Kd, atm.press, lat, lake.area){
+#'@name k.read
+#'@aliases 
+#'k.read
+#'k.cole
+#'k.macIntyre
+#'k.crusius
+#'@title Returns a timeseries of gas exchange velocity
+#'@description 
+#'Returns the gas exchange velocity based on the chosen model in units of m/day
+#'@usage
+#'k.cole(ts.data)
+#'
+#'k.crusius(ts.data, method='power')
+#'
+#'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
+#'
+#'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
+#'@param ts.data vector of datetime in POSIXct format
+#'@param method Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"
+#'@param wnd.z height of wind measurement, m
+#'@param Kd numeric value of air temperature, degC
+#'@param atm.press atmospheric pressure in mb
+#'@param lat Latitude, degrees north
+#'@param lake.area Lake area, m^2
+#'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
+#'@keywords methods math
+#'@references
+#'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
+#'in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
+#'Limnology and Oceanography 43 (1998): 647-656.
+#'
+#'MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney, 
+#'and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer 
+#'coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
+#'
+#'Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
+#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake‐size dependency of wind shear and convection 
+#'as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
+#'
+#'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
+#'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'@author
+#'Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway, Jordan S. Read
+#'@seealso 
+#'\link{k.cole}
+#'\link{k.crusius}
+#'\link{k.macIntyre}
+#'@examples 
+#'data.path = system.file('extdata', package="LakeMetabolizer")
+#'
+#'tb.data = load.all.data('sparkling', data.path)
+#'
+#'ts.data = tb.data$data #pull out just the timeseries data
+#'
+#'#calculate U10 and add it back onto the original 
+#'
+#'u10 = scale.exp.wind(ts.data)
+#'ts.data = rmv.vars(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
+#'ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset  
+#'
+#'
+#'k600_cole = k.cole(ts.data)
+#'
+#'k600_crusius = k.crusius(ts.data)
+#'
+#'kd        = tb.data$metadata$averagekd
+#'wnd.z      = 10   #because we converted to u10
+#'atm.press  = 1018
+#'lat       = tb.data$metadata$latitude
+#'lake.area = tb.data$metadata$lakearea
+#'
+#'#for k.read and k.macIntyre, we need LW_net. 
+#'#Calculate from the observations we have available. 
+#'
+#'lwnet = calc.lw.net(ts.data, lat, atm.press)
+#'ts.data = merge(ts.data, lwnet)
+#'
+#'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+#'
+#'k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
+#'@export
+k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   
   data = ts.data
   # Get short wave radiation data 
@@ -14,11 +87,8 @@ k.read = function(ts.data, wndZ, Kd, atm.press, lat, lake.area){
     sw <- get.vars(data, 'sw')
     
   } else if (has.vars(data, 'par')){
-    #sw <- par
-    #parMult <- 0.4957
     tmp.par = get.vars(data, 'par')
     sw = par.to.sw(tmp.par)
-    #sw <- sw*parMult
   } else {  
     stop("Data must have PAR or SW column\n")
   }
@@ -71,14 +141,100 @@ k.read = function(ts.data, wndZ, Kd, atm.press, lat, lake.area){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.read.base(wndZ, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
+  k600 = k.read.base(wnd.z, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=data$datetime, k600=k600))
 }
 
+#'@name k.read.base
+#'@aliases 
+#'k.read.base
+#'k.cole.base
+#'k.macIntyre.base
+#'k.crusius.base
+#'@title Returns a timeseries of gas exchange velocity
+#'@description 
+#'Returns the gas exchange velocity based on the chosen model in units of m/day
+#'@usage
+#'k.cole.base(wnd)
+#'
+#'k.crusius.base(wnd, method='power')
+#'
+#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'@param wnd Numeric value of wind speed, (Units:m/s)
+#'@param method Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"
+#'@param wnd.z Height of wind measurement, (Units: m)
+#'@param Kd Light attenuation coefficient (Units: m^-1)
+#'@param lat Latitude, degrees north
+#'@param lake.area Lake area, m^2
+#'@param atm.press Atmospheric pressure, (Units: millibar)
+#'@param dateTime datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct}})
+#'@param Ts Numeric vector of surface water temperature, (Units(deg C)
+#'@param z.mix Numeric vector of  mixed layer depths. Must be the same length as the Ts parameter
+#'@param airT Numeric value of air temperature, Units(deg C)
+#'@param RH Numeric value of relative humidity, \%
+#'@param sw Numeric value of short wave radiation, W m^-2
+#'@param lwnet Numeric value net long wave radiation, W m^-2
+#'@return Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
+#'should be converted to appropriate gas using \link{k600.2.kGAS}.
+#'@keywords methods math
+#'@references
+#'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
+#'in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
+#'Limnology and Oceanography 43 (1998): 647-656.
+#'
+#'MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney, 
+#'and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer 
+#'coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
+#'
+#'Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
+#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake‐size dependency of wind shear and convection 
+#'as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
+#'
+#'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
+#'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'@author
+#'R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
+#'@seealso 
+#'\link{k.cole}
+#'\link{k.read}
+#'\link{k.crusius}
+#'\link{k.macIntyre}
+#'@examples 
+#'wnd.z <- 2
+#'Kd <- 2
+#'lat <- 54
+#'lake.area <- 5000 
+#'atm.press <- 1013
+#'dateTime <- as.POSIXct("2013-12-30 14:00")
+#'Ts <- 16.5
+#'z.mix <- 2.32
+#'airT <- 20
+#'wnd <- 6
+#'RH <- 90
+#'sw <- 800
+#'lwnet <- -55
+#'timeStep <- 30
+#'
+#'U10 <- scale.exp.wind.base(wnd, wnd.z)
+#'
+#'k600_cole <- k.cole.base(U10)
+#'
+#'k600_crusius <- k.crusius.base(U10)
+#'
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
 
-k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
+#'@export
+k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
+  
+  Kelvin <- 273.15 # temp mod for deg K   
+  emiss <- 0.972 # emissivity;
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
   
   # define constants used in function
   dT <- 0.5   # change in temp for mixed layer depth
@@ -103,15 +259,7 @@ k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp
   } else {  
     stop("no SW equivalent file available\n")
   }
-  
-  # Get water temperature data
-  #if(!missing(wtr)){ 
-    #wtr <- wtr
-    Ts <- surf.temp
-  #} else {  
-  #  stop("no wtr file available\n")
-  #}
-  
+
   # Get air temperature
   if(!missing(airT)){ 
     airT <- airT
@@ -129,11 +277,6 @@ k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp
   # Get long wave radiation data
   if(!missing(lwnet)){ 
     lwnet <- lwnet
-  #} else if(!missing(lw)){
-    #lw_in <- lw # long wave in
-    #Tk <- Ts+Kelvin # water temperature in Kelvin
-    #LWo <- S_B*emiss*Tk^4 # long wave out
-    #lwnet <- lw_in-LWo
   } else {  
     stop("no longwave radiation available")
   }
@@ -150,7 +293,7 @@ k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp
   wnd[rpcI] <- mnWnd
   
   # calculate sensible and latent heat fluxes
-  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ)
+  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wnd.z)
   C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
@@ -164,21 +307,13 @@ k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp
   
   # calculate u*
   vonK <- 0.41 # von Karman  constant
-  if (wndZ != 10) {
+  if (wnd.z != 10) {
     e1 <- sqrt(C_D)
-    wnd <- wnd/(1-e1/vonK*log(10/wndZ))
+    wnd <- wnd/(1-e1/vonK*log(10/wnd.z))
   }
   rhoAir <- 1.2 #  air density
   tau <- C_D*wnd^2*rhoAir
   uSt <- sqrt(tau/rho_w)
-  
-  # find Z_aml
-  #if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
-  #  z_aml <- depth[length(depth)]
-  #} else {
-  #  zI <- depth[wtr[1] - dT > wtr]
-  #  z_aml <- zI[1]
-  #}
   z_aml = z.mix
   
   # calculate the effective heat flux

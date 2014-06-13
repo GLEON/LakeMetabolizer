@@ -1,0 +1,105 @@
+\name{k.read}
+\alias{k.cole}
+\alias{k.crusius}
+\alias{k.macIntyre}
+\alias{k.read}
+\title{Returns a timeseries of gas exchange velocity}
+\usage{
+  k.cole(ts.data)
+
+  k.crusius(ts.data, method='power')
+
+  k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
+
+  k.macIntyre(ts.data, wnd.z, Kd, atm.press)
+}
+\arguments{
+  \item{ts.data}{vector of datetime in POSIXct format}
+
+  \item{method}{Only for \link{k.crusius}. String of valid
+  method . Either "linear", "bilinear", or "power"}
+
+  \item{wnd.z}{height of wind measurement, m}
+
+  \item{Kd}{numeric value of air temperature, degC}
+
+  \item{atm.press}{atmospheric pressure in mb}
+
+  \item{lat}{Latitude, degrees north}
+
+  \item{lake.area}{Lake area, m^2}
+}
+\value{
+  Returns a data.frame with a datetime column and a k600
+  column. k600 is in units of meters per day (m/d).
+}
+\description{
+  Returns the gas exchange velocity based on the chosen
+  model in units of m/day
+}
+\examples{
+data.path = system.file('extdata', package="LakeMetabolizer")
+
+tb.data = load.all.data('sparkling', data.path)
+
+ts.data = tb.data$data #pull out just the timeseries data
+
+#calculate U10 and add it back onto the original
+
+u10 = scale.exp.wind(ts.data)
+ts.data = rmv.vars(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
+ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset
+
+
+k600_cole = k.cole(ts.data)
+
+k600_crusius = k.crusius(ts.data)
+
+kd        = tb.data$metadata$averagekd
+wnd.z      = 10   #because we converted to u10
+atm.press  = 1018
+lat       = tb.data$metadata$latitude
+lake.area = tb.data$metadata$lakearea
+
+#for k.read and k.macIntyre, we need LW_net.
+#Calculate from the observations we have available.
+
+lwnet = calc.lw.net(ts.data, lat, atm.press)
+ts.data = merge(ts.data, lwnet)
+
+k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+
+k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
+}
+\author{
+  Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn.
+  Woolway, Jordan S. Read
+}
+\references{
+  Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric
+  exchange of carbon dioxide in a low-wind oligotrophic
+  lake measured by the addition of SF~ 6}. Limnology and
+  Oceanography 43 (1998): 647-656.
+
+  MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan
+  Aberg, Damon E. Turney, and Scott D. Miller.
+  \emph{Buoyancy flux, turbulence, and the gas transfer
+  coefficient in a stratified lake}. Geophysical Research
+  Letters 37, no. 24 (2010).
+
+  Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin
+  C. Rose, Sally MacIntyre, John D. Lenters, Robyn L. Smyth
+  et al. \emph{Lake‐size dependency of wind shear and
+  convection as controls on gas exchange}. Geophysical
+  Research Letters 39, no. 9 (2012).
+
+  Crusius, John, and Rik Wanninkhof. \emph{Gas transfer
+  velocities measured at low wind speed over a lake}.
+  Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+}
+\seealso{
+  \link{k.cole} \link{k.crusius} \link{k.macIntyre}
+}
+\keyword{math}
+\keyword{methods}
+
