@@ -67,7 +67,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
   RH <- dat$RH
   
   # if temperature and humidity height are missing, assume same as wind
-  if (missing(airt.z)){airt.z <- wnd.z}
+  if (missing(airT.z)){airT.z <- wnd.z}
   if (missing(RH.z)){RH.z <- wnd.z}
 
   # define constants
@@ -171,16 +171,16 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
     ustar[idx] <- (Uz[idx]*const_vonKarman)/((log(obu[idx]/zo[idx])+ 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
     # calculate tstar
-    zeta <- airt.z/obu
+    zeta <- airT.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log((zetat*obu[idx])/zot[idx]) - psi(2,zetat)) +  0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) - psi(2,zeta[idx]))
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airT.z/zot[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) + 5*zeta[idx])
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airT.z/zot[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log(obu[idx]/zot[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
 
