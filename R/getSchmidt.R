@@ -21,14 +21,6 @@
 #'getSchmidt(temperature=12, gas="O2")
 #'@export
 getSchmidt	<-	function(temperature, gas){
-	# temperature can be a number or a vector of numbers
-	# gas must be a valid name. Code for more, but currently only in the supported data frame.
-	
-	# __Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, 
-	#__Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H. McDowell,
-	#__and Denis Newbold. "Scaling the gas transfer velocity and hydraulic 
-	#__geometry in streams and small rivers." Limnology & Oceanography: 
-	#__Fluids & Environments 2 (2012): 41-53.
 	
 	range.t	<-	c(4,35) # supported temperature range
 	
