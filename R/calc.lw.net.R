@@ -27,7 +27,7 @@
 #'R Iestyn Woolway
 #'Jordan S. Read
 #'Hilary Dugan
-#'@seealso k.read
+#'@seealso \link{k.read}
 #'@examples 
 #'dateTime <- as.POSIXct("2013-12-30 23:00")
 #'Uz <- 3
