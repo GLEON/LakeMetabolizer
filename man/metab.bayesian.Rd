@@ -66,9 +66,9 @@
 }
 
 \references{
-	Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A’mar. 2010. 
+	Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar. 2010. 
 	\emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration Using a Bayesian 
-	Statistical Model of Oxygen Dynamics.} Limnology and Oceanography 55 (3): 1047–1062. 
+	Statistical Model of Oxygen Dynamics.} Limnology and Oceanography 55 (3): 1047-1062. 
 	doi:10.4319/lo.2010.55.3.1047. http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
 }
 
