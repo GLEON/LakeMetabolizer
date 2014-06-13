@@ -1,5 +1,4 @@
-\name{k.all}
-\alias{k.all}
+\name{k.read}
 \alias{k.cole}
 \alias{k.crusius}
 \alias{k.macIntyre}
@@ -35,8 +34,8 @@
   column. k600 is in units of meters per day (m/d).
 }
 \description{
-  Returns the gas exchange velocity for k600 based on a
-  specific model in units of m/day) Read et al. 2012
+  Returns the gas exchange velocity based on the chosen
+  model in units of m/day
 }
 \examples{
 data.path = system.file('extdata', package="LakeMetabolizer")
@@ -99,8 +98,7 @@ k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
   Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 }
 \seealso{
-  \link{k.cole} \link{k.read} \link{k.crusius}
-  \link{k.macIntyre}
+  \link{k.cole} \link{k.crusius} \link{k.macIntyre}
 }
 \keyword{math}
 \keyword{methods}

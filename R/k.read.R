@@ -1,12 +1,11 @@
-#'@name k.all
+#'@name k.read
 #'@aliases 
 #'k.cole
-#'k.read
 #'k.macIntyre
 #'k.crusius
 #'@title Returns a timeseries of gas exchange velocity
 #'@description 
-#'Returns the gas exchange velocity for k600 based on a specific model in units of m/day) Read et al. 2012
+#'Returns the gas exchange velocity based on the chosen model in units of m/day
 #'@usage
 #'## Method for Cole and Caraco, 1998
 #'k.cole(ts.data)
@@ -47,7 +46,6 @@
 #'Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway, Jordan S. Read
 #'@seealso 
 #'\link{k.cole}
-#'\link{k.read}
 #'\link{k.crusius}
 #'\link{k.macIntyre}
 #'@examples 
@@ -155,7 +153,95 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   return(data.frame(datetime=data$datetime, k600=k600))
 }
 
+#'@name k.read.base
+#'@aliases 
+#'k.cole.base
+#'k.macIntyre.base
+#'k.crusius.base
+#'@title Returns a timeseries of gas exchange velocity
+#'@description 
+#'Returns the gas exchange velocity based on the chosen model in units of m/day
+#'@usage
+#'## Method for Cole and Caraco, 1998
+#'k.cole.base(wnd)
+#'
+#'## Method for Crusius and Wanninkhof 2003
+#'k.crusius.base(wnd, method='power')
+#'
+#'## Method for Read et al 2012
+#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'
+#'## Method for Macintyre et al 2010
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'@param wnd Numeric value of wind speed, (Units:m/s)
+#'@param method Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"
+#'@param wnd.z Height of wind measurement, (Units: m)
+#'@param Kd Light attenuation coefficient (Units: m^-1)
+#'@param lat Latitude, degrees north
+#'@param lake.area Lake area, m^2
+#'@param atm.press Atmospheric pressure, (Units: millibar)
+#'@param dateTime datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct}})
+#'@param Ts Numeric vector of surface water temperature, (Units(deg C)
+#'@param z.mix Numeric vector of  mixed layer depths. Must be the same length as the Ts parameter
+#'@param airT Numeric value of air temperature, Units(deg C)
+#'@param RH Numeric value of relative humidity, \%
+#'@param sw Numeric value of short wave radiation, W m^-2
+#'@param lwnet Numeric value net long wave radiation, W m^-2
+#'@param par Numeric value of photosynthetically active radiation, umol m^-2 s^-1 (if sw not available)
+#'@return Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
+#'should be converted to appropriate gas using \link{k600.2.kGAS}.
+#'@keywords methods math
+#'@references
+#'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
+#'in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
+#'Limnology and Oceanography 43 (1998): 647-656.
+#'
+#'MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney, 
+#'and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer 
+#'coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
+#'
+#'Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
+#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake‐size dependency of wind shear and convection 
+#'as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
+#'
+#'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
+#'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'@author
+#'R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
+#'@seealso 
+#'\link{k.cole}
+#'\link{k.read}
+#'\link{k.crusius}
+#'\link{k.macIntyre}
+#'@examples 
+#'wnd.z <- 2
+#'Kd <- 2
+#'lat <- 54
+#'lake.area <- 5000 
+#'atm.press <- 1013
+#'dateTime <- as.POSIXct("2013-12-30 14:00")
+#'Ts <- 16.5
+#'z.mix <- 2.32
+#'airT <- 20
+#'wnd <- 6
+#'RH <- 90
+#'sw <- 800
+#'lwnet <- -55
+#'timeStep <- 30
+#'
+#'U10 <- scale.exp.wind.base(wnd, wnd.z)
+#'
+#'k600_cole <- k.cole.base(U10)
+#'
+#'k600_crusius <- k.crusius.base(U10)
+#'
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, 
+#'                            dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
+#'                            z.mix, airT, wnd, RH, sw, lwnet)
 
+#'@export
 k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
   
   Kelvin <- 273.15 # temp mod for deg K   

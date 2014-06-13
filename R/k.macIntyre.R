@@ -90,7 +90,7 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   
 }
 
-k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
+k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){
   
   #Constants
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
@@ -116,14 +116,6 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, surf.temp, z.mix, a
   } else {  
     stop("no SW equivalent file available\n")
   }
-  
-  # Get water temperature data
-  #if(!missing(wtr)){ 
-  #wtr <- wtr
-  Ts <- surf.temp
-  #} else {  
-  #  stop("no wtr file available\n")
-  #}
   
   # Get air temperature
   if(!missing(airT)){ 
@@ -151,14 +143,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, surf.temp, z.mix, a
   } else {  
     stop("no longwave radiation available")
   }
-  
-  # Get wind speed data
-  if(!missing(Uz)){ 
-    wnd <- Uz
-  } else{  
-    stop("no wind speed data available")
-  }
-  
+
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
   wnd[rpcI] <- mnWnd
