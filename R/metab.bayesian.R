@@ -128,7 +128,7 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors=c("gppM
 	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
 	           is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
    
-	   error('All inputs to metab.bayes must be numeric vectors')
+	   stop('All inputs to metab.bayes must be numeric vectors')
 	 }
 	
 	require("R2jags")

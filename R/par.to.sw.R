@@ -1,40 +1,53 @@
 
-# s3 dispatchers
-#par.to.sw = function(x, ...) UseMethod("par.to.sw")
-
-#sw.to.par = function(x, ...) UseMethod("sw.to.par")
-
-
 #default functions
 par.to.sw.base = function(par){
   
   sw = par* 2.114
 }
 
-sw.to.par.base = function(sw){
-  
-  par = sw * 0.473
-}
 
-#data.frame functions for timeseries handling 
-sw.to.par = function(data, sw.col='sw'){
-  
-  output = data
-  
-  indx = var.indx(data, 'sw')
-  
-  data[,indx] = sw.to.par.base(data[,indx])
-  names(data)[indx] = 'par' #rename to par
-  
-  return(data)
-}
-
-
+#'@name par.to.sw
+#'@aliases par.to.sw.base
+#'
+#'@title Convert PAR to shortwave
+#'@description 
+#'Returns incoming shortwave radiation by converting PAR measuremt.
+#'
+#'@usage
+#'par.to.sw.base(par)
+#'
+#'par.to.sw(data, par.col='par')
+#'
+#'@param data Object of class data.frame with column name 'par' (units umol/m^2/sec)
+#'@param par.col String of alternative name for PAR column 
+#'@param par Numeric vector of PAR values
+#'
+#'
+#'@return 
+#'#For par.to.sw
+#'
+#'Object of class data.frame with column name 'sw' and other values from \code{ts.data}
+#'
+#'#For par.to.sw.base
+#'
+#'Numeric vector of shortwave values with units W/m^2
+#'
+#'@keywords methods math
+#'@references
+#'Britton, C. M., and J. D. Dodd. \emph{Relationships of photosynthetically active radiation and shortwave irradiance.} 
+#'Agricultural Meteorology 17, no. 1 (1976): 1-7.
+#'@author
+#'LakeMetabolizer
+#'@seealso \link{sw.to.par}
+#'@examples 
+#'par <- 800
+#'par.to.sw.base(par)
+#'@export
 par.to.sw = function(data, par.col='par'){
   
   output = data
   
-  indx = var.indx(data, 'par')
+  indx = var.indx(data, par.col)
   
   data[,indx] = par.to.sw.base(data[,indx])
   names(data)[indx] = 'sw' #rename to par
@@ -42,6 +55,4 @@ par.to.sw = function(data, par.col='par'){
   return(data)
 }
 
-#Papaioannou, G, N Papanikolaou, and D Retalis. 1993.
-#"Relationships of Photosynthetically Active Radiation and Shortwave Irradiance." 
-#Theoretical and Applied Climatology 48: 23-27. http://www.sciencedirect.com/science/article/pii/0002157176900807.
+

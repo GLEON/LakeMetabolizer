@@ -47,7 +47,7 @@ Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway
 }
 
 \examples{
-  data.path = system.file('extdata', '', package="LakeMetabolizer")
+  data.path = system.file('extdata', package="LakeMetabolizer")
   
   tb.data = load.all.data('sparkling', data.path)
   
@@ -56,7 +56,7 @@ Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway
   #calculate U10 and add it back onto the original 
   
   u10 = scale.exp.wind(ts.data)
-  ts.data = rmv.var(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
+  ts.data = rmv.vars(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
   ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset  
   
   

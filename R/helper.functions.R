@@ -1,5 +1,22 @@
-#helper.functions 
+#'@title tests data.frame for column names
+#'@description 
+#'tests \code{data} for data column names
+#'
+#'@usage
+#'has.vars(data, var.names)
+#'@param data Object of class data.frame
+#'@param var.names A character vector of names to test against \code{data}
+#'
+#'@return a boolean vector of same length as \code{var.names} 
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{get.vars}
+#'\link{rmv.vars}
+#'@export
 has.vars = function(data, var.names){
   
   if(!is(data, 'data.frame')){
@@ -17,7 +34,25 @@ has.vars = function(data, var.names){
   return(has.var)  
 }
 
+#'@title subsets data.frame according to header names
+#'@description 
+#'subsets \code{data} according to header names
+#'
+#'@usage
+#'get.vars(data, var.names)
+#'@param data Object of class data.frame
+#'@param var.names A character vector of names to get from \code{data}
+#'
+#'@return An object of class data.frame
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{has.vars}
+#'\link{rmv.vars}
+#'@export
 get.vars = function(data, var.names){
   
   if(!is(data, 'data.frame')){
@@ -45,7 +80,28 @@ get.vars = function(data, var.names){
   return(data[, varI | datetimeI])
 }
 
-rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
+#'@title subsets data.frame according to header names
+#'@description 
+#'subsets \code{data} according to header names. Excludes all matches to \code{var.name}
+#'
+#'@usage
+#'rmv.vars(data, var.names, ignore.missing=TRUE, ignore.offset=FALSE)
+#'@param data Object of class data.frame
+#'@param var.name A character vector of names to remove from \code{data}
+#'@param ignore.missing Boolean, should an error be thrown if no matching data found
+#'@param ignore.offset Should the numerical offset be ignored in the match, (e.g. all \code{wtr} columns removed, or \code{wtr_0} specifically)
+#'
+#'@return An object of class data.frame
+#'
+#'@keywords methods
+
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{has.vars}
+#'\link{get.vars}
+#'@export
+rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 	if(ignore.offset){
 		varI = var.indx(data, var.name)
 	}else{
@@ -63,7 +119,26 @@ rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 
 }
 
+#'@title finds matching column names in data.frame
+#'@description 
+#'returns index of column matches for \code{data} according to header names matches with \code{var.names}.
+#'
+#'@usage
+#'var.indx(data, var.name)
+#'@param data Object of class data.frame
+#'@param var.name A character vector of names to find matches with \code{data}
+#'
+#'@return a boolean vector with same length as \code{var.names}
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{has.vars}
+#'\link{get.vars}
+#'\link{rmv.var}
+#'@export
 var.indx = function(data, var.name){
   if(length(var.name) != 1){
     stop('var.indx only operates on one variable at a time')

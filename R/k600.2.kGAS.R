@@ -7,7 +7,7 @@
 
 # OUTPUT:
 # kGAS: gas transfer velocity for the specified gas (in same units as k600 input)
-k600.2.kGAS.base	<-	function(k600,temperature,gas){
+k600.2.kGAS.base	<-	function(k600,temperature,gas="O2"){
 	
 	n	<-	0.5
 	schmidt	<-	getSchmidt(temperature,gas)

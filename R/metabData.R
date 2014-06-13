@@ -11,7 +11,6 @@
 # NOTE: This function currently uses k.cole, and does not accept an argument for other methods. This needs to be modified.
 
 metabData <- function(do.ts, wtrAll.ts, wnd.ts, irr.ts, atmPress=716/0.75006168, wndHeight){
-	require("rLakeAnalyzer")
 
 	Mode <- function(x){
 			ux <- unique(x)
