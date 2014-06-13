@@ -1,12 +1,4 @@
 
-
-
-# s3 dispatchers
-#par.to.sw = function(x, ...) UseMethod("par.to.sw")
-
-#sw.to.par = function(x, ...) UseMethod("sw.to.par")
-
-
 #default functions
 par.to.sw.base = function(par){
   
@@ -14,18 +6,31 @@ par.to.sw.base = function(par){
 }
 
 
+#'@name par.to.sw
+#'@aliases par.to.sw.base
+#'
 #'@title Convert PAR to shortwave
 #'@description 
 #'Returns incoming shortwave radiation by converting PAR measuremt.
 #'
 #'@usage
-#'calc.lw.net(ts.data, lat, atm.press)
+#'par.to.sw.base(par)
 #'
-#'calc.lw.net.base(dateTime, sw, Ts, lat, atm.press, airT, RH)
+#'par.to.sw(data, par.col='par')
 #'
-#'@param \code{ts.data} Object of class data.frame with column name 'par'
+#'@param data Object of class data.frame with column name 'par' (units umol/m^2/sec)
+#'@param par.col String of alternative name for PAR column 
+#'@param par Numeric vector of PAR values
 #'
-#'@return Object of class data.frame with column name 'sw' and other values from \code{ts.data}
+#'
+#'@return 
+#'#For par.to.sw
+#'
+#'Object of class data.frame with column name 'sw' and other values from \code{ts.data}
+#'
+#'#For par.to.sw.base
+#'
+#'Numeric vector of shortwave values with units W/m^2
 #'
 #'@keywords methods math
 #'@references
@@ -42,7 +47,7 @@ par.to.sw = function(data, par.col='par'){
   
   output = data
   
-  indx = var.indx(data, 'par')
+  indx = var.indx(data, par.col)
   
   data[,indx] = par.to.sw.base(data[,indx])
   names(data)[indx] = 'sw' #rename to par

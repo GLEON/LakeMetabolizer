@@ -4,8 +4,8 @@
 #'
 #'@usage
 #'has.vars(data, var.names)
-#'@param \code{data} Object of class data.frame
-#'@param \code{var.names} A character vector of names to test against \code{data}
+#'@param data Object of class data.frame
+#'@param var.names A character vector of names to test against \code{data}
 #'
 #'@return a boolean vector of same length as \code{var.names} 
 #'
@@ -40,8 +40,8 @@ has.vars = function(data, var.names){
 #'
 #'@usage
 #'get.vars(data, var.names)
-#'@param \code{data} Object of class data.frame
-#'@param \code{var.names} A character vector of names to get from \code{data}
+#'@param data Object of class data.frame
+#'@param var.names A character vector of names to get from \code{data}
 #'
 #'@return An object of class data.frame
 #'
@@ -86,10 +86,10 @@ get.vars = function(data, var.names){
 #'
 #'@usage
 #'rmv.vars(data, var.names, ignore.missing=TRUE, ignore.offset=FALSE)
-#'@param \code{data} Object of class data.frame
-#'@param \code{var.name} A character vector of names to remove from \code{data}
-#'@param \code{ignore.missing} Boolean, should an error be thrown if no matching data found
-#'@param \code{ignore.offset} Should the numerical offset be ignored in the match, (e.g. all \code{wtr} columns removed, or \code{wtr_0} specifically)
+#'@param data Object of class data.frame
+#'@param var.name A character vector of names to remove from \code{data}
+#'@param ignore.missing Boolean, should an error be thrown if no matching data found
+#'@param ignore.offset Should the numerical offset be ignored in the match, (e.g. all \code{wtr} columns removed, or \code{wtr_0} specifically)
 #'
 #'@return An object of class data.frame
 #'
@@ -124,9 +124,9 @@ rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 #'returns index of column matches for \code{data} according to header names matches with \code{var.names}.
 #'
 #'@usage
-#'var.indx(data, var.names)
-#'@param \code{data} Object of class data.frame
-#'@param \code{var.names} A character vector of names to find matches with \code{data}
+#'var.indx(data, var.name)
+#'@param data Object of class data.frame
+#'@param var.name A character vector of names to find matches with \code{data}
 #'
 #'@return a boolean vector with same length as \code{var.names}
 #'
