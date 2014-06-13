@@ -15,7 +15,7 @@
   k.crusius.base(wnd, method='power')
   
   ## Method for Read et al 2012
-  k.read.base(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, airT, Uz, RH, sw, lwnet, par, lw)
+  k.read.base(wndZ, Kd, lat, lake.area, atm.press, dateTime, wtr, airT, Uz, RH, sw, lwnet, par, lwnet)
   
   ## Method for Macintyre et al 2010
   k.macIntyre.base(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet)
@@ -38,8 +38,7 @@
   \item{RH}{Numeric value of relative humidity, \%}
   \item{sw}{Numeric value of short wave radiation, W m^-2} 
   \item{lwnet}{Numeric value net long wave radiation, W m^-2}  
-  \item{par}{Numeric value of photosynthetically active radiation, umol m^-2 s^-1 (if sw not available)}  
-  \item{lw}{Numeric value of incoming long wave radiation, W m^-2}  
+  \item{par}{Numeric value of photosynthetically active radiation, umol m^-2 s^-1 (if sw not available)}
 }
 
 \value{

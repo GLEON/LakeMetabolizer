@@ -7,14 +7,15 @@
 	GPP is calculated from the algebraic manipulation of NEP and R. Based on Cole et al 2000.
 }
 \usage{
-	metab.bookkeep(do.obs, do.sat, k.gas, z.mix, date.times, lake.lat)
+	metab.bookkeep(do.obs, do.sat, k.gas, z.mix, irr, ...)
 }
 \arguments{
   \item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
   \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \code{\link{o2.at.sat}}}
   \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}}
-  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}}
-  \item{date.times}{Vector of timestamps for above observations in \code{\link{POSIXct}} format}
+  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{meta.depths.ts}}}
+  \item{irr}{Vector of integers: 1 for day, 0 for night}
+  \item{...}{Not used, extra input is ignored.}
 }
 
 \value{
