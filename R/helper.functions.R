@@ -312,6 +312,7 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 # ==================
 # = Conquer a List =
 # ==================
+#RDB
 conquerList <- function(x, naming=NULL){
 	# If x is not a list, don't bother
 	if(!is.list(x) | is.data.frame(x)){return(x)}
@@ -358,6 +359,7 @@ conquerList <- function(x, naming=NULL){
 # =======================================================
 # = Simple way of estimating watts entering water layer =
 # =======================================================
+#RDB
 watts.in <- function(top, bot, irr, z1perc){
 	# top = the top of the layer in meters (e.g., 2)
 	# bottom = the bottom of the layer in meters (e.g., 4)
@@ -368,3 +370,14 @@ watts.in <- function(top, bot, irr, z1perc){
     kd <- log(0.01)/-z1perc # calculate an average kd for the photic zone
     watts*exp(-kd*top) - watts*exp(-kd*bot) # Estimate watts gained as the difference between watts entering at the top and exiting at the bottom
 }
+
+# ==================
+# = Calculate Mode =
+# ==================
+#RDB
+Mode <- function(x){
+	ux <- unique(x)
+	ux[which.max(tabulate(match(x, ux)))]
+}
+
+

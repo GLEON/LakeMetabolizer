@@ -7,8 +7,6 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   #datetimes - in POSIXct data structure
   
   mb.args <- list(...)
-print(ls()); flush.console();
-  print(names(mb.args)); flush.console();
   if(all(c("datetime", "lake.lat")%in%names(mb.args))){
     irr <- as.integer(is.day(datetimes=mb.args$datetime, lat=mb.args$lake.lat))
     dayI <- irr == 1L

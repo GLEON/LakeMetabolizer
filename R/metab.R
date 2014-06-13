@@ -27,27 +27,16 @@ metab <- function(data, method, ...){
 	# ==============
 	# = Groom data =
 	# ==============
-	# data0 <- LakeMetabolizer:::ryanData()
-	
-	# Removes days with many missing ROWS:
-	# data <- LakeMetabolizer:::addNAs(data0)
-	
 	# Removes days with many NA's:
-	# data1 <- LakeMetabolizer:::addNAs(data0[complete.cases(data0),], percentReqd=1)
 	data1 <- addNAs(data[complete.cases(data),], percentReqd=1)
 	data2 <- data1[complete.cases(data1),]
-	
-	print(paste("data names:", paste(names(data), collapse=" "))); flush.console();
-	print(paste("data1 names:", paste(names(data1), collapse=" "))); flush.console();
-	print(paste("data2 names:", paste(names(data2), collapse=" "))); flush.console();
 	
 	# ==================================
 	# = Prepare to apply metab to data =
 	# ==================================
 	ids <- id(list(data2[,"year"],trunc(data2[,"doy"]))) # ID chunks to be analyzed
 	ids <- as.integer(ids - (min(ids)-1))
-	nid <- length(unique(ids))#attributes(ids)$n
-	# metabArgs <- as.list(data[1:10,c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr")])
+	nid <- length(unique(ids))
 	results <- vector("list", nid)
 	
 	# ==================================
@@ -58,9 +47,7 @@ metab <- function(data, method, ...){
 		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "datetime") # data2 columns that could correspond to arguments
 		used.args <- poss.args[poss.args%in%names(data2)] # assuming arguments are used if they are in data2
 		largs0 <- as.list(data2[i==ids, used.args]) # subsetting columns of data2 to used.args (just a safety check, probably not needed)
-		print(paste("largs0 names:", paste(names(largs0), collapse=" "))); flush.console();
 		largs <- c(largs0, m.args[!names(m.args)%in%names(largs0)]) # adding on any other arguments supplied via ...
-		print(paste("largs names:", paste(names(largs), collapse=" "))); flush.console();
 		# note that in largs, argument supplied through data/data2/poss.args take precedent over arguments from ...
 		
 		print(paste("Analyzing day #", i)); flush.console();
@@ -89,11 +76,5 @@ metab <- function(data, method, ...){
 	
 	return(answer)
 }
-
-# ===========
-# = EXAMPLE =
-# ===========
-# metab(data=tb.data, method="kalman")
-# metab(data=tb.data, method="bayes")
 
 
