@@ -156,7 +156,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 }
 
 
-k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
+k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
   
   Kelvin <- 273.15 # temp mod for deg K   
   emiss <- 0.972 # emissivity;
@@ -185,15 +185,7 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, surf.tem
   } else {  
     stop("no SW equivalent file available\n")
   }
-  
-  # Get water temperature data
-  #if(!missing(wtr)){ 
-    #wtr <- wtr
-    Ts <- surf.temp
-  #} else {  
-  #  stop("no wtr file available\n")
-  #}
-  
+
   # Get air temperature
   if(!missing(airT)){ 
     airT <- airT
@@ -211,11 +203,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, surf.tem
   # Get long wave radiation data
   if(!missing(lwnet)){ 
     lwnet <- lwnet
-  #} else if(!missing(lw)){
-    #lw_in <- lw # long wave in
-    #Tk <- Ts+Kelvin # water temperature in Kelvin
-    #LWo <- S_B*emiss*Tk^4 # long wave out
-    #lwnet <- lw_in-LWo
   } else {  
     stop("no longwave radiation available")
   }
