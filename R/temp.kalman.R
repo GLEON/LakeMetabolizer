@@ -90,9 +90,24 @@ kalmanLoopTempR <- function(nlls, alpha, c1,  P, Q, H, beta, watts, wtr){
 	return(a.loop[["nlls"]])
 }
 
-# ==========================================================================
-# = Wrapper function to return a smoothed time series of water temperature =
-# ==========================================================================
+#'@title Smooth temperature time series using a Kalman filter/ smoother
+#'@description Smoothes a temperature time series uses a Kalman filter/ smoother.
+#'@usage
+#'temp.kalman(wtr, watts, ampH, ...)
+#'@details 
+#'basic model process is \code{x[t] = beta*x[t-1] + c1*watts[t-1]}
+#'@param wtr Vector (regular time series) of water temperature in degrees C
+#'@param watts estimate of watts entering the layer at each time step, from \link{watts.in}
+#'@param ampH some parameter that @rbatt needs to define
+#'@param ... parameters to be passed to \link{optim}
+#'@return a smoothed temperature time series
+#'@author Ryan Batt
+#'@references 
+#'Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 
+#'addressing noisy time series with a Kalman filter}. Limnology and 
+#'Oceanography: Methods 10: 20-30. doi: 10.4319/lom.2012.10.20
+#'@seealso \link{watts.in} \link{metab.kalman}
+#'@export
 temp.kalman <- function(wtr, watts, ampH=1, ...){
 	# Filter and fit
 	guesses <- c(0.9, 1E-4, log(5), log(5))

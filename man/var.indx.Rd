@@ -21,7 +21,7 @@
   Luke A. Winslow
 }
 \seealso{
-  \link{has.vars} \link{get.vars} \link{rmv.var}
+  \link{has.vars} \link{get.vars} \link{rmv.vars}
 }
 \keyword{methods}
 
