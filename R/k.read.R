@@ -14,10 +14,10 @@
 #'k.crusius(ts.data, method='power')
 #'
 #'## Method for Read et al 2012
-#'k.read(ts.data, wndZ, Kd, atm.press, lat, lake.area)
+#'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
 #'## Method for from MacIntyre et al. 2010
-#'k.macIntyre(ts.data, wndZ, Kd, atm.press)
+#'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
 #'
 #'@param ts.data vector of datetime in POSIXct format
 #'@param wnd.z height of wind measurement, m
