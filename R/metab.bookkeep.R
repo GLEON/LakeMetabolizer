@@ -6,25 +6,22 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   #z.mix      - depth in meters
   #date.times - in POSIXct data structure
   
+  mb.args <- list(...)
+
+  if(c("datetime", "lake.lat")%in%names(mb.args)){
+    irr <- as.integer(is.day(lake.lat, datettime))
+    dayI <- irr == 1L
+    nightI <- irr == 0L	
+  }else{
+	dayI <- irr == 1L
+	nightI <- irr == 0L
+  }
   
   delta.do <- diff(do.obs)
   miss.delta <- sum(is.na(delta.do))
   if(miss.delta != 0){
 	warning(paste(miss.delta, " missing values (", miss.delta/length(delta.do), "%) in diff(do.obs)", sep=""))
-}
-  # mid.times <- diff(date.times)/2 + date.times[1:(length(date.times)-1)]
-  # delta.times <- diff(date.times)
-  
-  # k.gas.timestep <- k.gas[1:(length(k.gas)-1)] * as.numeric(delta.times, 'secs')/(60*60*24) #convert to per-timestep
-  
-  # dayI <- is.day(lake.lat, mid.times)
-  # nightI <- !dayI
-
-  if(!is.integer(irr)){
-	stop("irr must be a vector of integers: 1 for day, 0 for night")
   }
-  dayI <- irr == 1L
-  nightI <- irr == 0L
   
   #gas flux out is negative
   #normalized to z.mix, del_concentration/timestep (e.g., mg/L/10min)
