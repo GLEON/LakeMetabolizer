@@ -1,6 +1,5 @@
-calc.lw.net = function(x, ...) UseMethod("calc.lw.net")
 
-calc.lw.net.data.frame = function(ts.data, lat, atm.press){
+calc.lw.net = function(ts.data, lat, atm.press){
   
   if(has.vars(ts.data, 'sw')){
     sw = get.vars(ts.data, 'sw')
@@ -11,14 +10,14 @@ calc.lw.net.data.frame = function(ts.data, lat, atm.press){
   }
   
   
-  lw.calc = calc.lw.net(ts.data$datetime, sw[,2], get.vars(ts.data,'wtr')[,2], lat, atm.press, 
+  lw.calc = calc.lw.net.base(ts.data$datetime, sw[,2], get.vars(ts.data,'wtr')[,2], lat, atm.press, 
                         get.vars(ts.data,'airt')[,2], get.vars(ts.data,'rh')[,2])
   
   return(data.frame(datetime=ts.data$datetime, lwnet=lw.calc))
 }
 
 
-calc.lw.net.default <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
+calc.lw.net.base <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   
   # estimate clear sky short wave radiation
   clearsky <- calc.clearsky(dateTime,lat,atm.press,airT,RH)

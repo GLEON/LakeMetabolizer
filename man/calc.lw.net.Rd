@@ -3,9 +3,12 @@
 \title{Estimate net long wave heat radiation}
 \description{Returns the net long wave radiation based on Crawford and Duchon, 1999}
 \usage{
-  calc.lw.net(dateTime,sw,Ts,lat,atm.press,airT,RH)
+  calc.lw.net(ts.data, lat, atm.press)
+  
+  calc.lw.net.base(dateTime, sw, Ts, lat, atm.press, airT, RH)
 }
 \arguments{
+  \item{ts.data}{Object of class \code{data.frame}}
   \item{dateTime}{vector of datetime in POSIXct format}
   \item{sw}{numeric value of short wave radiation, W/m2} 
   \item{Ts}{numeric value of surface water temperature, degC}  
@@ -37,7 +40,7 @@
   lake.area <- 5000 
   atm.press <- 1013
   Ts <- 22
-  calc.lw.net(dateTime,sw,Ts,lat,atm.press,airT,RH)
+  calc.lw.net.base(dateTime,sw,Ts,lat,atm.press,airT,RH)
 }
 
 \references{

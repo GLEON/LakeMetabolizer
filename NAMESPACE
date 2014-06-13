@@ -1,26 +1,21 @@
 export(k.read, k.crusius, k.cole, k.macIntyre, 
-       metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,  temp.kalman,
-	   k600.2.kGAS, k600.2.kGAS.base,
-		 getSchmidt, o2.at.sat, 
-	   calc.zeng, calc.lw.net, sw.to.par, par.to.sw, sun.rise.set, 
-	   load.all.data, load.meta, manuscript.code, 
-		 scale.exp.wind, scale.exp.wind.base,
-	   get.vars, has.vars, var.indx, rmv.var, watts.in,
-	   k.read, k.read.base,
-	   k.cole, k.cole.base,
-	   k.macIntyre, k.macIntyre.base,
-	   k.crusius, k.crusius.base)
+	metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,  temp.kalman,
+	k600.2.kGAS, k600.2.kGAS.base, 
+	o2.at.sat.base, o2.at.sat,
+	getSchmidt,
+	calc.zeng, 
+	calc.lw.net, calc.lw.net.base, 
+	sw.to.par, sw.to.par.base, par.to.sw, par.to.sw.base,
+	sun.rise.set, is.day, is.night,
+	load.all.data, load.meta, manuscript.code, 
+	scale.exp.wind, scale.exp.wind.base,
+	get.vars, has.vars, var.indx, rmv.var, watts.in,
+	k.read, k.read.base,
+	k.cole, k.cole.base,
+	k.macIntyre, k.macIntyre.base,
+	k.crusius, k.crusius.base)
 	
 useDynLib(LakeMetabolizer)
 
-S3method(calc.lw.net, default)
-S3method(calc.lw.net, data.frame)
-S3method(sw.to.par, default)
-S3method(sw.to.par, data.frame)
-S3method(o2.at.sat, base)
-S3method(o2.at.sat, data.frame)
-
 import(rLakeAnalyzer)
-import(R2jags)
-import(R2WinBUGS)
 import(plyr)

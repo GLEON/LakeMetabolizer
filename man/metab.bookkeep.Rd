@@ -49,16 +49,19 @@
   wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
   
   k.gas = k600.2.kGAS.base(k.cole.base(wnd[,2]), wtr[,3], 'O2')
-  do.sat = o2.at.sat(wtr[,3], altitude=300)
+  do.sat = o2.at.sat.base(wtr[,3], altitude=300)
   
-  metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, doobs[,1], 45)
+  # Must supply 1 for daytime timesteps and 0 for nighttime timesteps
+  irr = as.integer(is.day(doobs[,1], 45))
+  
+  metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr)
   
 }
 
 \references{
 	Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell. 2000. 
 	\emph{Persistence of Net Heterotrophy in Lakes during Nutrient Addition and Food Web Manipulations.} 
-	Limnology and Oceanography 45 (8): 1718–1730. doi:10.4319/lo.2000.45.8.1718.
+	Limnology and Oceanography 45 (8): 1718?1730. doi:10.4319/lo.2000.45.8.1718.
 }
 
 \keyword{methods}

@@ -9,10 +9,10 @@
 	Scale wind speed to standard U10 (10 meters) based on height of observations
 }
 \usage{
-	## Function accepting a timeseries data.frame 
+	# Used for timeseries data in a data.frame 
 	scale.exp.wind(ts.data, wndZ)
 	
-	## Function accepting raw numeric data
+	# Used for raw numeric data
 	scale.exp.wind.base(wnd, wndZ)
 }
 

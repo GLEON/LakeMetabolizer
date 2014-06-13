@@ -1,5 +1,6 @@
 \name{o2.at.sat}
 \alias{o2.at.sat}
+\alias{o2.at.sat.base}
 
 \title{
 Calculates the equilibrium saturation concentration of oxygen in water at the supplied conditions
@@ -10,7 +11,7 @@ in water varies with both temperature, salinity, and the partial pressure of oxy
 (calculated from supplied elevation or barometric pressure). 
 }
 \usage{
-o2.at.sat(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "weiss")
+o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "weiss")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -55,8 +56,8 @@ Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water an
 	sal.range = 1:25
 	
 	par(mfrow=c(1,2))
-	plot(temp.range, o2.at.sat(temp.range), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
-	plot(o2.at.sat(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
+	plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
+	plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

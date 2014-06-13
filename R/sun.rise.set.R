@@ -1,18 +1,20 @@
-is.day <- function(lat, datetime){
-  sr.ss <- sun.rise.set(lat, datetime)
+
+
+is.day <- function(datetimes, lat){
+  sr.ss <- sun.rise.set(datetimes, lat)
   
-  is.daytime <- xor(sr.ss[,1] > datetime, sr.ss[,2] > datetime)
+  is.daytime <- xor(sr.ss[,1] > datetimes, sr.ss[,2] > datetimes)
   return(is.daytime)
 }
 
 
-is.night <- function(lat, datetime){
-  return(!is.day(lat, datetime))
+is.night <- function(datetimes, lat){
+  return(!is.day(datetimes, lat))
 }
 
 
 
-sun.rise.set <- function(lat, datetimes){
+sun.rise.set <- function(datetimes, lat){
 	#SUNRISESET Calculates the time of sunrise and sunset
 	#
 	# Input:

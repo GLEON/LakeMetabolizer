@@ -34,10 +34,10 @@
 }
 \references{
 Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget, R Adrian, B Leroux Babin,
-CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O�Donnell, ML Pace, E Ryder, PA Staehr, T Torgersen, 
+CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell, ML Pace, E Ryder, PA Staehr, T Torgersen, 
 MJ Vanni, KC Weathers, G Zhuw 2013. 
 \emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe.}
-Limnology and Oceanograph 58 (3): 849�866. doi:10.4319/lo.2013.58.3.0849.
+Limnology and Oceanograph 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 }
 \author{
 Luke Winslow, Ryan Batt, GLEON Fellows
@@ -67,7 +67,7 @@ Luke Winslow, Ryan Batt, GLEON Fellows
   
   k600 = k.cole.base(wnd[,2])
   k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
-  do.sat = o2.at.sat(wtr[,3], altitude=300)
+  do.sat = o2.at.sat.base(wtr[,3], altitude=300)
   
   metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 

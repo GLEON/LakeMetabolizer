@@ -5,8 +5,11 @@
 # = Define the Jags Model =
 # =========================
 bayes.makeModel <- function(){
-	require("R2jags")
-	require("R2WinBUGS")
+  
+  
+	if(!require("R2jags") | !require("R2WinBUGS")){
+    stop()
+	}
 	#Step 1: use a function to define the model
 	bayes.mod <- function(){
 		
