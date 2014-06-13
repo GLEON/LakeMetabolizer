@@ -85,7 +85,7 @@ get.vars = function(data, var.names){
 #'subsets \code{data} according to header names. Excludes all matches to \code{var.name}
 #'
 #'@usage
-#'rmv.vars(data, var.names, ignore.missing=TRUE, ignore.offset=FALSE)
+#'rmv.vars(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE)
 #'@param data Object of class data.frame
 #'@param var.name A character vector of names to remove from \code{data}
 #'@param ignore.missing Boolean, should an error be thrown if no matching data found

@@ -1,4 +1,4 @@
-calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
+calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
   
   # INPUTS
   #   dateTime = datetime, YYYY-mm-dd HH:MM
@@ -6,9 +6,9 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
   #   Uz = wind speed, m/s
   #   rh = relative humidity, %
   #   airT = air temperature, degC
-  #   hu: height of wind measurement
-  #   ht: height of temperature measurement
-  #   hq: height of humidity measurement
+  #   wnd.z: height of wind measurement
+  #   airt.z: height of temperature measurement
+  #   rh.z: height of humidity measurement
   #   atm.press: atmospheric pressure (mb)
   #
   # OUTPUTS:
@@ -52,8 +52,8 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
   rh <- dat$rh
   
   # if temperature and humidity height are missing, assume same as wind
-  if (missing(ht)){ht <- hu}
-  if (missing(hq)){hq <- hu}
+  if (missing(airt.z)){airt.z <- wnd.z}
+  if (missing(rh.z)){rh.z <- wnd.z}
 
   # define constants
   const_vonKarman <- 0.41 # von Karman constant
@@ -92,7 +92,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
   ustar <- Uz*sqrt(0.00104+0.0015/(1+exp((-Uz+12.5)/1.56)))
   zo <- (const_Charnock*ustar^2/const_Gravity) + (0.11*KinV/ustar)
   for (i in 1:20){
-    ustar <- const_vonKarman*Uz/(log(hu/zo))
+    ustar <- const_vonKarman*Uz/(log(wnd.z/zo))
     zo <- (const_Charnock*ustar^2/const_Gravity) + (0.11*KinV/ustar)    
   }
   zo <- Re(zo)
@@ -103,7 +103,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
   zot <- zo*exp(-2.67*(re)^(0.25) + 2.57)
   zot <- Re(zot)
   zoq <- Re(zot)
-  C_HN <- const_vonKarman*sqrt(C_DN)/(log(hu/zot)) 
+  C_HN <- const_vonKarman*sqrt(C_DN)/(log(wnd.z/zot)) 
   C_EN <- Re(C_HN)
 
   # calculate neutral transfer coefficients at 10 m
@@ -141,7 +141,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
     zetat <- -0.465
   
     # calculate ustar
-    zeta <- hu/obu
+    zeta <- wnd.z/obu
     
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
@@ -149,37 +149,37 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
     idx <- zeta < zetam & !is.na(zeta) # very unstable conditions      
     ustar[idx] <- (Uz[idx]*const_vonKarman)/((log((zetam*obu[idx])/zo[idx]) - psi(1,zetam)) + 1.14*(((-zeta[idx])^0.333) - ((-zetam)^0.333))) 
     idx <- zeta < 0 & zeta >= zetam & !is.na(zeta) # unstable conditions
-    ustar[idx] = (Uz[idx]*const_vonKarman)/(log(hu/zo[idx]) - psi(1,zeta[idx]))
+    ustar[idx] = (Uz[idx]*const_vonKarman)/(log(wnd.z/zo[idx]) - psi(1,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    ustar[idx] <- (Uz[idx]*const_vonKarman)/(log(hu/zo[idx]) + 5*zeta[idx])
+    ustar[idx] <- (Uz[idx]*const_vonKarman)/(log(wnd.z/zo[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     ustar[idx] <- (Uz[idx]*const_vonKarman)/((log(obu[idx]/zo[idx])+ 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
     # calculate tstar
-    zeta <- ht/obu
+    zeta <- airt.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log((zetat*obu[idx])/zot[idx]) - psi(2,zetat)) +  0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(ht/zot[idx]) - psi(2,zeta[idx]))
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(ht/zot[idx]) + 5*zeta[idx])
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log(obu[idx]/zot[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
 
     # calculate qstar
-    zeta <- hq/obu
+    zeta <- rh.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log((zetat*obu[idx])/zoq[idx]) - psi(2,zetat)) + 0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(hq/zoq[idx]) - psi(2,zeta[idx]))
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(hq/zoq[idx]) + 5*zeta[idx])
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log(obu[idx]/zoq[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
@@ -202,7 +202,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,hu,ht,hq){
     obu <- (-rho_a*t_virt*(ustar*ustar*ustar))/(const_Gravity*const_vonKarman*((ash/const_SpecificHeatAir) + (0.61*(airT + 273.16)*alh/xlv)))
 
     # alter zeta in stable cases
-    zeta <- hu/obu
+    zeta <- wnd.z/obu
     idx <- zeta >= 1
     Uz[idx] <- max(Uz[idx],0.1)
 

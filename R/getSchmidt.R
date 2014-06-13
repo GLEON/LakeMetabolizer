@@ -6,8 +6,8 @@
 #'@usage
 #'getSchmidt(temperature, gas)
 #'
-#'@param \code{temperature} Numeric vector of water temperatures in deg. Celsius
-#'@param \code{gas} String for gas code. Valid inputs include: 'He', 'O2', 'CO2', 'CH4', 'SF6', 'N2O', 'Ar', and 'N2'
+#'@param temperature Numeric vector of water temperatures in deg. Celsius
+#'@param gas String for gas code. Valid inputs include: 'He', 'O2', 'CO2', 'CH4', 'SF6', 'N2O', 'Ar', and 'N2'
 #'@return Schmidt number (unitless)
 #'@note Temperature range is only valid from 4-35 deg Celsius
 #'@keywords methods math
