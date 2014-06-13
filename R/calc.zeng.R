@@ -1,24 +1,39 @@
-calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
-  
-  # INPUTS
-  #   dateTime = datetime, YYYY-mm-dd HH:MM
-  #   Ts = surface water temperature, degC
-  #   Uz = wind speed, m/s
-  #   rh = relative humidity, %
-  #   airT = air temperature, degC
-  #   wnd.z: height of wind measurement
-  #   airt.z: height of temperature measurement
-  #   rh.z: height of humidity measurement
-  #   atm.press: atmospheric pressure (mb)
-  #
-  # OUTPUTS:
-  #   mm: matrix of sensible and latent heat fluxes
-  #                mm also contains other variables used in calculating 
-  #                these fluxes. 
-  
-  # Author R.Iestyn Woolway
 
-  # define functions used in script
+#'@title Estimate sensible and latent heat fluxes
+#'@description 
+#'Returns the sensible and latent heat fluxed based on Zeng et al, 1998'
+#'@usage
+#'calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z)
+#'
+#'@param dateTime vector of datetime in POSIXct format
+#'@param Ts numeric value of surface water temperature, degC
+#'@param airT numeric value of air temperature, degC
+#'@param Uz numeric value of wind speed, m/s
+#'@param RH numeric value of relative humidity, \%
+#'@param atm.press atmospheric pressure in mb
+#'@param wnd.z height of wind measurement, m
+#'@param airT.z height of air temperature measurement, m (optional)
+#'@param RH.z height of relative humidity measurement, m (optional)
+#'@return A data.frame including sensible and latent heat flux estimates, and other variables used in calculating these fluxes.
+#'@keywords methods math
+#'@references
+#'Zeng, X., M. Zhao., and Dickinson, R.E. 1998. \emph{Intercomparison of bulk aerodynamic algorithms 
+#'for the computation of sea surface fluxes using TOGA COARE and TAO data}. Journal of Climate 11: 2628-2644.
+#'@author
+#'R. Iestyn. Woolway
+#'@seealso \link{k.read}
+#'@examples 
+#'dateTime <- as.POSIXct("2013-12-30 23:00")
+#'Ts <- 22.51
+#'airT <- 20
+#'Uz <- 3  
+#'RH <- 90
+#'atm.press <- 1013
+#'wnd.z <- 2
+#'calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z)
+#'@export
+calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
+  
   psi <- function(k,zeta){
     chik <- (1 - 16*zeta)^0.25
     if (k == 1){
@@ -33,7 +48,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
                     Ts = Ts,
                     airT = airT,
                     Uz = Uz,
-                    rh = rh)
+                    RH = RH)
   
   # remove duplicated time stamps
   dat$dateTime <- as.POSIXct(strptime(dat$dateTime,"%Y-%m-%d %H:%M")) # ensure times are POSIXct
@@ -49,11 +64,11 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
   Ts <- dat$Ts
   airT <- dat$airT
   Uz <- dat$Uz
-  rh <- dat$rh
+  RH <- dat$RH
   
   # if temperature and humidity height are missing, assume same as wind
-  if (missing(airt.z)){airt.z <- wnd.z}
-  if (missing(rh.z)){rh.z <- wnd.z}
+  if (missing(airT.z)){airT.z <- wnd.z}
+  if (missing(RH.z)){RH.z <- wnd.z}
 
   # define constants
   const_vonKarman <- 0.41 # von Karman constant
@@ -68,7 +83,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
 
   # calculate humidity values
   e_s <- 6.11*exp(17.27*airT/(237.3 + airT)) # saturated vapour pressure at airT, mb
-  e_a <- rh*e_s/100 # vapour pressure, mb
+  e_a <- RH*e_s/100 # vapour pressure, mb
   q_z <- 0.622*e_a/atm.press # specific humidity, kg kg-1 
   e_sat <- 6.11*exp(17.27*Ts/(237.3 + Ts)) # saturated vapour pressure at Ts, mb
   q_s <- 0.622*e_sat/atm.press # humidity at saturation, kg kg-1
@@ -156,30 +171,30 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
     ustar[idx] <- (Uz[idx]*const_vonKarman)/((log(obu[idx]/zo[idx])+ 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
     # calculate tstar
-    zeta <- airt.z/obu
+    zeta <- airT.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log((zetat*obu[idx])/zot[idx]) - psi(2,zetat)) +  0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) - psi(2,zeta[idx]))
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airT.z/zot[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airt.z/zot[idx]) + 5*zeta[idx])
+    tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/(log(airT.z/zot[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     tstar[idx] <- (const_vonKarman*(airT[idx] - Ts[idx]))/((log(obu[idx]/zot[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
 
     # calculate qstar
-    zeta <- rh.z/obu
+    zeta <- RH.z/obu
     zeta[zeta < -zeta_thres] <- -zeta_thres
     zeta[zeta > zeta_thres] <- zeta_thres
 
     idx <- zeta < zetat & !is.na(zeta) # very unstable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log((zetat*obu[idx])/zoq[idx]) - psi(2,zetat)) + 0.8*((-zetat)^-0.333 - ((-zeta[idx]))^-0.333))
     idx <- zeta >= zetat & zeta < 0 & !is.na(zeta) # unstable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) - psi(2,zeta[idx]))
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(RH.z/zoq[idx]) - psi(2,zeta[idx]))
     idx <- zeta > 0 & zeta <= 1 & !is.na(zeta) # stable conditions
-    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(rh.z/zoq[idx]) + 5*zeta[idx])
+    qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/(log(RH.z/zoq[idx]) + 5*zeta[idx])
     idx <- zeta > 1 & !is.na(zeta) # very stable conditions
     qstar[idx] <- (const_vonKarman*(q_z[idx] - q_s[idx]))/((log(obu[idx]/zoq[idx]) + 5) + (5*log(zeta[idx]) + zeta[idx] - 1))
     
@@ -225,7 +240,7 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,rh,atm.press,wnd.z,airt.z,rh.z){
   
   # store results in data.frame and merge with original dateTime
   mm <- data.frame(dateTime = dat$dateTime,
-                   Ts = Ts,airT = airT,rh = rh,Uz = Uz,
+                   Ts = Ts,airT = airT,RH = RH,Uz = Uz,
                    C_D = C_D,C_E = C_E,C_H = C_H,zo = zo,zot = zot,
                    zoq = zoq,ustar = ustar,alh = alh,ash = ash)
   mm <- merge(mm,original_dates,all = TRUE)

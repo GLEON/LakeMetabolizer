@@ -1,0 +1,120 @@
+\name{k.read.base}
+\alias{k.cole.base}
+\alias{k.crusius.base}
+\alias{k.macIntyre.base}
+\alias{k.read.base}
+\title{Returns a timeseries of gas exchange velocity}
+\usage{
+  k.cole.base(wnd)
+
+  k.crusius.base(wnd, method='power')
+
+  k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
+    dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+
+  k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
+    z.mix, airT, wnd, RH, sw, lwnet)
+}
+\arguments{
+  \item{wnd}{Numeric value of wind speed, (Units:m/s)}
+
+  \item{method}{Only for \link{k.crusius.base}. String of
+  valid method . Either "linear", "bilinear", or "power"}
+
+  \item{wnd.z}{Height of wind measurement, (Units: m)}
+
+  \item{Kd}{Light attenuation coefficient (Units: m^-1)}
+
+  \item{lat}{Latitude, degrees north}
+
+  \item{lake.area}{Lake area, m^2}
+
+  \item{atm.press}{Atmospheric pressure, (Units: millibar)}
+
+  \item{dateTime}{datetime (Y-\%m-\%d \%H:\%M), (Format:
+  \code{\link{POSIXct}})}
+
+  \item{Ts}{Numeric vector of surface water temperature,
+  (Units(deg C)}
+
+  \item{z.mix}{Numeric vector of mixed layer depths. Must
+  be the same length as the Ts parameter}
+
+  \item{airT}{Numeric value of air temperature, Units(deg
+  C)}
+
+  \item{RH}{Numeric value of relative humidity, \%}
+
+  \item{sw}{Numeric value of short wave radiation, W m^-2}
+
+  \item{lwnet}{Numeric value net long wave radiation, W
+  m^-2}
+}
+\value{
+  Numeric value of gas exchange velocity (k600) in units of
+  m/day. Before use, should be converted to appropriate gas
+  using \link{k600.2.kGAS}.
+}
+\description{
+  Returns the gas exchange velocity based on the chosen
+  model in units of m/day
+}
+\examples{
+wnd.z <- 2
+Kd <- 2
+lat <- 54
+lake.area <- 5000
+atm.press <- 1013
+dateTime <- as.POSIXct("2013-12-30 14:00")
+Ts <- 16.5
+z.mix <- 2.32
+airT <- 20
+wnd <- 6
+RH <- 90
+sw <- 800
+lwnet <- -55
+timeStep <- 30
+
+U10 <- scale.exp.wind.base(wnd, wnd.z)
+
+k600_cole <- k.cole.base(U10)
+
+k600_crusius <- k.crusius.base(U10)
+
+k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+
+k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+}
+\author{
+  R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S
+  Read, GLEON fellows
+}
+\references{
+  Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric
+  exchange of carbon dioxide in a low-wind oligotrophic
+  lake measured by the addition of SF~ 6}. Limnology and
+  Oceanography 43 (1998): 647-656.
+
+  MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan
+  Aberg, Damon E. Turney, and Scott D. Miller.
+  \emph{Buoyancy flux, turbulence, and the gas transfer
+  coefficient in a stratified lake}. Geophysical Research
+  Letters 37, no. 24 (2010).
+
+  Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin
+  C. Rose, Sally MacIntyre, John D. Lenters, Robyn L. Smyth
+  et al. \emph{Lake‐size dependency of wind shear and
+  convection as controls on gas exchange}. Geophysical
+  Research Letters 39, no. 9 (2012).
+
+  Crusius, John, and Rik Wanninkhof. \emph{Gas transfer
+  velocities measured at low wind speed over a lake}.
+  Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+}
+\seealso{
+  \link{k.cole} \link{k.read} \link{k.crusius}
+  \link{k.macIntyre}
+}
+\keyword{math}
+\keyword{methods}
+

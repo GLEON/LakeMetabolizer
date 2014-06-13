@@ -30,7 +30,7 @@ is.day <- function(datetimes, lat){
 #'determines if measurement was taken during the nighttime 
 #'
 #'@usage
-#'is.day(datetimes, lat)
+#'is.night(datetimes, lat)
 #'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
 #'@param lat Single latitude value of site. South should be negative, north positive
 #'
@@ -49,17 +49,29 @@ is.night <- function(datetimes, lat){
 }
 
 
-
+#'@title Calculates the time of sunrise and sunset
+#'@description 
+#'Calculates the time of sunrise and sunset based on latitude and date.
+#'
+#'@usage
+#'sun.rise.set(datetimes, lat)
+#'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
+#'@param lat Single latitude value of site. South should be negative, north positive
+#'
+#'@return A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format.
+#'@references
+#'Iqbal, Muhammad. 1983. An Introduction to Solar Radiation. Elsevier.
+#'
+#'@keywords methods
+#'@examples
+#'sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31'))
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{is.night}
+#'\link{is.day}
+#'@export
 sun.rise.set <- function(datetimes, lat){
-	#SUNRISESET Calculates the time of sunrise and sunset
-	#
-	# Input:
-	#   lat - The latitude for the desired location on earth.
-	#   day - date
-	#
-	# takes lattitude (deg south should be negative, north positive) and a
-	# matlab datenum (days since year 0) and returns the time of sunrise as a
-	# day fraction (e.g., 0.5 would be noon, 0 would be midnight)
 
 	doy <- as.POSIXlt(datetimes)$yday+1 # POSIX functions treat January 1 as day of year 0, so add 1 to compensate
 
