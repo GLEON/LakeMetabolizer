@@ -47,7 +47,7 @@ Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway
 }
 
 \examples{
-  data.path = system.file('extdata', '', package="LakeMetabolizer")
+  data.path = system.file('extdata', package="LakeMetabolizer")
   
   tb.data = load.all.data('sparkling', data.path)
   

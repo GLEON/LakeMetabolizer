@@ -85,9 +85,11 @@ get.vars = function(data, var.names){
 #'subsets \code{data} according to header names. Excludes all matches to \code{var.name}
 #'
 #'@usage
-#'rmv.vars(data, var.names)
+#'rmv.vars(data, var.names, ignore.missing=TRUE, ignore.offset=FALSE)
 #'@param \code{data} Object of class data.frame
-#'@param \code{var.names} A character vector of names to remove from \code{data}
+#'@param \code{var.name} A character vector of names to remove from \code{data}
+#'@param \code{ignore.missing} Boolean, should an error be thrown if no matching data found
+#'@param \code{ignore.offset} Should the numerical offset be ignored in the match, (e.g. all \code{wtr} columns removed, or \code{wtr_0} specifically)
 #'
 #'@return An object of class data.frame
 #'
@@ -99,7 +101,7 @@ get.vars = function(data, var.names){
 #'\link{has.vars}
 #'\link{get.vars}
 #'@export
-rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
+rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 	if(ignore.offset){
 		varI = var.indx(data, var.name)
 	}else{
@@ -135,7 +137,7 @@ rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 #'@seealso 
 #'\link{has.vars}
 #'\link{get.vars}
-#'\link{rmv.vars}
+#'\link{rmv.var}
 #'@export
 var.indx = function(data, var.name){
   if(length(var.name) != 1){
