@@ -8,7 +8,7 @@ bayes.makeModel <- function(){
   
   
 	if(!require("R2jags") | !require("R2WinBUGS")){
-    stop()
+    stop('metab.bayesian requires R2jags and R2WinBUGS')
 	}
 	#Step 1: use a function to define the model
 	bayes.mod <- function(){
