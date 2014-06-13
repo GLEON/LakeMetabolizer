@@ -5,8 +5,8 @@
 #'
 #'@usage
 #'is.day(datetimes, lat)
-#'@param \code{datetimes} Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
-#'@param \code{lat} Single latitude value of site. South should be negative, north positive
+#'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
+#'@param lat Single latitude value of site. South should be negative, north positive
 #'
 #'@return a boolean vector of same length as \code{datetimes} 
 #'
@@ -31,8 +31,8 @@ is.day <- function(datetimes, lat){
 #'
 #'@usage
 #'is.day(datetimes, lat)
-#'@param \code{datetimes} Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
-#'@param \code{lat} Single latitude value of site. South should be negative, north positive
+#'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
+#'@param lat Single latitude value of site. South should be negative, north positive
 #'
 #'@return a boolean vector of same length as \code{datetimes} 
 #'

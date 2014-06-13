@@ -9,14 +9,14 @@
 #'
 #'calc.lw.net.base(dateTime, sw, Ts, lat, atm.press, airT, RH)
 #'
-#'@param \code{ts.data} Object of class \code{data.frame} including the required variables(see details for list of variables and their units)
-#'@param \code{dateTime} vector of datetime in POSIXct format
-#'@param \code{sw} numeric value of short wave radiation, W/m2
-#'@param \code{Ts} numeric value of surface water temperature, degC
-#'@param \code{lat} latitude in degrees north
-#'@param \code{atm.press} atmospheric pressure in mb
-#'@param \code{airT} numeric value of air temperature, degC
-#'@param \code{RH} numeric value of relative humidity, \%
+#'@param ts.data Object of class \code{data.frame} including the required variables(see details for list of variables and their units)
+#'@param dateTime vector of datetime in POSIXct format
+#'@param sw numeric value of short wave radiation, W/m2
+#'@param Ts numeric value of surface water temperature, degC
+#'@param lat latitude in degrees north
+#'@param atm.press atmospheric pressure in mb
+#'@param airT numeric value of air temperature, degC
+#'@param RH numeric value of relative humidity, \%
 #'
 #'@return 
 #'## for calc.lw.net.base
