@@ -8,18 +8,13 @@
 #'@description 
 #'Returns the gas exchange velocity based on the chosen model in units of m/day
 #'@usage
-#'# Method for Cole and Caraco, 1998
 #'k.cole(ts.data)
 #'
-#'# Method for Crusius and Wanninkhof 2003
 #'k.crusius(ts.data, method='power')
 #'
-#'# Method for Read et al 2012
 #'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
-#'## Method for from MacIntyre et al. 2010
 #'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
-#'
 #'@param ts.data vector of datetime in POSIXct format
 #'@param method Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"
 #'@param wnd.z height of wind measurement, m
@@ -162,16 +157,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@description 
 #'Returns the gas exchange velocity based on the chosen model in units of m/day
 #'@usage
-#'## Method for Cole and Caraco, 1998
 #'k.cole.base(wnd)
-#'
-#'## Method for Crusius and Wanninkhof 2003
 #'k.crusius.base(wnd, method='power')
-#'
-#'## Method for Read et al 2012
 #'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
-#'
-#'## Method for Macintyre et al 2010
 #'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
 #'@param wnd Numeric value of wind speed, (Units:m/s)
 #'@param method Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"

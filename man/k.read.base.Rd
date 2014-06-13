@@ -5,16 +5,9 @@
 \alias{k.read.base}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
-  ## Method for Cole and Caraco, 1998 k.cole.base(wnd)
-
-  ## Method for Crusius and Wanninkhof 2003
-    k.crusius.base(wnd, method='power')
-
-  ## Method for Read et al 2012 k.read.base(wnd.z, Kd, lat,
-    lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd,
-    RH, sw, lwnet)
-
-  ## Method for Macintyre et al 2010
+  k.cole.base(wnd) k.crusius.base(wnd, method='power')
+    k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
+    dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
     k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
     z.mix, airT, wnd, RH, sw, lwnet)
 }
