@@ -2,7 +2,7 @@
 # modified from K600 code by Richard Woolway and Jordan Read
 
 # INPUTS;
-# wndz: Height of anemometer
+# wnd.z: Height of anemometer
 # Kd: Diffuse attenuation coefficient
 # atm.press: Atmospheric pressure in hPa or Mb. If unknown use '1013' for sea level 
 # dateTime: date and time vector
@@ -18,12 +18,9 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
-emiss <- 0.972 # emissivity;
-Kelvin = 273.15 #conversion from C to Kelvin
 
 
-k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
+k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   # Get short wave radiation data 
   if(has.vars(ts.data, 'sw')){ 
     sw <- get.vars(ts.data, 'sw')
@@ -86,16 +83,20 @@ k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.macIntyre.base(wndZ, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
+  k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
   
 }
 
-k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
+k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
   
   #Constants
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  emiss <- 0.972 # emissivity;
+  Kelvin = 273.15 #conversion from C to Kelvin
+  
   dT <- 0.5   # change in temp for mixed layer depth. Step change in temperature from the surface
   #temperature is set equivalent to the accuracy of the loggers.
   albedo_SW <- 0.07
@@ -164,7 +165,7 @@ k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, ai
 
 
   # calculate sensible and latent heat fluxes
-  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wndZ)
+  mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wnd.z)
   C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
@@ -177,9 +178,9 @@ k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, ai
   rho_w <- water.density(Ts)
   
   # calculate u*
-  if (wndZ != 10) { ## ok, WTF is this. It's late, but I don't think I know this conversion
+  if (wnd.z != 10) { ## ok, WTF is this. It's late, but I don't think I know this conversion
     e1 <- sqrt(C_D)
-    u10 <- wnd/(1-e1/vonK*log(10/wndZ))
+    u10 <- wnd/(1-e1/vonK*log(10/wnd.z))
   }else{
   	u10 = wnd
   }
