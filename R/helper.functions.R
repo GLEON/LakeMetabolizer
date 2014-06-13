@@ -380,4 +380,11 @@ Mode <- function(x){
 	ux[which.max(tabulate(match(x, ux)))]
 }
 
+# ================================
+# = Calculate sampling frequency =
+# ================================
+calc.freq <- function(datetime){
+	freq <- round(Mode(1/diff(date2doy(datetime))))
+}
+
 

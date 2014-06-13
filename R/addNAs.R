@@ -3,30 +3,31 @@ addNAs <- function(x, ...){
 	dL <- grepl("^[dD][oO][yY]$", names(x)) # matches doy, regardless of case
 	yL <- grepl("^[yY]ear4?$", names(x))# matches Year, year, year4, Year4
 	dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
-	if(any(dL)){
+	if(any(dL)){ # look for "day of year column"
 		names(x)[dL] <- "doy"
 	}else{
 		warning("No 'doy' column found")
 	}
-	if(any(yL)){
+	if(any(yL)){ # look for "year" column
 		names(x)[yL] <- "year"
 	}else{
 		warning("No 'year' column found")
 	}
-	if(any(dateL)){
+	if(any(dateL)){ # look for the date column
 		names(x)[dateL] <- "datetime"
 	}else{
-		warning("No 'date' column found")
+		# warning("No 'date' column found")
+		stop("No 'datetime' column found")
 	}
-	if(!"POSIXct"%in%class(x[,"datetime"])){
+	if(!"POSIXct"%in%class(x[,"datetime"])){ # make sure the date column is POSIXct (note that if date column is not found, you get this error)
 		stop("date column must be POSIXct")
 	}
 	rdig <- 4
-	Mode <- function(x){
+	Mode <- function(x){ # note that this function is now in the helper.functions.R file
 			ux <- unique(x)
 			ux[which.max(tabulate(match(x, ux)))]
 	}
-	ex <- round(Mode(1/diff(x[,"doy"])))
+	ex <- round(Mode(1/diff(x[,"doy"]))) # note that this is the freq that's calculated in metab.xx()
 	mins <- 1/ex*24*60
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){abs(x - round(x)) < tol}
 	if(!is.wholenumber(mins)){warning("Time between samples not whole number")}
@@ -35,9 +36,7 @@ addNAs <- function(x, ...){
 		return(x1)
 	}
 	Range <- range(x1[,"datetime"]) #intentionally not truncating (having already used byeShort, I don't have to worry about starting and stopping at a specific time each day)
-	# Ideal <- data.frame("RoundDoY"=round(seq(Range[1], Range[2], by=(1/ex)),rdig))
 	Ideal <- data.frame("datetime"=seq(Range[1], Range[2], by=paste(mins, "mins")))
-	# x1[,"RoundDoY"] <- round(x1[,"doy"], rdig)
 	
 	print(paste("NA's added to fill in time series:",dim(Ideal)[1]-dim(x1)[1], sep=" "))
 	flush.console()
