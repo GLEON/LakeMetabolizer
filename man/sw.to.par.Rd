@@ -1,0 +1,52 @@
+\name{sw.to.par}
+\alias{sw.to.par}
+\alias{sw.to.par.base}
+\title{Convert shortwave radiation to PAR}
+\usage{
+  sw.to.par(data, sw.col='sw')
+
+  sw.to.par.base(sw)
+}
+\arguments{
+  \item{data}{Object of class data.frame with column name
+  \code{sw} (or specified alternate)}
+
+  \item{sw.col}{Name of column containing shortwave data
+  (units must be W/m^2)}
+
+  \item{sw}{Numeric shortwave value in W/m^2}
+}
+\value{
+  #For sw.to.par
+
+  Object of class data.frame with column name 'par' and
+  other values from \code{ts.data}
+
+  #for sw.to.par.base
+
+  Numeric vector of PAR values in units umol/m^2/sec
+}
+\description{
+  Returns PAR by converting incoming shortwave radiation
+  measuremt.
+}
+\examples{
+#For base function
+sw <- 800
+sw.to.par.base(sw)
+}
+\author{
+  Luke Winslow and others
+}
+\references{
+  Britton, C. M., and J. D. Dodd. \emph{Relationships of
+  photosynthetically active radiation and shortwave
+  irradiance.} Agricultural Meteorology 17, no. 1 (1976):
+  1-7.
+}
+\seealso{
+  \link{par.to.sw}
+}
+\keyword{math}
+\keyword{methods}
+
