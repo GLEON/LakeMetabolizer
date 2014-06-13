@@ -11,7 +11,7 @@ in water varies with both temperature, salinity, and the partial pressure of oxy
 (calculated from supplied elevation or barometric pressure). 
 }
 \usage{
-o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "weiss")
+o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "garcia")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
