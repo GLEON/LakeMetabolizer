@@ -15,7 +15,7 @@
   \item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
   \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \code{\link{o2.at.sat}}}
   \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}}
-  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}}
+  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{ts.meta.depths}}}
   \item{irr}{Vector of photosynthetically active radiation in umoles/m2/s}
   \item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
   \item{priors}{Parameter priors supplied as a named list (example: \code{c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}}
@@ -32,7 +32,7 @@
 }
 
 \seealso{
-	\code{\link{metab.bootstrap}}, \code{\link{metab.mle}}, \code{\link{meta.bookkeep}}
+	\code{\link{metab.mle}}, \code{\link{metab.bookkeep}}
 }
 
 \examples{
