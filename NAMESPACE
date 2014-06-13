@@ -1,4 +1,4 @@
-export(k.read, k.crusius, k.cole, k.macIntyre, 
+export(k.read, k.crusius, k.cole, k.macIntyre, metab,
 	metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,  temp.kalman,
 	k600.2.kGAS, k600.2.kGAS.base, 
 	o2.at.sat.base, o2.at.sat,
