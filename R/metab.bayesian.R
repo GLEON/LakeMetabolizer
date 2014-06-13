@@ -20,9 +20,9 @@ bayes.makeModel <- function(k.gas){
 	# Write the appropriate bayesian model into a temporary file
 	modfile <- tempfile('jags.metab.bayes')
 	switch(choice.mod,
-		allK = write.model(bayes.mod.allK, modfile),
-		noK = write.model(bayes.mod.noK, modfile),
-		bothK = write.model(bayes.mod.bothK, modfile)
+		allK = {write.model(bayes.mod.allK, modfile); print("writing allK model")},
+		noK = {write.model(bayes.mod.noK, modfile); print("writing noK model")},
+		bothK = {write.model(bayes.mod.bothK, modfile); print("writing bothK model")}
 	)
 	return(modfile)
 }

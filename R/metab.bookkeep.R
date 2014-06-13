@@ -7,12 +7,15 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   #date.times - in POSIXct data structure
   
   mb.args <- list(...)
-
-  if(c("datetime", "lake.lat")%in%names(mb.args)){
+  print(names(mb.args)); flush.console();
+  if(all(c("datetime", "lake.lat")%in%names(mb.args))){
     irr <- as.integer(is.day(lake.lat, datettime))
     dayI <- irr == 1L
     nightI <- irr == 0L	
   }else{
+	if(!all(irr==1L | irr==0L)){
+		stop("either supply datetime & lake.lat arguments, or supply irr as integer vector of 1's and 0's")
+	}
 	dayI <- irr == 1L
 	nightI <- irr == 0L
   }

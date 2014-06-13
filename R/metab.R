@@ -37,6 +37,10 @@ metab <- function(data, method, ...){
 	data1 <- addNAs(data[complete.cases(data),], percentReqd=1)
 	data2 <- data1[complete.cases(data1),]
 	
+	print(paste("data names:", paste(names(data), collapse=" "))); flush.console();
+	print(paste("data1 names:", paste(names(data1), collapse=" "))); flush.console();
+	print(paste("data2 names:", paste(names(data2), collapse=" "))); flush.console();
+	
 	# ==================================
 	# = Prepare to apply metab to data =
 	# ==================================
@@ -54,12 +58,34 @@ metab <- function(data, method, ...){
 		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "datetime") # data2 columns that could correspond to arguments
 		used.args <- poss.args[poss.args%in%names(data2)] # assuming arguments are used if they are in data2
 		largs0 <- as.list(data2[i==ids, used.args]) # subsetting columns of data2 to used.args (just a safety check, probably not needed)
+		print(paste("largs0 names:", paste(names(largs0), collapse=" "))); flush.console();
 		largs <- c(largs0, m.args[!names(m.args)%in%names(largs0)]) # adding on any other arguments supplied via ...
+		print(paste("largs names:", paste(names(largs), collapse=" "))); flush.console();
 		# note that in largs, argument supplied through data/data2/poss.args take precedent over arguments from ...
 		
+		print(paste("Analyzing day #", i)); flush.console();
 		results[[i]] <- do.call(mtdCall, largs)
 	}
 	answer0 <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
+	
+	
+	a0.names <- names(results[[1]])
+	
+	if(length(a0.names)>1 & is.list(answer0) & !is.data.frame(answer0)){
+		
+		names(answer0) <- a0.names
+		answer <- answer0$metab
+		for(i in 1:length(a0.names)){
+			if(a0.names[i]=="metab"){next}
+			if(a0.names[i]=="smoothDO"){
+				attr(answer, "smoothDO.vec") <- answer0[[a0.names[i]]]
+			}
+			attr(answer, a0.names[i]) <- answer0[[a0.names[i]]]
+		}
+		
+	}else{
+		answer <- answer0
+	}
 	
 	return(answer)
 }

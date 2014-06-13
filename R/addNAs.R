@@ -14,11 +14,11 @@ addNAs <- function(x, ...){
 		warning("No 'year' column found")
 	}
 	if(any(dateL)){
-		names(x)[dateL] <- "date"
+		names(x)[dateL] <- "datetime"
 	}else{
 		warning("No 'date' column found")
 	}
-	if(!"POSIXct"%in%class(x[,"date"])){
+	if(!"POSIXct"%in%class(x[,"datetime"])){
 		stop("date column must be POSIXct")
 	}
 	rdig <- 4
@@ -34,16 +34,16 @@ addNAs <- function(x, ...){
 	if(nrow(x1)==0){
 		return(x1)
 	}
-	Range <- range(x1[,"date"]) #intentionally not truncating (having already used byeShort, I don't have to worry about starting and stopping at a specific time each day)
+	Range <- range(x1[,"datetime"]) #intentionally not truncating (having already used byeShort, I don't have to worry about starting and stopping at a specific time each day)
 	# Ideal <- data.frame("RoundDoY"=round(seq(Range[1], Range[2], by=(1/ex)),rdig))
-	Ideal <- data.frame("date"=seq(Range[1], Range[2], by=paste(mins, "mins")))
+	Ideal <- data.frame("datetime"=seq(Range[1], Range[2], by=paste(mins, "mins")))
 	# x1[,"RoundDoY"] <- round(x1[,"doy"], rdig)
 	
 	print(paste("NA's added to fill in time series:",dim(Ideal)[1]-dim(x1)[1], sep=" "))
 	flush.console()
 	x2 <- merge(x1, Ideal, all.x=TRUE, all.y=TRUE)
-	if(any(yL)){x2[,"year"] <- approx(x2[,"date"], x2[,"year"], xout=Ideal[,1])$y}
-	if(any(dL)){x2[,"doy"] <- approx(x2[,"date"], x2[,"doy"], xout=Ideal[,1])$y}
+	if(any(yL)){x2[,"year"] <- approx(x2[,"datetime"], x2[,"year"], xout=Ideal[,1])$y}
+	if(any(dL)){x2[,"doy"] <- approx(x2[,"datetime"], x2[,"doy"], xout=Ideal[,1])$y}
 	
 	return(x2)
 }
