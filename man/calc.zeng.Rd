@@ -3,7 +3,7 @@
 \title{Estimate sensible and latent heat fluxes}
 \description{Returns the sensible and latent heat fluxed based on Zeng et al, 1998}
 \usage{
-  calc.zeng(dateTime,Ts,airT,Uz,rh,atm.press,wndZ,airTZ,RHZ)
+  calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wndZ,airTZ,RHZ)
 }
 \arguments{
   \item{dateTime}{vector of datetime in POSIXct format}
