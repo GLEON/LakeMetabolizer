@@ -5,10 +5,14 @@
 \alias{k.read.base}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
-  k.cole.base(wnd) k.crusius.base(wnd, method='power')
-    k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
+  k.cole.base(wnd)
+
+  k.crusius.base(wnd, method='power')
+
+  k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
     dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
-    k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
+
+  k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
     z.mix, airT, wnd, RH, sw, lwnet)
 }
 \arguments{
