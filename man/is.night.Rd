@@ -2,7 +2,7 @@
 \alias{is.night}
 \title{determines if measurement was taken during the night}
 \usage{
-  is.day(datetimes, lat)
+  is.night(datetimes, lat)
 }
 \arguments{
   \item{datetimes}{Vector of dates as \code{POSIXct} or

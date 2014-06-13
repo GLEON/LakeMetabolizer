@@ -30,7 +30,7 @@ is.day <- function(datetimes, lat){
 #'determines if measurement was taken during the nighttime 
 #'
 #'@usage
-#'is.day(datetimes, lat)
+#'is.night(datetimes, lat)
 #'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
 #'@param lat Single latitude value of site. South should be negative, north positive
 #'
