@@ -4,12 +4,12 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   #do.sat     - concentration units
   #k.gas      - piston velocity (m/day)
   #z.mix      - depth in meters
-  #date.times - in POSIXct data structure
+  #datetimes - in POSIXct data structure
   
   mb.args <- list(...)
   print(names(mb.args)); flush.console();
   if(all(c("datetime", "lake.lat")%in%names(mb.args))){
-    irr <- as.integer(is.day(lake.lat, datettime))
+    irr <- as.integer(is.day(mb.args$lake.lat, datettime))
     dayI <- irr == 1L
     nightI <- irr == 0L	
   }else{

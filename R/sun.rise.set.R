@@ -77,25 +77,25 @@ sun.rise.set <- function(datetimes, lat){
 
 
 	#TODO: Add leap-year fix
-	dayAngle <- 2*pi*(doy-1)/365;
+	dayAngle <- 2*pi*(doy-1)/365
 
 
-	degToRad <- 2*pi/360;
-	radToDeg <- 180/pi;
+	degToRad <- 2*pi/360
+	radToDeg <- 180/pi
 
 	#Declination of the sun "delta" (radians). Iqbal 1983 Eq. 1.3.1
-	dec <- 0.006918 - 0.399912*cos(dayAngle) + 0.070257*sin(dayAngle) - 0.006758*cos(2*dayAngle) +  0.000907*sin(2*dayAngle) - 0.002697*cos(3*dayAngle) + 0.00148*sin(3*dayAngle);
+	dec <- 0.006918 - 0.399912*cos(dayAngle) + 0.070257*sin(dayAngle) - 0.006758*cos(2*dayAngle) +  0.000907*sin(2*dayAngle) - 0.002697*cos(3*dayAngle) + 0.00148*sin(3*dayAngle)
 
 	#Sunrise hour angle "omega" (degrees). Iqbal 1983 Eq. 1.5.4
-	latRad <- lat*degToRad;
-	sunriseHourAngle <- acos(-tan(latRad)*tan(dec))*radToDeg;
+	latRad <- lat*degToRad
+	sunriseHourAngle <- acos(-tan(latRad)*tan(dec))*radToDeg
 
 	#If we don't have a sunrise, then sunriseHourAngle is imaginary, replace with NaN
-	sunriseHourAngle[is.complex(sunriseHourAngle)] = NA;
+	sunriseHourAngle[is.complex(sunriseHourAngle)] <- NA
 
 	#Sunrise and sunset times (decimal hours, relative to solar time) Iqbal 1983 Ex. 1.5.1
-	sr <- 12 - sunriseHourAngle/15;
-	ss <- 12 + sunriseHourAngle/15;
+	sr <- 12 - sunriseHourAngle/15
+	ss <- 12 + sunriseHourAngle/15
 
 	#convert to seconds into day
 	rise <- trunc(datetimes, 'day') + sr*60*60
