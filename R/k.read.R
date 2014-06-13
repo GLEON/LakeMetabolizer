@@ -235,11 +235,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, 
-#'                            dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
-#'                            z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
 
 #'@export
 k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
