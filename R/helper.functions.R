@@ -117,7 +117,26 @@ rmv.var = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 
 }
 
+#'@title finds matching column names in data.frame
+#'@description 
+#'returns index of column matches for \code{data} according to header names matches with \code{var.names}.
+#'
+#'@usage
+#'var.indx(data, var.names)
+#'@param \code{data} Object of class data.frame
+#'@param \code{var.names} A character vector of names to find matches with \code{data}
+#'
+#'@return a boolean vector with same length as \code{var.names}
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{has.vars}
+#'\link{get.vars}
+#'\link{rmv.vars}
+#'@export
 var.indx = function(data, var.name){
   if(length(var.name) != 1){
     stop('var.indx only operates on one variable at a time')

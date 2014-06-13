@@ -1,5 +1,23 @@
 
+#'@title determines if measurement was taken during the daytime
+#'@description 
+#'determines if measurement was taken during the daytime
+#'
+#'@usage
+#'is.day(datetimes, lat)
+#'@param \code{datetimes} Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
+#'@param \code{lat} Single latitude value of site. South should be negative, north positive
+#'
+#'@return a boolean vector of same length as \code{datetimes} 
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{is.night}
+#'\link{sun.rise.set}
+#'@export
 is.day <- function(datetimes, lat){
   sr.ss <- sun.rise.set(datetimes, lat)
   
@@ -7,7 +25,25 @@ is.day <- function(datetimes, lat){
   return(is.daytime)
 }
 
+#'@title determines if measurement was taken during the night
+#'@description 
+#'determines if measurement was taken during the nighttime 
+#'
+#'@usage
+#'is.day(datetimes, lat)
+#'@param \code{datetimes} Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
+#'@param \code{lat} Single latitude value of site. South should be negative, north positive
+#'
+#'@return a boolean vector of same length as \code{datetimes} 
+#'
+#'@keywords methods
 
+#'@author
+#'Luke A. Winslow
+#'@seealso 
+#'\link{is.day}
+#'\link{sun.rise.set}
+#'@export
 is.night <- function(datetimes, lat){
   return(!is.day(datetimes, lat))
 }
