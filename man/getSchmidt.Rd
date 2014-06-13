@@ -8,8 +8,8 @@
   \item{temperature}{Numeric vector of water temperatures
   in deg. Celsius}
 
-  \item{gas}{String for gas code. Valid inputs include:
-  'He', 'O2', 'CO2', 'CH4', 'SF6', 'N2O', 'Ar', and 'N2'}
+  \item{gas}{String for gas code. Valid inputs include: He,
+  O2, CO2, CH4, SF6, N2O, Ar, and N2}
 }
 \value{
   Schmidt number (unitless)
