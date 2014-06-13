@@ -76,7 +76,6 @@ k.read = function(ts.data, wndZ, Kd, atm.press, lat, lake.area){
 
 k.read.base <- function(wndZ, Kd, lat, lake.area, atm.press, dateTime, surf.temp, z.mix, airT, wnd, RH, sw, lwnet){ 
   
-  require(rLakeAnalyzer)
   # define constants used in function
   dT <- 0.5   # change in temp for mixed layer depth
   C1 <- 114.278 # from Soloviev et al. 2007

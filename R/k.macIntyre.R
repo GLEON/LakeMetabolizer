@@ -90,7 +90,6 @@ k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
 
 k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, airT, Uz, RH, sw, lwnet){
   
-  require(rLakeAnalyzer)
   #Constants
   dT <- 0.5   # change in temp for mixed layer depth. Step change in temperature from the surface
   #temperature is set equivalent to the accuracy of the loggers.

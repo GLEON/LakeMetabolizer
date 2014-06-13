@@ -1,6 +1,5 @@
 
 load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
-	require(rLakeAnalyzer)
  
 	files <- dir(data.path)
 	files <- files[grepl(paste(lake.name, '\\.', sep=''), files, ignore.case=TRUE)]

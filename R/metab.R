@@ -26,7 +26,6 @@ metab <- function(data, method){
 	# ==============
 	# = Groom data =
 	# ==============
-	require("plyr")
 	# data0 <- LakeMetabolizer:::ryanData()
 	
 	# Removes days with many missing ROWS:
