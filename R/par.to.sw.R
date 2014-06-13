@@ -1,4 +1,6 @@
 
+
+
 # s3 dispatchers
 #par.to.sw = function(x, ...) UseMethod("par.to.sw")
 
@@ -11,25 +13,31 @@ par.to.sw.base = function(par){
   sw = par* 2.114
 }
 
-sw.to.par.base = function(sw){
-  
-  par = sw * 0.473
-}
 
-#data.frame functions for timeseries handling 
-sw.to.par = function(data, sw.col='sw'){
-  
-  output = data
-  
-  indx = var.indx(data, 'sw')
-  
-  data[,indx] = sw.to.par.base(data[,indx])
-  names(data)[indx] = 'par' #rename to par
-  
-  return(data)
-}
-
-
+#'@title Convert PAR to shortwave
+#'@description 
+#'Returns incoming shortwave radiation by converting PAR measuremt.
+#'
+#'@usage
+#'calc.lw.net(ts.data, lat, atm.press)
+#'
+#'calc.lw.net.base(dateTime, sw, Ts, lat, atm.press, airT, RH)
+#'
+#'@param \code{ts.data} Object of class data.frame with column name 'par'
+#'
+#'@return Object of class data.frame with column name 'sw' and other values from \code{ts.data}
+#'
+#'@keywords methods math
+#'@references
+#'Britton, C. M., and J. D. Dodd. \emph{Relationships of photosynthetically active radiation and shortwave irradiance.} 
+#'Agricultural Meteorology 17, no. 1 (1976): 1-7.
+#'@author
+#'LakeMetabolizer
+#'@seealso \link{sw.to.par}
+#'@examples 
+#'par <- 800
+#'par.to.sw.base(par)
+#'@export
 par.to.sw = function(data, par.col='par'){
   
   output = data
@@ -42,6 +50,4 @@ par.to.sw = function(data, par.col='par'){
   return(data)
 }
 
-#Papaioannou, G, N Papanikolaou, and D Retalis. 1993.
-#"Relationships of Photosynthetically Active Radiation and Shortwave Irradiance." 
-#Theoretical and Applied Climatology 48: 23-27. http://www.sciencedirect.com/science/article/pii/0002157176900807.
+

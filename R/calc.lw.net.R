@@ -20,9 +20,9 @@
 #'
 #'@keywords methods math
 #'@references
-#'Crawford, T.M., and Duchon, C.E. 1999. An improved parameterization for 
+#'Crawford, T.M., and Duchon, C.E. 1999. \emph{An improved parameterization for 
 #'estimating effective atmospheric emissivity for use in calculating daytime 
-#'downwelling longwave radiation. Journal of Applied Meteorology 38: 474-480.
+#'downwelling longwave radiation}. Journal of Applied Meteorology 38: 474-480.
 #'@author
 #'R Iestyn Woolway
 #'Jordan S. Read

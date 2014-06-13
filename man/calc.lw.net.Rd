@@ -53,10 +53,10 @@ calc.lw.net.base(dateTime,sw,Ts,lat,atm.press,airT,RH)
   R Iestyn Woolway Jordan S. Read Hilary Dugan
 }
 \references{
-  Crawford, T.M., and Duchon, C.E. 1999. An improved
+  Crawford, T.M., and Duchon, C.E. 1999. \emph{An improved
   parameterization for estimating effective atmospheric
   emissivity for use in calculating daytime downwelling
-  longwave radiation. Journal of Applied Meteorology 38:
+  longwave radiation}. Journal of Applied Meteorology 38:
   474-480.
 }
 \seealso{
