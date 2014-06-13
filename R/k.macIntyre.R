@@ -18,6 +18,11 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
+S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+emiss <- 0.972 # emissivity;
+Kelvin = 273.15 #conversion from C to Kelvin
+
+
 k.macIntyre = function(ts.data, wndZ, Kd, atm.press){
   # Get short wave radiation data 
   if(has.vars(ts.data, 'sw')){ 
@@ -137,11 +142,11 @@ k.macIntyre.base <- function(wndZ, Kd, atm.press, dateTime, surf.temp, z.mix, ai
  
   if(!missing(lwnet)){ 
     lwnet <- lwnet
-  } else if(!missing(lw)){
-    lw_in <- lw # long wave in
-    Tk <- Ts+Kelvin # water temperature in Kelvin
-    LWo <- S_B*emiss*Tk^4 # long wave out
-    lwnet <- lw_in-LWo
+  #} else if(!missing(lw)){
+  #  lw_in <- lw # long wave in
+  #  Tk <- Ts+Kelvin # water temperature in Kelvin
+  #  LWo <- S_B*emiss*Tk^4 # long wave out
+  #  lwnet <- lw_in-LWo
   } else {  
     stop("no longwave radiation available")
   }
