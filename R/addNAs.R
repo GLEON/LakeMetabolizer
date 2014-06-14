@@ -1,8 +1,18 @@
 #rdb
 addNAs <- function(x, ...){
+		dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
+	
 	dL <- grepl("^[dD][oO][yY]$", names(x)) # matches doy, regardless of case
 	yL <- grepl("^[yY]ear4?$", names(x))# matches Year, year, year4, Year4
-	dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
+
+	
+	if(any(dateL)){ # look for the date column
+		names(x)[dateL] <- "datetime"
+	}else{
+		# warning("No 'date' column found")
+		stop("No 'datetime' column found")
+	}
+	
 	if(any(dL)){ # look for "day of year column"
 		names(x)[dL] <- "doy"
 	}else{
@@ -13,12 +23,7 @@ addNAs <- function(x, ...){
 	}else{
 		warning("No 'year' column found")
 	}
-	if(any(dateL)){ # look for the date column
-		names(x)[dateL] <- "datetime"
-	}else{
-		# warning("No 'date' column found")
-		stop("No 'datetime' column found")
-	}
+
 	if(!"POSIXct"%in%class(x[,"datetime"])){ # make sure the date column is POSIXct (note that if date column is not found, you get this error)
 		stop("date column must be POSIXct")
 	}

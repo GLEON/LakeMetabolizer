@@ -50,27 +50,33 @@ metab <- function(data, method, ...){
 		largs <- c(largs0, m.args[!names(m.args)%in%names(largs0)]) # adding on any other arguments supplied via ...
 		# note that in largs, argument supplied through data/data2/poss.args take precedent over arguments from ...
 		
-		print(paste("Analyzing day #", i)); flush.console();
-		results[[i]] <- do.call(mtdCall, largs)
+		# print(paste("Analyzing day #", i)); flush.console(); # Is this annoying? I'm commenting-out
+		results[[i]] <- do.call(mtdCall, largs) # this is where all of the work happens
 	}
 	answer0 <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
 	
 	
 	a0.names <- names(results[[1]])
 	
+	# =======================================================
+	# = Add non-metab list elements as attributes to output =
+	# =======================================================
+	# only need to add attributes if it's a list (more than 1 element, not a data frame)
 	if(length(a0.names)>1 & is.list(answer0) & !is.data.frame(answer0)){
 		
 		names(answer0) <- a0.names
 		answer <- answer0$metab
 		for(i in 1:length(a0.names)){
 			if(a0.names[i]=="metab"){next}
-			if(a0.names[i]=="smoothDO"){
-				attr(answer, "smoothDO.vec") <- answer0[[a0.names[i]]]
+			if(a0.names[i]=="smoothDO"){ # do a little extra attribute work if smoothDO
+				t.sDO <- answer0[[a0.names[i]]] # grab the element of the list that contains smoothed DO concs
+				t.sDO <- t.sDO[,!names(t.sDO)%in%c("doy","year")] # remove the columns that are the year/ doy
+				attr(answer, "smoothDO.vec") <- c(t(t.sDO)) # provide the smoothed DO as a long vector, instead of each row containing nobs+2 columns of smoothed DO from a given day
 			}
-			attr(answer, a0.names[i]) <- answer0[[a0.names[i]]]
+			attr(answer, a0.names[i]) <- answer0[[a0.names[i]]] # assign non "metab" list element as attribute
 		}
 		
-	}else{
+	}else{ # if the list only has one element, or if the list is really a data.frame, then answer0 is what we want
 		answer <- answer0
 	}
 	
