@@ -34,8 +34,8 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	rho <- mod[[1]][2] 
 	iota <- mod[[1]][1]
 	mod.matrix <- model.matrix(mod)
-	gpp <- mean(iota*mod.matrix[,1], na.rm=TRUE) * nobs
-	resp <- mean(rho*mod.matrix[,2], na.rm=TRUE) * nobs
+	gpp <- mean(iota*mod.matrix[,1], na.rm=TRUE) * freq
+	resp <- mean(rho*mod.matrix[,2], na.rm=TRUE) * freq
 	nep <- gpp + resp
 	#other ways to get nep:
 	# nep = rho + gpp
