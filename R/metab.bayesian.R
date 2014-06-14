@@ -182,7 +182,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	
 	mb.args <- list(...)
-	
+	nobs <- length(do.obs)
 	# =========================================
 	# = Check for datetime and claculate freq =
 	# =========================================
