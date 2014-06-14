@@ -33,7 +33,7 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	Q0 <- ((diff(range(do.obs,na.rm=TRUE)) - mean(do.obs,na.rm=TRUE))^2 / length(do.obs))
 	guesses <- c(1E-4, 1E-4, log(Q0))
 	
-	fit <- optim(guesses, fn=mleNLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr, ...)
+	fit <- optim(guesses, fn=mleNLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
 	pars0 <- fit$par
 	
 	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]))
