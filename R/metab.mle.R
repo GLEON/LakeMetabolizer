@@ -2,21 +2,36 @@
 
 metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
-	n.obs <- length(do.obs)
-	chk.list <- list(do.obs, irr, do.sat, z.mix, k.gas, wtr)
+	nobs <- length(do.obs)
 	
+	mm.args <- list(...)
+	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
+		datetime <- mm.args$datetime # extract datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
+		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
+			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
+			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
+		}
+	}else{ # if datetime is *not* in the ... args
+		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
+		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
+		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
+		freq <- nobs
+	}
+	
+	chk.list <- list(do.obs, irr, do.sat, z.mix, k.gas, wtr)
 	if(!all(sapply(chk.list, is.numeric)) || !all(sapply(chk.list, is.vector))){
 		stop('All metab.mle inputs must be numeric vectors.')
 	}
  
-	if(!all(n.obs==sapply(chk.list, length))){
+	if(!all(nobs==sapply(chk.list, length))){
 		stop('All input data to metab.mle must be the same length')
 	}
 	
 	Q0 <- ((diff(range(do.obs,na.rm=TRUE)) - mean(do.obs,na.rm=TRUE))^2 / length(do.obs))
 	guesses <- c(1E-4, 1E-4, log(Q0))
 	
-	fit <- optim(guesses, fn=mle2NLL, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr, ...)
+	fit <- optim(guesses, fn=mle2NLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr, ...)
 	pars0 <- fit$par
 	
 	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]))
@@ -24,9 +39,9 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# ====================================
 	# = Use fits to calculate metabolism =
 	# ====================================
-	GPP <- mean(pars[1]*irr, na.rm=TRUE) * n.obs
+	GPP <- mean(pars[1]*irr, na.rm=TRUE) * nobs
 	# GPP <- mean(pars[1]*irr, na.rm=TRUE)*Freq # Use a line like this if we are going to have missing values; (	Freq <- round(Mode(1/diff(do.doy)))  from metabData, line 21)
-	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * n.obs
+	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * nobs
 	
 	return(list("params"=pars, "metab"=c("GPP"=GPP,"R"=R,"NEP"=GPP+R)))
 }
