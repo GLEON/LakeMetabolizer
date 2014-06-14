@@ -183,7 +183,26 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	
 	mb.args <- list(...)
 	
-	# Check for priors supplied in ...
+	# =========================================
+	# = Check for datetime and claculate freq =
+	# =========================================
+	if("datetime"%in%names(mb.args)){ # check to see if datetime is in the ... args
+		datetime <- mb.args$datetime # extract datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
+		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
+			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
+			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
+		}
+	}else{ # if datetime is *not* in the ... args
+		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
+		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
+		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
+		freq <- nobs
+	}
+	
+	# ======================================
+	# = # Check for priors supplied in ... =
+	# ======================================
 	if("priors" %in% names(mb.args)){
 		t.priors <- mb.args$priors
 		p.name.logic <- all(c(c("gppMu", "gppSig2", "rMu", "rSig2", "kSig2"))%in%names(t.priors))
@@ -197,18 +216,16 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 		priors <- c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)
 	}
 		
-	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
-	           is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
-   
-	   stop('All inputs to metab.bayes must be numeric vectors')
-	 }
+	if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
+		stop('All inputs to metab.bayes must be numeric vectors')
+	}
 	
 	require("R2jags")
 	require("R2WinBUGS")
 	
 	# Define model and write to file
 	# Model choice depends on k values (all 0, all non-0, mixture)
-	modfile <- bayes.makeModel(k.gas=k.gas) # k.gas would be available at higher scope, but passing to be explicit. 
+	modfile <- bayes.makeModel(k.gas=(k.gas/freq))
 	
 	# ===========================================
 	# = Define objects to be used in jags model =
@@ -218,18 +235,19 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	U[,1] <- irr # PAR Values
 	U[,2] <- log(wtr) # log(temp) values
 
-	#Supply kP (for K), and cP (for C)
+	# Priors (kP) for k.gas
 	kP <- matrix(NA, nrow=length(k.gas), ncol=2)
 	# variances for K
-	kP[,1] <- k.gas # means for K
+	kP[,1] <- k.gas/freq # means for K, adjusted to sampling frequency (velocity denominator in time step, not day)
 	if(is.na(priors["kSig2"])){
 		k0.logic <- !is.finite(1/kP[,1]) # test for when k is 0
-		kP[,2] <- sum(k.gas)/sum(!k0.logic)*0.1 # k variance = mean of the non-zero K, times 0.1
+		kP[,2] <- sum(kP[,1])/sum(!k0.logic)*0.1 # k variance = mean of the non-zero K, times 0.1
 		kP[k0.logic,2] <- 1E-9
 	}else{
 		kP[,2] <- priors["kSig2"]
 	}
 	
+	# Priors for regression coefficients (cP)
 	cP <- matrix(NA, nrow=2, ncol=2)
 	cP[1,1] <- priors["gppMu"] # prior mean of GPP coefficient (C[1,1]*PAR=GPP)
 	cP[1,2] <- priors["gppSig2"] # prior variance of GPP coefficient
