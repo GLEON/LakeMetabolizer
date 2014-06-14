@@ -28,7 +28,7 @@ metab <- function(data, method, ...){
 	# = Groom data =
 	# ==============
 	# Removes days with many NA's:
-	data1 <- addNAs(data[complete.cases(data),], percentReqd=1)
+	data1 <- addNAs(data[complete.cases(data),], percentReqd=1) # note that addNAs ALSO checks for POSIXct datetime, and adds year/doy
 	data2 <- data1[complete.cases(data1),]
 	
 	# ==================================

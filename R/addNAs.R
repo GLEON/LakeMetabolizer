@@ -1,32 +1,40 @@
 #rdb
 addNAs <- function(x, ...){
-		dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
-	
+	dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
 	dL <- grepl("^[dD][oO][yY]$", names(x)) # matches doy, regardless of case
 	yL <- grepl("^[yY]ear4?$", names(x))# matches Year, year, year4, Year4
 
-	
+	# =============================================================
+	# = The datetime checks result in error if conditions not met =
+	# =============================================================
 	if(any(dateL)){ # look for the date column
 		names(x)[dateL] <- "datetime"
 	}else{
 		# warning("No 'date' column found")
 		stop("No 'datetime' column found")
 	}
+	if(!"POSIXct"%in%class(x[,"datetime"])){ # make sure the date column is POSIXct (note that if date column is not found, you get this error)
+		stop("date column must be POSIXct")
+	}
 	
+	# ===============================================
+	# = If doy/ year aren't found, they'll be added =
+	# ===============================================
+	# Because we are requiring POSIXct datetime, these values can be generated if they're missing
 	if(any(dL)){ # look for "day of year column"
 		names(x)[dL] <- "doy"
 	}else{
-		warning("No 'doy' column found")
+		x[,"doy"] <- date2doy(x[,"datetime"])
+		# warning("No 'doy' column found")
+		
 	}
 	if(any(yL)){ # look for "year" column
 		names(x)[yL] <- "year"
 	}else{
-		warning("No 'year' column found")
+		x[,"year"] <- as.integer(format.Date(x[,"datetime"], format="%Y"))
+		# warning("No 'year' column found")
 	}
 
-	if(!"POSIXct"%in%class(x[,"datetime"])){ # make sure the date column is POSIXct (note that if date column is not found, you get this error)
-		stop("date column must be POSIXct")
-	}
 	rdig <- 4
 	Mode <- function(x){ # note that this function is now in the helper.functions.R file
 			ux <- unique(x)
