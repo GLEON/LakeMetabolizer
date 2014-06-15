@@ -283,7 +283,7 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 	# =============================================
 	# = Convert to POSIX, or if can't, give error =
 	# =============================================
-	if(all(class(x)!="POSIX.ct")){
+	if(!"POSIXct"%in%class(x)){
 		if(is.null(input.format)){
 			x <- as.POSIXct(x)
 		}else{
