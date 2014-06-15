@@ -7,11 +7,13 @@
 #'@param data a data.frame whose columns are "year", "doy", "datetime", "do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "priors". Data columns (i.e., not year, doy, or datetime) that are not used by a particular statistical method do not need to be supplied.
 #'@param method a character string specifying one of the 5 statistical methods ("bayesian", "bookkeep", "kalman", "ols", "mle")
 
-
-
-metab <- function(data, method, ...){
+metab <- function(data, method, wtr.name="wtr", ...){
 	
 	m.args <- list(...)
+	
+	if(wtr.name != "wtr"){
+		names(data)[names(data)==wtr.name] <- "wtr"
+	}
 	
 	# ===================
 	# = Identify method =
