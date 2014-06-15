@@ -179,7 +179,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 
 
 
-metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
+metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	
 	mb.args <- list(...)
 	nobs <- length(do.obs)
@@ -203,8 +203,8 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# ======================================
 	# = # Check for priors supplied in ... =
 	# ======================================
-	if("priors" %in% names(mb.args)){
-		t.priors <- mb.args$priors
+	if(!missing(priors)){
+		t.priors <- priors
 		p.name.logic <- all(c(c("gppMu", "gppSig2", "rMu", "rSig2", "kSig2"))%in%names(t.priors))
 		p.class.logic <- is.integer(t.priors) | is.numeric(t.priors)
 		if(p.name.logic & p.class.logic){
