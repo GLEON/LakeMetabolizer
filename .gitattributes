@@ -1,4 +1,6 @@
 
-*.R text eol=lf
-*.Rd text eol=lf
+* text=auto
+
+*.R text eol=crlf
+*.Rd text eol=crlf
 
