@@ -207,11 +207,16 @@ pred.merge <- function(x1, x2, all=FALSE){
 # example: round.time(x, "0.5 hours")
 # x is a time format – preferably POSIXct, or can be coerced w/ as.POSIXct
 # if x needs to be converted to POSIX, define input.format if x currently isn't in a 'standard unambiguous format'
-round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%M:%S"){
+# default output.format=NULL leads to output of class POSIXct, character otherwise
+round.time <- function(x, units, input.format=NULL, output.format=NULL){
 	# x = head(t.sonde0.na2[,"date"], 20) + 120
 	# units = "df.345 min"
 	# Check for invalid input classes
-	stopifnot(is.character(units)&is.character(output.format)&(is.null(input.format)|is.character(input.format)))
+	stopifnot(
+		is.character(units) & 
+		(is.null(output.format) | is.character(output.format)) &
+		(is.null(input.format) | is.character(input.format))
+	)
 	
 	# Determine time unit
 	unit.choices <- c("sec", "min", "hour", "day")
@@ -304,7 +309,11 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 	# trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
 	trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
 	rounded <- trunc.POSIXt(x, trunc.unit) + switch(unit, sec = 1, min = 60, hour = 3600, day = 86400)*after
-	format.Date(rounded, format=output.format)
+	if(!is.null(output.format)){
+		return(format.Date(rounded, format=output.format))
+	}else{
+		return(rounded)
+	}	
 }
 
 
