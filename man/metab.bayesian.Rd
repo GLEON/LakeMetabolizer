@@ -9,7 +9,7 @@
 	estimates of metabolism along with uncertainty around the parameters.
   }
 \usage{
-	metab.bayesian(do.obs, do.sat, k.gas, z.mix, date.times, irr, wtr, priors)
+	metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 }
 \arguments{
   \item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
