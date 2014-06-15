@@ -1,4 +1,4 @@
-# Set the default behavior, in case people don't have core.autocrlf set.
-*.R -crlf
-*.Rd -crlf
+
+*.R text eol=lf
+*.Rd text eol=lf
 
