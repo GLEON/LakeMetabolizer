@@ -102,21 +102,21 @@ get.vars = function(data, var.names){
 #'\link{get.vars}
 #'@export
 rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
-	if(ignore.offset){
-		varI = var.indx(data, var.name)
-	}else{
-		varI = grep(var.name, names(data), ignore.case=TRUE)
-	}
-	
-	if(length(varI) > 0){
-		varI = varI * -1
-		return(data[, varI])
-	}else{
-		if(!ignore.missing){
-			stop('No variable by that name found')
-		}
-	}
-
+  if(ignore.offset){
+    varI = var.indx(data, var.name)
+  }else{
+    varI = grep(var.name, names(data), ignore.case=TRUE)
+  }
+  
+  if(length(varI) > 0){
+    varI = varI * -1
+    return(data[, varI])
+  }else{
+    if(!ignore.missing){
+      stop('No variable by that name found')
+    }
+  }
+  
 }
 
 #'@title finds matching column names in data.frame
@@ -162,38 +162,38 @@ var.indx = function(data, var.name){
 # Both desired (no duplicates) and expected (how merge will behave) dimensions
 # 'all' argument corresponds to the argument of the same name in merge()
 pred.merge <- function(x1, x2, all=FALSE){
-	common.names <- intersect(names(x1), names(x2))
-	
-	if(length(common.names)>1){
-		fact1 <- do.call(paste, as.list(x1[,common.names])) #'factors' from x1
-		fact2 <- do.call(paste, as.list(x2[,common.names])) # factors from x2	
-	}else{
-		fact1 <- x1[,common.names]
-		fact2 <- x2[,common.names]
-	}
-
-
-	fInt <- intersect(fact1, fact2) # common elements of fact1 and fact2, same as desired.aF (see below)
-
-	o1 <- table(fact1[fact1%in%fInt])
-	o2 <- table(fact2[fact2%in%fInt])
-	out.aF <- sum(o1*o2)
-
-	if(all){ # if you used all=TRUE in merge()		
-		just1 <- sum(fact1%in%setdiff(fact1, fact2))
-		just2 <- sum(fact2%in%setdiff(fact2, fact1))
-	
-		out.aT <- just1 + just2 + out.aF # This is what merge will give when all=TRUE
-		desired.aT <- sum(!duplicated(c(fact1, fact2))) # non-duplicated output if all=TRUE
-	
-		list(desired=desired.aT, merge=out.aT)
-	
-	}else{
-		out.aF # This is what merge *will* output
-		desired.oF <- length(fInt) # Length of desired output, assuming you don't want duplicated join rows
-	
-		list(desired=desired.oF, merge=out.aF)
-	}
+  common.names <- intersect(names(x1), names(x2))
+  
+  if(length(common.names)>1){
+    fact1 <- do.call(paste, as.list(x1[,common.names])) #'factors' from x1
+    fact2 <- do.call(paste, as.list(x2[,common.names])) # factors from x2	
+  }else{
+    fact1 <- x1[,common.names]
+    fact2 <- x2[,common.names]
+  }
+  
+  
+  fInt <- intersect(fact1, fact2) # common elements of fact1 and fact2, same as desired.aF (see below)
+  
+  o1 <- table(fact1[fact1%in%fInt])
+  o2 <- table(fact2[fact2%in%fInt])
+  out.aF <- sum(o1*o2)
+  
+  if(all){ # if you used all=TRUE in merge()		
+    just1 <- sum(fact1%in%setdiff(fact1, fact2))
+    just2 <- sum(fact2%in%setdiff(fact2, fact1))
+    
+    out.aT <- just1 + just2 + out.aF # This is what merge will give when all=TRUE
+    desired.aT <- sum(!duplicated(c(fact1, fact2))) # non-duplicated output if all=TRUE
+    
+    list(desired=desired.aT, merge=out.aT)
+    
+  }else{
+    out.aF # This is what merge *will* output
+    desired.oF <- length(fInt) # Length of desired output, assuming you don't want duplicated join rows
+    
+    list(desired=desired.oF, merge=out.aF)
+  }
 }
 
 
@@ -209,111 +209,111 @@ pred.merge <- function(x1, x2, all=FALSE){
 # if x needs to be converted to POSIX, define input.format if x currently isn't in a 'standard unambiguous format'
 # default output.format=NULL leads to output of class POSIXct, character otherwise
 round.time <- function(x, units, input.format=NULL, output.format=NULL){
-	# x = head(t.sonde0.na2[,"date"], 20) + 120
-	# units = "df.345 min"
-	# Check for invalid input classes
-	stopifnot(
-		is.character(units) & 
-		(is.null(output.format) | is.character(output.format)) &
-		(is.null(input.format) | is.character(input.format))
-	)
-	
-	# Determine time unit
-	unit.choices <- c("sec", "min", "hour", "day")
-	choices.or <- paste(unit.choices, collapse="|")
-	unit.pattern <- paste(".*(", choices.or, ").*", sep="")
-	unit <- gsub(unit.pattern, "\\1", units)
-	if(is.na(unit)){stop("not a valid unit, use sec, min, hour, or day")}
-	which.choice <- which(unit==unit.choices)
-	
-	# Determine time interval
-	u.time.pattern <- "(?:[0-9]+\\.[0-9]+)|(?:[0-9]+\\.)|(?:\\.[0-9]+)|(?:[0-9]+)"
-	u.time.char <- regmatches(units, regexpr(u.time.pattern, units, perl=TRUE))
-	u.time <- as.numeric(u.time.char)
-	u.time <- ifelse(is.na(u.time), 1, u.time)
-	
-	unit.cutoff <- switch(unit, sec=60, min=60, hour=24, day=1)
-	
-	# =========================================================================
-	# = Check for invalid input (before slow [attempted] conversion to POSIX) =
-	# =========================================================================
-	if(sign(u.time)==-1L){
-		stop("time interval must be positive")
-	}
-	# Deal with case where units are 1 second (or less)
-	if(unit=="sec" & u.time<=1L){
-		return(format.Date(x, format=output.format))
-	} else
-	
-	# Fractional time intervals – convert to smaller unit
-	if((trunc(u.time)-u.time)!=0){
-		if(sign(u.time)==1L){
-			while((trunc(u.time)-u.time)!=0){
-				if(unit=="sec"){stop("time interval must be an integer when converted to units of seconds")}
-				unit <- unit.choices[which.choice-1]
-				which.choice <- which(unit==unit.choices)
-				unit.cutoff <- switch(unit, sec=60, min=60, hour=24)
-				u.time <- unit.cutoff*u.time
-			}
-		}else{
-			stop("time interval must be positive")
-		}
-	} else 
-	
-	# Deal with case where units are days
-	if(unit=="day"){
-		if(u.time==1){
-			return(format.Date(trunc.POSIXt(x + 43200, units = units), format=output.format))
-		}else{
-			stop("units must be <= 1 day")
-		}
-	} else 
-	
-	# Deal w/ cases where time interval is 1 unit
-	if(u.time==1){
-			unit <- unit.choices[which.choice-1]
-			which.choice <- which(unit==unit.choices)
-			unit.cutoff <- switch(unit, sec=60, min=60, hour=24)
-			u.time <- unit.cutoff
-	} 
-	
-	# Deal with cases where time interval is > 1 of a larger unit
-	# Note that this follows up on case where u.time is > 1 and is not an integer
-	if(u.time>unit.cutoff){
-		u.time <- u.time%%unit.cutoff
-		mod.mess <- paste("Rounding to units =", u.time, unit) # may or may not want to make this a warning ...
-		warning(mod.mess)
-	}
-	
-	# =============================================
-	# = Convert to POSIX, or if can't, give error =
-	# =============================================
-	if(!"POSIXct"%in%class(x)){
-		if(is.null(input.format)){
-			x <- as.POSIXct(x)
-		}else{
-			x <- as.POSIXct(x, format=input.format)
-		}
-	}
-	
-	# ===========================================================
-	# = Matching units (e.g., min) and unit multiples (e.g., 5) =
-	# ===========================================================
-	
-	which.choice <- which(unit==unit.choices)
-	form.unit <- c("%S", "%M", "%H", "%d")[which.choice]
-	mult <- as.integer(format.Date(x, format=form.unit))/u.time
-	after <- round(mult, 0)*u.time
-	# direction <- sign(after-before)
-	
-	# trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
-	trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
-	rounded <- trunc.POSIXt(x, trunc.unit) + switch(unit, sec = 1, min = 60, hour = 3600, day = 86400)*after
-	if(!is.null(output.format)){
-		return(format.Date(rounded, format=output.format))
-	}else{
-		return(rounded)
-	}	
+  # x = head(t.sonde0.na2[,"date"], 20) + 120
+  # units = "df.345 min"
+  # Check for invalid input classes
+  stopifnot(
+    is.character(units) & 
+      (is.null(output.format) | is.character(output.format)) &
+      (is.null(input.format) | is.character(input.format))
+  )
+  
+  # Determine time unit
+  unit.choices <- c("sec", "min", "hour", "day")
+  choices.or <- paste(unit.choices, collapse="|")
+  unit.pattern <- paste(".*(", choices.or, ").*", sep="")
+  unit <- gsub(unit.pattern, "\\1", units)
+  if(is.na(unit)){stop("not a valid unit, use sec, min, hour, or day")}
+  which.choice <- which(unit==unit.choices)
+  
+  # Determine time interval
+  u.time.pattern <- "(?:[0-9]+\\.[0-9]+)|(?:[0-9]+\\.)|(?:\\.[0-9]+)|(?:[0-9]+)"
+  u.time.char <- regmatches(units, regexpr(u.time.pattern, units, perl=TRUE))
+  u.time <- as.numeric(u.time.char)
+  u.time <- ifelse(is.na(u.time), 1, u.time)
+  
+  unit.cutoff <- switch(unit, sec=60, min=60, hour=24, day=1)
+  
+  # =========================================================================
+  # = Check for invalid input (before slow [attempted] conversion to POSIX) =
+  # =========================================================================
+  if(sign(u.time)==-1L){
+    stop("time interval must be positive")
+  }
+  # Deal with case where units are 1 second (or less)
+  if(unit=="sec" & u.time<=1L){
+    return(format.Date(x, format=output.format))
+  } else
+    
+    # Fractional time intervals – convert to smaller unit
+    if((trunc(u.time)-u.time)!=0){
+      if(sign(u.time)==1L){
+        while((trunc(u.time)-u.time)!=0){
+          if(unit=="sec"){stop("time interval must be an integer when converted to units of seconds")}
+          unit <- unit.choices[which.choice-1]
+          which.choice <- which(unit==unit.choices)
+          unit.cutoff <- switch(unit, sec=60, min=60, hour=24)
+          u.time <- unit.cutoff*u.time
+        }
+      }else{
+        stop("time interval must be positive")
+      }
+    } else 
+      
+      # Deal with case where units are days
+      if(unit=="day"){
+        if(u.time==1){
+          return(format.Date(trunc.POSIXt(x + 43200, units = units), format=output.format))
+        }else{
+          stop("units must be <= 1 day")
+        }
+      } else 
+        
+        # Deal w/ cases where time interval is 1 unit
+        if(u.time==1){
+          unit <- unit.choices[which.choice-1]
+          which.choice <- which(unit==unit.choices)
+          unit.cutoff <- switch(unit, sec=60, min=60, hour=24)
+          u.time <- unit.cutoff
+        } 
+  
+  # Deal with cases where time interval is > 1 of a larger unit
+  # Note that this follows up on case where u.time is > 1 and is not an integer
+  if(u.time>unit.cutoff){
+    u.time <- u.time%%unit.cutoff
+    mod.mess <- paste("Rounding to units =", u.time, unit) # may or may not want to make this a warning ...
+    warning(mod.mess)
+  }
+  
+  # =============================================
+  # = Convert to POSIX, or if can't, give error =
+  # =============================================
+  if(!"POSIXct"%in%class(x)){
+    if(is.null(input.format)){
+      x <- as.POSIXct(x)
+    }else{
+      x <- as.POSIXct(x, format=input.format)
+    }
+  }
+  
+  # ===========================================================
+  # = Matching units (e.g., min) and unit multiples (e.g., 5) =
+  # ===========================================================
+  
+  which.choice <- which(unit==unit.choices)
+  form.unit <- c("%S", "%M", "%H", "%d")[which.choice]
+  mult <- as.integer(format.Date(x, format=form.unit))/u.time
+  after <- round(mult, 0)*u.time
+  # direction <- sign(after-before)
+  
+  # trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
+  trunc.unit <- unit.choices[min(which.choice+1, length(unit.choices))]
+  rounded <- trunc.POSIXt(x, trunc.unit) + switch(unit, sec = 1, min = 60, hour = 3600, day = 86400)*after
+  if(!is.null(output.format)){
+    return(format.Date(rounded, format=output.format))
+  }else{
+    return(rounded)
+  }	
 }
 
 
@@ -323,46 +323,46 @@ round.time <- function(x, units, input.format=NULL, output.format=NULL){
 # ==================
 #RDB
 conquerList <- function(x, naming=NULL){
-	# If x is not a list, don't bother
-	if(!is.list(x) | is.data.frame(x)){return(x)}
-	
-	s1 <- length(x)
-	s2 <- length(x[[1]])
-	u1 <- unlist(x, recursive=FALSE)
-	stopifnot(length(u1)==s1*s2)
-	
-	
-	if(is.data.frame(x[[1]])){
-		single.row <- nrow(x[[1]]) == 1L
-	}else{
-		single.row <- FALSE
-	}
-	
-	# return value from ldply() if it will work (e.g., if each element of list x contains a row of a data frame)
-	if(single.row & is.list(x)){ # the checking for is.list() is a bit redundant with earlier check
-		return(cbind(naming, ldply(x)))
-	}
-	
-	#
-	s2C <- unlist(lapply(x[[1]], class))
-	cqd <- vector("list", s2)
-	for(i in 1:s2){
-		ti <- seq(i, s1*s2, s2)
-		tl <- vector("list", s1)
-		for(j in 1:s1){
-			tl[[j]] <- u1[[ti[j]]]
-		}
-		if(is.data.frame(tl[[1]])|!is.list(tl[[1]])){
-			if(!is.null(naming)){
-				cqd[[i]] <- cbind(naming,ldply(tl))
-			}else{
-				cqd[[i]] <- ldply(tl)
-			}
-		}else{
-			cqd[[i]] <- llply(tl)
-		}
-	}
-	return(cqd)
+  # If x is not a list, don't bother
+  if(!is.list(x) | is.data.frame(x)){return(x)}
+  
+  s1 <- length(x)
+  s2 <- length(x[[1]])
+  u1 <- unlist(x, recursive=FALSE)
+  stopifnot(length(u1)==s1*s2)
+  
+  
+  if(is.data.frame(x[[1]])){
+    single.row <- nrow(x[[1]]) == 1L
+  }else{
+    single.row <- FALSE
+  }
+  
+  # return value from ldply() if it will work (e.g., if each element of list x contains a row of a data frame)
+  if(single.row & is.list(x)){ # the checking for is.list() is a bit redundant with earlier check
+    return(cbind(naming, ldply(x)))
+  }
+  
+  #
+  s2C <- unlist(lapply(x[[1]], class))
+  cqd <- vector("list", s2)
+  for(i in 1:s2){
+    ti <- seq(i, s1*s2, s2)
+    tl <- vector("list", s1)
+    for(j in 1:s1){
+      tl[[j]] <- u1[[ti[j]]]
+    }
+    if(is.data.frame(tl[[1]])|!is.list(tl[[1]])){
+      if(!is.null(naming)){
+        cqd[[i]] <- cbind(naming,ldply(tl))
+      }else{
+        cqd[[i]] <- ldply(tl)
+      }
+    }else{
+      cqd[[i]] <- llply(tl)
+    }
+  }
+  return(cqd)
 }
 
 # =======================================================
@@ -370,14 +370,14 @@ conquerList <- function(x, naming=NULL){
 # =======================================================
 #RDB
 watts.in <- function(top, bot, irr, z1perc){
-	# top = the top of the layer in meters (e.g., 2)
-	# bottom = the bottom of the layer in meters (e.g., 4)
-	# irr = PAR, measured in uE
-	# z1perc = depth of 1 percent surface light, measured in meters (e.g., 4)
-	
-	watts <- 0.2174*irr # convert PAR to watts/m^2 (0.2174)
-    kd <- log(0.01)/-z1perc # calculate an average kd for the photic zone
-    watts*exp(-kd*top) - watts*exp(-kd*bot) # Estimate watts gained as the difference between watts entering at the top and exiting at the bottom
+  # top = the top of the layer in meters (e.g., 2)
+  # bottom = the bottom of the layer in meters (e.g., 4)
+  # irr = PAR, measured in uE
+  # z1perc = depth of 1 percent surface light, measured in meters (e.g., 4)
+  
+  watts <- 0.2174*irr # convert PAR to watts/m^2 (0.2174)
+  kd <- log(0.01)/-z1perc # calculate an average kd for the photic zone
+  watts*exp(-kd*top) - watts*exp(-kd*bot) # Estimate watts gained as the difference between watts entering at the top and exiting at the bottom
 }
 
 # ==================
@@ -385,15 +385,14 @@ watts.in <- function(top, bot, irr, z1perc){
 # ==================
 #RDB
 Mode <- function(x){
-	ux <- unique(x)
-	ux[which.max(tabulate(match(x, ux)))]
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
 }
 
 # ================================
 # = Calculate sampling frequency =
 # ================================
 calc.freq <- function(datetime){
-	freq <- round(Mode(1/diff(date2doy(datetime))))
+  freq <- round(Mode(1/diff(date2doy(datetime))))
 }
-
 
