@@ -179,7 +179,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 
 
 
-metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
+metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	
 	mb.args <- list(...)
 	nobs <- length(do.obs)
