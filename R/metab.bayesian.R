@@ -20,9 +20,9 @@ bayes.makeModel <- function(k.gas){
 	# Write the appropriate bayesian model into a temporary file
 	modfile <- tempfile('jags.metab.bayes')
 	switch(choice.mod,
-		allK = write.model(bayes.mod.allK, modfile),
-		noK = write.model(bayes.mod.noK, modfile),
-		bothK = write.model(bayes.mod.bothK, modfile)
+		allK = {write.model(bayes.mod.allK, modfile); print("writing allK model")},
+		noK = {write.model(bayes.mod.noK, modfile); print("writing noK model")},
+		bothK = {write.model(bayes.mod.bothK, modfile); print("writing bothK model")}
 	)
 	return(modfile)
 }
@@ -178,69 +178,33 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 }
 
 
-#'@title
-#'Metabolism model based on a bayesian parameter estimation framework
-#'@description
-#'This function runs the bayesian metabolism model on the supplied gas concentration and 
-#'other supporting data. This allows for both estimates of metabolism along with uncertainty around the parameters.
-#'@usage
-#'metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
-#'@param do.obs Vector of dissovled oxygen concentration observations, mg L^-1
-#'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
-#'@param k.gas Vector of kGAS values calculated from any of the gas flux models (e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
-#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see ts.meta.depths
-#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
-#'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
-#'@param ... Parameter priors supplied as a named list
-#'@return A named list of parameter estimates. 
-#'\item{GPP}{Estimated Gross Primary Productivity and R	Estimated ecosystem respiration}
-#'\item{R}{Estimated ecosystem respiration}
-#'
-#'@author Luke Winslow, Ryan Batt
-#'@references Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. 
-#'Teresa A'mar. 2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and 
-#'Reaeration Using a Bayesian Statistical Model of Oxygen Dynamics}. 
-#'Limnology and Oceanography 55 (3): 1047-1062. doi:10.4319/lo.2010.55.3.1047.
-#'@seealso 
-#'\link{metab.mle}
-#'\link{metab.bookkeep}
-#'@examples
-#'library(rLakeAnalyzer)
-#'\dontrun{
-#'doobs = load.ts(system.file('extdata', 
-#'                            'Sparkling.doobs', package="LakeMetabolizer"))
-#'wtr = load.ts(system.file('extdata', 
-#'                          'Sparkling.wtr', package="LakeMetabolizer"))
-#'wnd = load.ts(system.file('extdata', 
-#'                          'Sparkling.wnd', package="LakeMetabolizer"))
-#'irr = load.ts(system.file('extdata', 
-#'                          'Sparkling.par', package="LakeMetabolizer"))
-#'
-#'#Subset a day
-#'mod.date = as.POSIXct('2009-08-12')
-#'doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
-#'wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
-#'wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
-#'irr = irr[trunc(irr$datetime, 'day') == mod.date, ]
-#'
-#'k600 = k.cole.base(wnd[,2])
-#'k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
-#'do.sat = o2.at.sat(wtr[,3], altitude=300)
-#'priors <- list("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)
-#'
-#'metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
-#'               do.sat=do.sat, wtr=wtr[,2],
-#'               k.gas=k.gas, do.obs=doobs[,2],priors)
-#'
-#'}
-#'@export
-metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
+
+metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	
 	mb.args <- list(...)
+	nobs <- length(do.obs)
+	# =========================================
+	# = Check for datetime and claculate freq =
+	# =========================================
+	if("datetime"%in%names(mb.args)){ # check to see if datetime is in the ... args
+		datetime <- mb.args$datetime # extract datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
+		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
+			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
+			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
+		}
+	}else{ # if datetime is *not* in the ... args
+		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
+		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
+		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
+		freq <- nobs
+	}
 	
-	# Check for priors supplied in ...
-	if("priors" %in% names(mb.args)){
-		t.priors <- mb.args$priors
+	# ======================================
+	# = # Check for priors supplied in ... =
+	# ======================================
+	if(!missing(priors)){
+		t.priors <- priors
 		p.name.logic <- all(c(c("gppMu", "gppSig2", "rMu", "rSig2", "kSig2"))%in%names(t.priors))
 		p.class.logic <- is.integer(t.priors) | is.numeric(t.priors)
 		if(p.name.logic & p.class.logic){
@@ -252,18 +216,16 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 		priors <- c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA)
 	}
 		
-	 if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), 
-	           is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
-   
-	   stop('All inputs to metab.bayes must be numeric vectors')
-	 }
+	if(!all(c(is.numeric(do.obs), is.numeric(do.sat), is.numeric(k.gas), is.numeric(z.mix), is.numeric(irr), is.numeric(wtr)))){
+		stop('All inputs to metab.bayes must be numeric vectors')
+	}
 	
 	require("R2jags")
 	require("R2WinBUGS")
 	
 	# Define model and write to file
 	# Model choice depends on k values (all 0, all non-0, mixture)
-	modfile <- bayes.makeModel(k.gas=k.gas) # k.gas would be available at higher scope, but passing to be explicit. 
+	modfile <- bayes.makeModel(k.gas=(k.gas/freq))
 	
 	# ===========================================
 	# = Define objects to be used in jags model =
@@ -273,18 +235,19 @@ metab.bayesian = function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	U[,1] <- irr # PAR Values
 	U[,2] <- log(wtr) # log(temp) values
 
-	#Supply kP (for K), and cP (for C)
+	# Priors (kP) for k.gas
 	kP <- matrix(NA, nrow=length(k.gas), ncol=2)
 	# variances for K
-	kP[,1] <- k.gas # means for K
+	kP[,1] <- k.gas/freq # means for K, adjusted to sampling frequency (velocity denominator in time step, not day)
 	if(is.na(priors["kSig2"])){
 		k0.logic <- !is.finite(1/kP[,1]) # test for when k is 0
-		kP[,2] <- sum(k.gas)/sum(!k0.logic)*0.1 # k variance = mean of the non-zero K, times 0.1
+		kP[,2] <- sum(kP[,1])/sum(!k0.logic)*0.1 # k variance = mean of the non-zero K, times 0.1
 		kP[k0.logic,2] <- 1E-9
 	}else{
 		kP[,2] <- priors["kSig2"]
 	}
 	
+	# Priors for regression coefficients (cP)
 	cP <- matrix(NA, nrow=2, ncol=2)
 	cP[1,1] <- priors["gppMu"] # prior mean of GPP coefficient (C[1,1]*PAR=GPP)
 	cP[1,2] <- priors["gppSig2"] # prior variance of GPP coefficient

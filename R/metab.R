@@ -1,17 +1,37 @@
 
-#' Calculate Metabolism
+#'
+#' 
+#'@title Calculate Metabolism
 #'
 #' Returns daily time series of gross primary production (GPP), respiration (R), and net ecosystem production (NEP). Depending on the method used, other information may be returned as well. Calculations are made using one of 5 statistical methods.
 #'
 #'
-#'@param data a data.frame whose columns are "year", "doy", "datetime", "do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "priors". Data columns (i.e., not year, doy, or datetime) that are not used by a particular statistical method do not need to be supplied.
-#'@param method a character string specifying one of the 5 statistical methods ("bayesian", "bookkeep", "kalman", "ols", "mle")
-
-
-
-metab <- function(data, method, ...){
+#'@param data 
+#'a data.frame whose columns are "year", "doy", "datetime", "do.obs", 
+#'"do.sat", "k.gas", "z.mix", "irr", "wtr", "priors". Data columns 
+#'(i.e., not year, doy, or datetime) that are not used by a particular statistical method do not need to be supplied.
+#'@param method 
+#'a character string specifying one of the 5 statistical methods 
+#'("bayesian", "bookkeep", "kalman", "ols", "mle")
+#'
+#'@export
+metab <- function(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...){
 	
 	m.args <- list(...)
+	
+	#Rename the WTR column to be used (must be wtr to easily be passed to meta.* functions)
+	if(wtr.name != "wtr"){
+		names(data)[names(data)==wtr.name] <- "wtr"
+	}
+	
+	if(irr.name != "irr"){
+		names(data)[names(data)==irr.name] <- "irr"
+	}
+	
+	if(do.obs.name != "irr"){
+		names(data)[names(data)==do.obs.name] <- "do.obs"
+	}
+	
 	
 	# ===================
 	# = Identify method =
@@ -27,14 +47,8 @@ metab <- function(data, method, ...){
 	# ==============
 	# = Groom data =
 	# ==============
-	# data0 <- LakeMetabolizer:::ryanData()
-	
-	# Removes days with many missing ROWS:
-	# data <- LakeMetabolizer:::addNAs(data0)
-	
 	# Removes days with many NA's:
-	# data1 <- LakeMetabolizer:::addNAs(data0[complete.cases(data0),], percentReqd=1)
-	data1 <- addNAs(data[complete.cases(data),], percentReqd=1)
+	data1 <- addNAs(data[complete.cases(data),], percentReqd=1) # note that addNAs ALSO checks for POSIXct datetime, and adds year/doy
 	data2 <- data1[complete.cases(data1),]
 	
 	# ==================================
@@ -42,8 +56,7 @@ metab <- function(data, method, ...){
 	# ==================================
 	ids <- id(list(data2[,"year"],trunc(data2[,"doy"]))) # ID chunks to be analyzed
 	ids <- as.integer(ids - (min(ids)-1))
-	nid <- length(unique(ids))#attributes(ids)$n
-	# metabArgs <- as.list(data[1:10,c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr")])
+	nid <- length(unique(ids))
 	results <- vector("list", nid)
 	
 	# ==================================
@@ -57,17 +70,37 @@ metab <- function(data, method, ...){
 		largs <- c(largs0, m.args[!names(m.args)%in%names(largs0)]) # adding on any other arguments supplied via ...
 		# note that in largs, argument supplied through data/data2/poss.args take precedent over arguments from ...
 		
-		results[[i]] <- do.call(mtdCall, largs)
+		# print(paste("Analyzing day #", i)); flush.console(); # Is this annoying? I'm commenting-out
+		results[[i]] <- do.call(mtdCall, largs) # this is where all of the work happens
 	}
 	answer0 <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
 	
+	
+	a0.names <- names(results[[1]])
+	
+	# =======================================================
+	# = Add non-metab list elements as attributes to output =
+	# =======================================================
+	# only need to add attributes if it's a list (more than 1 element, not a data frame)
+	if(length(a0.names)>1 & is.list(answer0) & !is.data.frame(answer0)){
+		
+		names(answer0) <- a0.names
+		answer <- answer0$metab
+		for(i in 1:length(a0.names)){
+			if(a0.names[i]=="metab"){next}
+			if(a0.names[i]=="smoothDO"){ # do a little extra attribute work if smoothDO
+				t.sDO <- answer0[[a0.names[i]]] # grab the element of the list that contains smoothed DO concs
+				t.sDO <- t.sDO[,!names(t.sDO)%in%c("doy","year")] # remove the columns that are the year/ doy
+				attr(answer, "smoothDO.vec") <- c(t(t.sDO)) # provide the smoothed DO as a long vector, instead of each row containing nobs+2 columns of smoothed DO from a given day
+			}
+			attr(answer, a0.names[i]) <- answer0[[a0.names[i]]] # assign non "metab" list element as attribute
+		}
+		
+	}else{ # if the list only has one element, or if the list is really a data.frame, then answer0 is what we want
+		answer <- answer0
+	}
+	
 	return(answer)
 }
-
-# ===========
-# = EXAMPLE =
-# ===========
-# metab(data=tb.data, method="kalman")
-# metab(data=tb.data, method="bayes")
 
 

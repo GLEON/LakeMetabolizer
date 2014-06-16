@@ -2,7 +2,7 @@
 \alias{metab}
 \title{Calculate Metabolism}
 \usage{
-  metab(data, method)
+  metab(data, method, ...)
 }
 \arguments{
   \item{data}{a data.frame whose columns are "year", "doy",

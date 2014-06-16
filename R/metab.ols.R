@@ -1,16 +1,26 @@
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
-	n.obs <- length(do.obs)
+	nobs <- length(do.obs)
+	
+	mo.args <- list(...)
+	if("datetime"%in%names(mo.args)){ # check to see if datetime is in the ... args
+		datetime <- mo.args$datetime # extract datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
+		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
+			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
+			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
+		}
+	}else{ # if datetime is *not* in the ... args
+		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
+		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
+		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
+		freq <- nobs
+	}
 
 	do.diff <- diff(do.obs)
 
-	#basically the average of the flux at time T_0 and T_1
-	#flux <- -0.5 * k * (D1 + D2 - 2*S)
-	#
-	# can be re-arranged
-	# flux <- 0.5 * [k * (D1-S) + k * (d2-s)]
-	# Average of each inst flux
-	inst_flux <- k.gas * (do.sat - do.obs)  # positive is into the lake
+
+	inst_flux <- (k.gas/freq) * (do.sat - do.obs)  # positive is into the lake
 	
 	# flux <- (inst_flux[1:(n.obs-1)] + inst_flux[-1])/2
 	flux <- inst_flux[-1]
@@ -24,8 +34,8 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	rho <- mod[[1]][2] 
 	iota <- mod[[1]][1]
 	mod.matrix <- model.matrix(mod)
-	gpp <- mean(iota*mod.matrix[,1], na.rm=TRUE) * n.obs
-	resp <- mean(rho*mod.matrix[,2], na.rm=TRUE) * n.obs
+	gpp <- mean(iota*mod.matrix[,1], na.rm=TRUE) * freq
+	resp <- mean(rho*mod.matrix[,2], na.rm=TRUE) * freq
 	nep <- gpp + resp
 	#other ways to get nep:
 	# nep = rho + gpp

@@ -226,19 +226,37 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 # ====================
 # Kalman filter metabolism w/ main recursion in NLL function written in C
 metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
+	
+	nobs <- length(do.obs)
+	
+	mm.args <- list(...)
+	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
+		datetime <- mm.args$datetime # extract datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
+		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
+			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
+			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
+		}
+	}else{ # if datetime is *not* in the ... args
+		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
+		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
+		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
+		freq <- nobs
+	}
+	
 	# Filter and fit
 	guesses <- c(1E-4,1E-4,log(5),log(5))
-	fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr, ...)
+	fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
 	pars0 <- fit$par
 	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]), "H"=exp(pars0[4]))
 	
 	# Smooth
-	smoothDO <- KFsmoothDO(pars, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, z.mix=z.mix, irr=irr, wtr=wtr)
+	smoothDO <- KFsmoothDO(pars, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
 	
 	# Use fits to calculate metabolism
-	n.obs <- length(do.obs)
-	GPP <- mean(pars[1]*irr, na.rm=TRUE) * n.obs
-	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * n.obs
+	
+	GPP <- mean(pars[1]*irr, na.rm=TRUE) * freq
+	R <- mean(pars[2]*log(wtr), na.rm=TRUE) * freq
 	
 	return(list("smoothDO"=smoothDO,"params"=pars, "metab"=c("GPP"=GPP,"R"=R, "NEP"=GPP+R)))
 }
