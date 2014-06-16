@@ -383,6 +383,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   K600 <- nu*600^(-0.5)*K1^(1/4)   # in cm/hr (Total)
   
   k600 <- as.numeric(K600)
-  
+  k600 <- k600*24/100 #now in units in m d-1
   return(k600)
 }
