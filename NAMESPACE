@@ -1,21 +1,17 @@
-export(k.read, k.crusius, k.cole, k.macIntyre, metab,
-	metab.mle, metab.bookkeep, metab.bayesian, metab.kalman,  temp.kalman,
-	k600.2.kGAS, k600.2.kGAS.base, 
-	o2.at.sat.base, o2.at.sat,
-	getSchmidt,
-	calc.zeng, 
-	calc.lw.net, calc.lw.net.base, 
-	sw.to.par, sw.to.par.base, par.to.sw, par.to.sw.base,
-	sun.rise.set, is.day, is.night,
-	load.all.data, load.meta, manuscript.code, 
-	scale.exp.wind, scale.exp.wind.base,
-	get.vars, has.vars, var.indx, rmv.vars, watts.in,
-	k.read, k.read.base,
-	k.cole, k.cole.base,
-	k.macIntyre, k.macIntyre.base,
-	k.crusius, k.crusius.base)
-	
-useDynLib(LakeMetabolizer)
-
-import(rLakeAnalyzer)
-import(plyr)
+export(calc.lw.net)
+export(calc.zeng)
+export(get.vars)
+export(getSchmidt)
+export(has.vars)
+export(is.day)
+export(is.night)
+export(k.read.base)
+export(k.read)
+export(k600.2.kGAS)
+export(metab)
+export(par.to.sw)
+export(rmv.vars)
+export(sun.rise.set)
+export(sw.to.par)
+export(temp.kalman)
+export(var.indx)

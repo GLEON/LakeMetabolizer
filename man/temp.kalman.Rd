@@ -2,7 +2,7 @@
 \alias{temp.kalman}
 \title{Smooth temperature time series using a Kalman filter/ smoother}
 \usage{
-  temp.kalman(wtr, watts, ampH, ...)
+  temp.kalman(wtr, watts, ampH=1, ...)
 }
 \arguments{
   \item{wtr}{Vector (regular time series) of water

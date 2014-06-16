@@ -2,15 +2,47 @@ Package: LakeMetabolizer
 Title: Tools for the analysis of ecosystem metabolism
 Maintainer: Luke Winslow <lawinslow@gmail.com>
 Version: 1.0.1
-Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Gordon Holtgrieve, Aline Jaimes, Jordan Read, Richard Woolway
-Description: A collection of tools for the calculation of freewater metabolism. 
+Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul
+    Hanson, Gordon Holtgrieve, Aline Jaimes, Jordan Read, Richard Woolway
+Description: A collection of tools for the calculation of freewater metabolism.
 License: GPL (>= 2)
-Imports: 
-	rLakeAnalyzer, plyr
+Imports:
+    rLakeAnalyzer,
+    plyr
 Suggests:
-  R2jags, R2WinBUGS
+    R2jags,
+    R2WinBUGS
 Depends:
-	R (>= 2.15.0)
+    R (>= 2.15.0)
 Packaged: 2013-08-01 09:09:24 UTC; Luke
 Repository: http://github.com/GLEON/LakeMetabolizer
 Date/Publication: 2014-01-01 09:09:24
+Collate:
+    'addNAs.R'
+    'byeShort.R'
+    'calc.lw.net.R'
+    'calc.zeng.R'
+    'date2doy.R'
+    'getSchmidt.R'
+    'helper.functions.R'
+    'k.cole.R'
+    'k.crusius.R'
+    'k.macIntyre.R'
+    'k.read.R'
+    'k600.2.kGAS.R'
+    'load.all.data.R'
+    'load.meta.R'
+    'manuscript.code.R'
+    'metab.bayesian.R'
+    'metab.bookkeep.R'
+    'metab.kalman.R'
+    'metab.mle.R'
+    'metab.ols.R'
+    'metab.R'
+    'metabData.R'
+    'o2.at.sat.R'
+    'par.to.sw.R'
+    'scale.exp.wind.R'
+    'sun.rise.set.R'
+    'sw.to.par.R'
+    'temp.kalman.R'
