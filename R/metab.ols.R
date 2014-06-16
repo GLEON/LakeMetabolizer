@@ -33,8 +33,8 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# sum(noflux.do.diff) # i think this should be the same as sum(fitted(mod)) b/c model residuals sum to 0 ... right?
 	# also note that NEP is gpp+rho (rho is negative by this convention, which is consistent w/ Kalman, Bayes, mle – unsure of BK)
 
-	results <- data.frame("GPP"=gpp, "R"=resp, "NEP"=nep) 
-	attr(results, "lm.mod") <- mod
+	results <- list("mod"=mod, "metab"=data.frame("GPP"=gpp, "R"=resp, "NEP"=nep))
+	# attr(results, "lm.mod") <- mod
 	return(results)
 	
 }

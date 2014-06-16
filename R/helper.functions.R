@@ -137,7 +137,7 @@ rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 #'@seealso 
 #'\link{has.vars}
 #'\link{get.vars}
-#'\link{rmv.vars}
+#'\link{rmv.var}
 #'@export
 var.indx = function(data, var.name){
   if(length(var.name) != 1){
@@ -314,7 +314,7 @@ round.time <- function(x, units, input.format=NULL, output.format="%Y-%m-%d %H:%
 # ==================
 conquerList <- function(x, naming=NULL){
 	# If x is not a list, don't bother
-	if(!is.list(x)){return(x)}
+	if(!is.list(x) | is.data.frame(x)){return(x)}
 	
 	s1 <- length(x)
 	s2 <- length(x[[1]])
