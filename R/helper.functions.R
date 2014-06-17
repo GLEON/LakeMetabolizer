@@ -17,7 +17,7 @@
 #'\link{get.vars}
 #'\link{rmv.vars}
 #'@export
-has.vars <- function(data, var.names){
+has.vars = function(data, var.names){
   
   if(!is(data, 'data.frame')){
     stop('Data must be of class data.frame')
@@ -53,7 +53,7 @@ has.vars <- function(data, var.names){
 #'\link{has.vars}
 #'\link{rmv.vars}
 #'@export
-get.vars <- function(data, var.names){
+get.vars = function(data, var.names){
   
   if(!is(data, 'data.frame')){
     stop('Data must be of class data.frame')
@@ -101,7 +101,7 @@ get.vars <- function(data, var.names){
 #'\link{has.vars}
 #'\link{get.vars}
 #'@export
-rmv.vars <- function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
+rmv.vars = function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
   if(ignore.offset){
     varI = var.indx(data, var.name)
   }else{
@@ -139,7 +139,7 @@ rmv.vars <- function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 #'\link{get.vars}
 #'\link{rmv.var}
 #'@export
-var.indx <- function(data, var.name){
+var.indx = function(data, var.name){
   if(length(var.name) != 1){
     stop('var.indx only operates on one variable at a time')
   }
