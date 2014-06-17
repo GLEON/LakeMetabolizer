@@ -43,31 +43,19 @@ watts.in(top, bot, irr, z1perc)
 	10: 20-30. doi: 10.4319/lom.2012.10.20
 }
 \author{
-	Ryan Batt
+	Ryan Batt, Luke Winslow
 }
 \note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-	\code{\link{temp.smooth}}
+	\code{\link{temp.kalman}}
 	\code{\link{metab.kalman}}
 }
 \examples{
 watts.in(3.2, 4, 1200, 4.5)
-
-## The function is currently defined as
-function (top, bot, irr, z1perc) 
-{
-    watts <- 0.2174 * irr
-    kd <- log(0.01)/-z1perc
-    watts * exp(-kd * top) - watts * exp(-kd * bot)
-  }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ temperature }
-\keyword{ watts }% __ONLY ONE__ keyword per line
+
+
+\keyword{ math }
+\keyword{ methods }
