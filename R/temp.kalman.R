@@ -93,7 +93,7 @@ kalmanLoopTempR <- function(nlls, alpha, c1,  P, Q, H, beta, watts, wtr){
 #'@title Smooth temperature time series using a Kalman filter/ smoother
 #'@description Smoothes a temperature time series uses a Kalman filter/ smoother.
 #'@usage
-#'temp.kalman(wtr, watts, ampH=1, ...)
+#'temp.kalman(wtr, watts, ampH, ...)
 #'@details 
 #'basic model process is \code{x[t] = beta*x[t-1] + c1*watts[t-1]}
 #'@param wtr Vector (regular time series) of water temperature in degrees C
