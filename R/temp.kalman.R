@@ -98,7 +98,7 @@ kalmanLoopTempR <- function(nlls, alpha, c1,  P, Q, H, beta, watts, wtr){
 #'basic model process is \code{x[t] = beta*x[t-1] + c1*watts[t-1]}
 #'@param wtr Vector (regular time series) of water temperature in degrees C
 #'@param watts estimate of watts entering the layer at each time step, from \link{watts.in}
-#'@param ampH some parameter that @rbatt needs to define
+#'@param ampH factor by which to artificially amplify the observation error variance, H
 #'@param ... parameters to be passed to \link{optim}
 #'@return a smoothed temperature time series
 #'@author Ryan Batt
