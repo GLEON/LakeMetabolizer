@@ -18,7 +18,7 @@
   \item{do.obs}{Vector of dissolved oxygen concentration observations, mg L^-1}
   \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \code{\link{o2.at.sat}}}
   \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}}
-  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}}
+  \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \code{\link{ts.meta.depths}}}
   \item{irr}{Vector of photosynthetically active radiation in umoles/m2/s}
   \item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
   \item{...}{Additional parameters are passed on to the \code{\link{optim}} function}
@@ -44,7 +44,7 @@ Luke Winslow, Ryan Batt, GLEON Fellows
 }
 
 \seealso{
-	\code{\link{meta.bayesian}}, \code{\link{metab.bookkeep}}, \code{\link{metab.ols}}.
+	\code{\link{metab.bayesian}}, \code{\link{metab.bookkeep}}, \code{\link{metab.ols}}.
 }
 \examples{
  library(rLakeAnalyzer)
