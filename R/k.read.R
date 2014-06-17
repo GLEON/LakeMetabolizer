@@ -93,28 +93,13 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     stop("Data must have PAR or SW column\n")
   }
   
-  # Get water temperature data
-  if(has.vars(data, 'wtr')){ 
-    wtr <- get.vars(data, 'wtr')
-    Ts <- wtr[,2] #grab what I hope is surface temperature
-    
-  } else {
-    stop("No 'wtr' column in supplied data\n")
-  }
+
+  wtr <- get.vars(data, 'wtr')
+  Ts <- wtr[,2] #grab what I hope is surface temperature
+
+  airT <- get.vars(data, 'airt')
   
-  # Get air temperature
-  if(has.vars(data, 'airt')){ 
-    airT <- get.vars(data, 'airt')
-  } else {  
-    stop("no air temp data available")
-  }
-  
-  # Get relative humidity data
-  if(has.vars(data, 'rh')){ 
-    RH <- get.vars(data, 'rh')
-  } else {  
-    stop("no relative humidity data available")
-  }
+  RH <- get.vars(data, 'rh')
   
   # Get long wave radiation data
   if(has.vars(data, 'lwnet')){ 
@@ -132,12 +117,8 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     stop("no longwave radiation available")
   }
   
-  # Get wind speed data
-  if(has.vars(data, 'wnd')){
-    wnd <- get.vars(data, 'wnd')
-  } else{
-    stop("no wind speed data available")
-  }
+
+  wnd <- get.vars(data, 'wnd')
   
   m.d = ts.meta.depths(wtr)
   
