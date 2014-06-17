@@ -49,13 +49,9 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 	10: 20-30. doi: 10.4319/lom.2012.10.20
 }
 \author{
-	Ryan Batt
+	Ryan Batt, Luke Winslow
 }
 \note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 \code{\link{temp.smooth}}
@@ -75,6 +71,7 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 			'Sparkling.par', package="LakeMetabolizer"))
 
   #Subset a day
+  Sys.setenv(TZ='GMT')
   mod.date <- as.POSIXct('2009-08-12')
   doobs <- doobs[trunc(doobs$datetime, 'day') == mod.date, ]
   wtr <- wtr[trunc(wtr$datetime, 'day') == mod.date, ]
@@ -83,30 +80,13 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
   k600 <- k.cole.base(wnd[,2])
   k.gas <- k600.2.kGAS.base(k600, wtr[,3], 'O2')
-  do.sat <- o2.at.sat(wtr[,3], altitude=300)
+  do.sat <- o2.at.sat.base(wtr[,3], altitude=300)
 
   metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
             do.sat=do.sat, wtr=wtr[,2],
             k.gas=k.gas, do.obs=doobs[,2])
   }#dontrun
 
-## The function is currently defined as
-function (do.obs, do.sat, k.gas, z.mix, irr, wtr, ...) 
-{
-    guesses <- c(1e-04, 1e-04, log(5), log(5))
-    fit <- optim(guesses, fn = KFnllDO, do.obs = do.obs, do.sat = do.sat, 
-        k.gas = k.gas, z.mix = z.mix, irr = irr, wtr = wtr, ...)
-    pars0 <- fit$par
-    pars <- c(gppCoeff = pars0[1], rCoeff = pars0[2], Q = exp(pars0[3]), 
-        H = exp(pars0[4]))
-    smoothDO <- KFsmoothDO(pars, do.obs = do.obs, do.sat = do.sat, 
-        k.gas = k.gas, z.mix = z.mix, irr = irr, wtr = wtr)
-    n.obs <- length(do.obs)
-    GPP <- mean(pars[1] * irr, na.rm = TRUE) * n.obs
-    R <- mean(pars[2] * log(wtr), na.rm = TRUE) * n.obs
-    return(list(smoothDO = smoothDO, params = pars, metab = c(GPP = GPP, 
-        R = R, NEP = GPP + R)))
-  }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
