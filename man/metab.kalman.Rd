@@ -22,7 +22,7 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 	Vector of kGAS values calculated from any of the gas flux models (e.g., \code{\link{k.cole}}) and converted to kGAS using \code{\link{k600.2.kGAS}}
 }
   \item{z.mix}{
-	Vector of mixed-layer depths in meters. To calculate, see \code{\link{rLakeAnalyzer}}
+	Vector of mixed-layer depths in meters. To calculate, see \code{\link{ts.meta.depths}}
 }
   \item{irr}{
 	Vector of photosynthetically active radiation in umoles/m2/s
@@ -54,7 +54,7 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 \note{
 
 \seealso{
-\code{\link{temp.smooth}}
+\code{\link{temp.kalman}}
 \code{\link{watts.in}}
 \code{\link{metab}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
