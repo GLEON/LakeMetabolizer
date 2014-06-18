@@ -51,7 +51,6 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 \author{
 	Ryan Batt, Luke Winslow
 }
-\note{
 
 \seealso{
 \code{\link{temp.kalman}}

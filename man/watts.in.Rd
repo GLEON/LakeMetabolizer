@@ -45,7 +45,6 @@ watts.in(top, bot, irr, z1perc)
 \author{
 	Ryan Batt, Luke Winslow
 }
-\note{
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
