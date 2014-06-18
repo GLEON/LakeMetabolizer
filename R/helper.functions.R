@@ -137,7 +137,7 @@ rmv.vars <- function(data, var.name, ignore.missing=TRUE, ignore.offset=FALSE){
 #'@seealso 
 #'\link{has.vars}
 #'\link{get.vars}
-#'\link{rmv.var}
+#'\link{rmv.vars}
 #'@export
 var.indx <- function(data, var.name){
   if(length(var.name) != 1){

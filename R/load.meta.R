@@ -1,5 +1,23 @@
-#load.meta
-
+#'@title Loads a metadata file from the specified path
+#'@description 
+#'Parses a formatted metadata file. Useful for site-specific metadata 
+#'that is not contained in the timeseries files.
+#'
+#'@usage
+#'load.meta(fPath)
+#'@param fPath The file path as a string
+#'
+#'@return A list with the metadata parsed from the file.
+#'
+#'@keywords IO
+#'@keywords file
+#'
+#'@author Luke A Winslow
+#'
+#'@seealso 
+#'\link{load.ts}
+#'\link{load.all.data}
+#'@export
 load.meta = function(fPath){
   
   fid = file(fPath, 'rt')
