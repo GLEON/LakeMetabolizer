@@ -1,4 +1,29 @@
-
+#'@title Attemps to load and merge all timeseries data for a given site name
+#'@description 
+#' Loads and returns all the data available in the specified directory for a given site. 
+#' All timeseries data are merged by \dQuote{datetime} into a single \link{data.frame}. 
+#' Data are identified by the column header information.
+#'
+#'@usage
+#'load.all.data(lake.name, data.path, checkMerge=TRUE)
+#'@param lake.name The file prefix to be matched. For example, \dQuote{sparkling} matches \dQuote{sparkling.wtr} but not \dQuote{troutbog.wtr}
+#'@param data.path The directory to look for files
+#'@param checkMerge Should check merge size before attempting to prevent potential merge problems.
+#'
+#'@return 
+#'  A list with two items
+#'  \item{data}{}
+#'  \item{metadata}{}
+#'
+#'@keywords IO
+#'@keywords file
+#'
+#'@author Luke A. Winslow
+#'
+#'@seealso 
+#'\link{load.ts}
+#'\link{load.meta}
+#'@export
 load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
  
 	files <- dir(data.path)
