@@ -26,37 +26,20 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
     sw <- get.vars(ts.data, 'sw')
     
   } else if (has.vars(ts.data, 'par')){
-    #sw <- par
-    #parMult <- 0.4957
+
     tmp.par = get.vars(ts.data, 'par')
     sw = par.to.sw(tmp.par)
-    #sw <- sw*parMult
   } else {  
     stop("Data must have PAR or SW column\n")
   }
   
   # Get water temperature data
-  if(has.vars(ts.data, 'wtr')){ 
-    wtr <- get.vars(ts.data, 'wtr')
-    Ts <- wtr[,2] #grab what I hope is surface temperature
-    
-  } else {
-    stop("No 'wtr' column in supplied data\n")
-  }
+  wtr <- get.vars(ts.data, 'wtr')
+  Ts <- get.Ts(ts.data)
   
-  # Get air temperature
-  if(has.vars(ts.data, 'airt')){ 
-    airT <- get.vars(ts.data, 'airt')
-  } else {  
-    stop("no air temp data available")
-  }
+  airT <- get.vars(ts.data, 'airt')
   
-  # Get relative humidity data
-  if(has.vars(ts.data, 'rh')){ 
-    RH <- get.vars(ts.data, 'rh')
-  } else {  
-    stop("no relative humidity data available")
-  }
+  RH <- get.vars(ts.data, 'rh')
   
   # Get long wave radiation data
   if(has.vars(ts.data, 'lwnet')){ 
@@ -74,16 +57,10 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
     stop("no longwave radiation available")
   }
   
-  # Get wind speed data
-  if(has.vars(ts.data, 'wnd')){
-    wnd <- get.vars(ts.data, 'wnd')
-  } else{
-    stop("no wind speed data available")
-  }
-  
+  wnd <- get.vars(ts.data, 'wnd')
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
+  k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, Ts[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
