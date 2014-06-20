@@ -94,8 +94,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   }
   
 
-  wtr <- get.vars(data, 'wtr')
-  Ts <- wtr[,2] #grab what I hope is surface temperature
+  Ts <- get.Ts(data)
 
   airT <- get.vars(data, 'airt')
   
@@ -227,47 +226,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
   mnWnd <- 0.2 # minimum wind speed
-  
-  
-  # Get short wave radiation data 
-  if(!missing(sw)){ 
-    sw <- sw
-  } else if (!missing(par)){
-    #sw <- par
-    #parMult <- 0.4957
-    sw = par.to.sw(par)
-    #sw <- sw*parMult
-  } else {  
-    stop("no SW equivalent file available\n")
-  }
-
-  # Get air temperature
-  if(!missing(airT)){ 
-    airT <- airT
-  } else {  
-    stop("no air temp data available")
-  }
-  
-  # Get relative humidity data
-  if(!missing(RH)){ 
-    RH <- RH
-  } else {  
-    stop("no relative humidity data available")
-  }
-  
-  # Get long wave radiation data
-  if(!missing(lwnet)){ 
-    lwnet <- lwnet
-  } else {  
-    stop("no longwave radiation available")
-  }
-  
-  # Get wind speed data
-  if(!missing(wnd)){ 
-    #do nothingnow
-  } else{  
-    stop("no wind speed data available")
-  }
   
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
