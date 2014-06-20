@@ -10,9 +10,9 @@ k.cole.base(wnd)
 
 k.crusius.base(wnd, method='power')
 
-k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
 \arguments{
 \item{wnd}{Numeric value of wind speed, (Units:m/s)}
