@@ -93,9 +93,8 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     stop("Data must have PAR or SW column\n")
   }
   
-
-  wtr <- get.vars(data, 'wtr')
-  Ts <- wtr[,2] #grab what I hope is surface temperature
+  wtr <- get.vars(data,'wtr')
+  Ts <- get.Ts(data)
 
   airT <- get.vars(data, 'airt')
   
@@ -122,7 +121,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.read.base(wnd.z, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
+  k600 = k.read.base(wnd.z, Kd, lat, lake.area, atm.press, data$datetime, Ts[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=data$datetime, k600=k600))
@@ -142,9 +141,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k.crusius.base(wnd, method='power')
 #'
-#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'@param wnd Numeric value of wind speed, (Units:m/s)
 #'@param method Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"
 #'@param wnd.z Height of wind measurement, (Units: m)
@@ -154,7 +153,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param atm.press Atmospheric pressure, (Units: millibar)
 #'@param dateTime datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct}})
 #'@param Ts Numeric vector of surface water temperature, (Units(deg C)
-#'@param z.mix Numeric vector of  mixed layer depths. Must be the same length as the Ts parameter
+#'@param z.aml Numeric vector of actively mixed layer depths. Must be the same length as the Ts parameter
 #'@param airT Numeric value of air temperature, Units(deg C)
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
@@ -192,7 +191,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'atm.press <- 1013
 #'dateTime <- as.POSIXct("2013-12-30 14:00")
 #'Ts <- 16.5
-#'z.mix <- 2.32
+#'z.aml <- 2.32
 #'airT <- 20
 #'wnd <- 6
 #'RH <- 90
@@ -206,18 +205,18 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
 #'@export
-k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
+k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){ 
   
+  # define constants used in function
   Kelvin <- 273.15 # temp mod for deg K   
   emiss <- 0.972 # emissivity;
   S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
-  
-  # define constants used in function
+  vonK <- 0.41 # von Karman  constant
   dT <- 0.5   # change in temp for mixed layer depth
   C1 <- 114.278 # from Soloviev et al. 2007
   nu <- 0.29 # proportionality constant from Zappa et al. 2007, lower bounds
@@ -227,47 +226,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
   mnWnd <- 0.2 # minimum wind speed
-  
-  
-  # Get short wave radiation data 
-  if(!missing(sw)){ 
-    sw <- sw
-  } else if (!missing(par)){
-    #sw <- par
-    #parMult <- 0.4957
-    sw = par.to.sw(par)
-    #sw <- sw*parMult
-  } else {  
-    stop("no SW equivalent file available\n")
-  }
-
-  # Get air temperature
-  if(!missing(airT)){ 
-    airT <- airT
-  } else {  
-    stop("no air temp data available")
-  }
-  
-  # Get relative humidity data
-  if(!missing(RH)){ 
-    RH <- RH
-  } else {  
-    stop("no relative humidity data available")
-  }
-  
-  # Get long wave radiation data
-  if(!missing(lwnet)){ 
-    lwnet <- lwnet
-  } else {  
-    stop("no longwave radiation available")
-  }
-  
-  # Get wind speed data
-  if(!missing(wnd)){ 
-    #do nothingnow
-  } else{  
-    stop("no wind speed data available")
-  }
   
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
@@ -287,7 +245,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   rho_w <- water.density(Ts)
   
   # calculate u*
-  vonK <- 0.41 # von Karman  constant
   if (wnd.z != 10) {
     e1 <- sqrt(C_D)
     wnd <- wnd/(1-e1/vonK*log(10/wnd.z))
@@ -295,12 +252,11 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   rhoAir <- 1.2 #  air density
   tau <- C_D*wnd^2*rhoAir
   uSt <- sqrt(tau/rho_w)
-  z_aml = z.mix
   
   # calculate the effective heat flux
-  q1 <- 2-2*exp(z_aml*-Kd)
-  q2 <- z_aml*Kd
-  q3 <- exp(z_aml*-Kd)
+  q1 <- 2-2*exp(z.aml*-Kd)
+  q2 <- z.aml*Kd
+  q3 <- exp(z.aml*-Kd)
   H_star <- dUdt-Qo*(q1/q2-q3) # Kim 1976
   
   # calculate the thermal expansion coefficient 
@@ -324,7 +280,7 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   B1 <- Bflx
   B1[ltI] <- 0
   divi <- 1/3
-  w1 <- -B1*z_aml
+  w1 <- -B1*z.aml
   wSt <- w1^divi
   
   # calculate kinematic viscosiy

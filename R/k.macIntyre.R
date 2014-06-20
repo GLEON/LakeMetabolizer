@@ -26,37 +26,20 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
     sw <- get.vars(ts.data, 'sw')
     
   } else if (has.vars(ts.data, 'par')){
-    #sw <- par
-    #parMult <- 0.4957
+
     tmp.par = get.vars(ts.data, 'par')
     sw = par.to.sw(tmp.par)
-    #sw <- sw*parMult
   } else {  
     stop("Data must have PAR or SW column\n")
   }
   
   # Get water temperature data
-  if(has.vars(ts.data, 'wtr')){ 
-    wtr <- get.vars(ts.data, 'wtr')
-    Ts <- wtr[,2] #grab what I hope is surface temperature
-    
-  } else {
-    stop("No 'wtr' column in supplied data\n")
-  }
+  wtr <- get.vars(ts.data, 'wtr')
+  Ts <- get.Ts(ts.data)
   
-  # Get air temperature
-  if(has.vars(ts.data, 'airt')){ 
-    airT <- get.vars(ts.data, 'airt')
-  } else {  
-    stop("no air temp data available")
-  }
+  airT <- get.vars(ts.data, 'airt')
   
-  # Get relative humidity data
-  if(has.vars(ts.data, 'rh')){ 
-    RH <- get.vars(ts.data, 'rh')
-  } else {  
-    stop("no relative humidity data available")
-  }
+  RH <- get.vars(ts.data, 'rh')
   
   # Get long wave radiation data
   if(has.vars(ts.data, 'lwnet')){ 
@@ -74,75 +57,28 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
     stop("no longwave radiation available")
   }
   
-  # Get wind speed data
-  if(has.vars(ts.data, 'wnd')){
-    wnd <- get.vars(ts.data, 'wnd')
-  } else{
-    stop("no wind speed data available")
-  }
-  
+  wnd <- get.vars(ts.data, 'wnd')
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, wtr[,2], m.d$top, 
+  k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, Ts[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
   
 }
 
-k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){
+k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){
   
   #Constants
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
-  
-  dT <- 0.5   # change in temp for mixed layer depth. Step change in temperature from the surface
-  #temperature is set equivalent to the accuracy of the loggers.
   albedo_SW <- 0.07
   vonK <- 0.41 #von Karman constant
   swRat <- 0.46 # percentage of SW radiation that penetrates the water column
   mnWnd <- 0.2 # minimum wind speed
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
- 
-  # Get short wave radiation data 
-  if(!missing(sw)){ 
-    sw <- sw
-  } else if (!missing(par)){
-    sw <- par
-    parMult <- 0.4957
-    sw <- sw*parMult
-  } else {  
-    stop("no SW equivalent file available\n")
-  }
-  
-  # Get air temperature
-  if(!missing(airT)){ 
-    airT <- airT
-  } else {  
-    stop("no air temp data available")
-  }
-  
-  # Get relative humidity data
-  if(!missing(RH)){ 
-    RH <- RH
-  } else {  
-    stop("no relative humidity data available")
-  }
-  
-  # Get long wave radiation data
- 
-  if(!missing(lwnet)){ 
-    lwnet <- lwnet
-  #} else if(!missing(lw)){
-  #  lw_in <- lw # long wave in
-  #  Tk <- Ts+Kelvin # water temperature in Kelvin
-  #  LWo <- S_B*emiss*Tk^4 # long wave out
-  #  lwnet <- lw_in-LWo
-  } else {  
-    stop("no longwave radiation available")
-  }
 
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
@@ -163,7 +99,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   rho_w <- water.density(Ts)
   
   # calculate u*
-  if (wnd.z != 10) { ## ok, WTF is this. It's late, but I don't think I know this conversion
+  if (wnd.z != 10) {
     e1 <- sqrt(C_D)
     u10 <- wnd/(1-e1/vonK*log(10/wnd.z))
   }else{
@@ -175,20 +111,10 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   tau <- C_D*u10^2*rhoAir
   uSt <- sqrt(tau/rho_w)
   
-  
-  # find Z_aml
-  #if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
-  #  z_aml <- depth[length(depth)]
-  #} else {
-  #  zI <- depth[wtr[1] - dT > wtr]
-  #  z_aml <- zI[1]
-  #}
-  z_aml = z.mix
-  
   # calculate the effective heat flux
-  q1 <- 2-2*exp(z_aml*-Kd)
-  q2 <- z_aml*Kd
-  q3 <- exp(z_aml*-Kd)
+  q1 <- 2-2*exp(z.aml*-Kd)
+  q2 <- z.aml*Kd
+  q3 <- exp(z.aml*-Kd)
   H_star <- dUdt-Qo*(q1/q2-q3) # Kim 1976
   
   
@@ -226,7 +152,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   
   
   KeNm = uSt^3
-  SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z_aml))
+  SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z.aml))
   SmE[SmE<0] = 0    # set negative to 0
   Sk   = SmE*kinV
   Sk   = Sk*100^4*3600^4 # Sally's K now in cm4/h4

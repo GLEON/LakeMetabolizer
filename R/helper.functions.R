@@ -80,6 +80,50 @@ get.vars <- function(data, var.names){
   return(data[, varI | datetimeI])
 }
 
+#'@title gets surface water temperatures
+#'@description 
+#'grabs best available data for surface water temperature
+#'
+#'@param data Object of class data.frame
+#'@param s.range a numeric vector of length=2 with the range for depth measurements to still be considered 'surface'
+#'@return An object of class data.frame
+#'
+#'@keywords methods
+
+#'@author
+#'Jordan S. Read
+#'@seealso 
+#'\link{has.vars}
+#'\link{get.vars}
+#'\link{rmv.vars}
+#'@export
+get.Ts <- function(data,s.range=c(0,1)){
+  wtr <- get.vars(data,'wtr') 
+  datetimeI <- var.indx(wtr,'datetime')
+  head.nm <- names(wtr)
+  head.chnk <- strsplit(names(wtr),'_')
+  depths <- vector(length = length(head.chnk))*NA
+  for (i in seq_len(length(head.chnk))){
+    if (length(head.chnk[[i]]) == 2){
+      depths[i] <- as.numeric(head.chnk[[i]][2])
+    }
+  }
+  
+  depths[depths > s.range[2] | depths < s.range[1]] <- NA
+  
+  varI <- which.min(depths)
+  
+  if (length(varI)==0){
+    stop(paste0('no matches for water temperatures within depth range ',s.range[1],' to ',s.range[2]))
+  }
+  
+  # want to use this here, but it returns wtr_0 and wtr_0.5 etc.
+  #Ts <- get.vars(wtr,head.nm[varI])
+  
+  Ts <- wtr[, c(datetimeI,varI)]
+  return(Ts)
+}
+
 #'@title subsets data.frame according to header names
 #'@description 
 #'subsets \code{data} according to header names. Excludes all matches to \code{var.name}
