@@ -93,7 +93,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     stop("Data must have PAR or SW column\n")
   }
   
-
+  wtr <- get.vars('wtr')
   Ts <- get.Ts(data)
 
   airT <- get.vars(data, 'airt')
@@ -121,7 +121,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   
   m.d = ts.meta.depths(wtr)
   
-  k600 = k.read.base(wnd.z, Kd, lat, lake.area, atm.press, data$datetime, wtr[,2], m.d$top, 
+  k600 = k.read.base(wnd.z, Kd, lat, lake.area, atm.press, data$datetime, Ts[,2], m.d$top, 
                 airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
   
   return(data.frame(datetime=data$datetime, k600=k600))
