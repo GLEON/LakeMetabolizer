@@ -61,7 +61,7 @@ get.vars <- function(data, var.names){
   
   header = names(data)
   
-  datetimeI = var.indx(data,'datetime')
+  datetimeI = grepl('datetime', header, ignore.case=TRUE)
   
   if(!any(datetimeI)){
     stop("Can't find datetime column in supplied data.")
