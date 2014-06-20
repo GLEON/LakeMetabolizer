@@ -153,7 +153,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param atm.press Atmospheric pressure, (Units: millibar)
 #'@param dateTime datetime (Y-\%m-\%d \%H:\%M), (Format: \code{\link{POSIXct}})
 #'@param Ts Numeric vector of surface water temperature, (Units(deg C)
-#'@param z.mix Numeric vector of  mixed layer depths. Must be the same length as the Ts parameter
+#'@param z.aml Numeric vector of actively mixed layer depths. Must be the same length as the Ts parameter
 #'@param airT Numeric value of air temperature, Units(deg C)
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
@@ -191,7 +191,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'atm.press <- 1013
 #'dateTime <- as.POSIXct("2013-12-30 14:00")
 #'Ts <- 16.5
-#'z.mix <- 2.32
+#'z.aml <- 2.32
 #'airT <- 20
 #'wnd <- 6
 #'RH <- 90
@@ -205,18 +205,18 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
 #'@export
-k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){ 
+k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){ 
   
+  # define constants used in function
   Kelvin <- 273.15 # temp mod for deg K   
   emiss <- 0.972 # emissivity;
   S_B <- 5.67E-8 # Stefan-Boltzman constant (?K is used)
-  
-  # define constants used in function
+  vonK <- 0.41 # von Karman  constant
   dT <- 0.5   # change in temp for mixed layer depth
   C1 <- 114.278 # from Soloviev et al. 2007
   nu <- 0.29 # proportionality constant from Zappa et al. 2007, lower bounds
@@ -245,7 +245,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   rho_w <- water.density(Ts)
   
   # calculate u*
-  vonK <- 0.41 # von Karman  constant
   if (wnd.z != 10) {
     e1 <- sqrt(C_D)
     wnd <- wnd/(1-e1/vonK*log(10/wnd.z))
@@ -253,12 +252,11 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   rhoAir <- 1.2 #  air density
   tau <- C_D*wnd^2*rhoAir
   uSt <- sqrt(tau/rho_w)
-  z_aml = z.mix
   
   # calculate the effective heat flux
-  q1 <- 2-2*exp(z_aml*-Kd)
-  q2 <- z_aml*Kd
-  q3 <- exp(z_aml*-Kd)
+  q1 <- 2-2*exp(z.aml*-Kd)
+  q2 <- z.aml*Kd
+  q3 <- exp(z.aml*-Kd)
   H_star <- dUdt-Qo*(q1/q2-q3) # Kim 1976
   
   # calculate the thermal expansion coefficient 
@@ -282,7 +280,7 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mi
   B1 <- Bflx
   B1[ltI] <- 0
   divi <- 1/3
-  w1 <- -B1*z_aml
+  w1 <- -B1*z.aml
   wSt <- w1^divi
   
   # calculate kinematic viscosiy
