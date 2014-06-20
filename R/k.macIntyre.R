@@ -82,44 +82,6 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   mnWnd <- 0.2 # minimum wind speed
   g <- 9.81 # gravity
   C_w <- 4186 # J kg-1 ?C-1 (Lenters et al. 2005)
- 
-  # Get short wave radiation data 
-  if(!missing(sw)){ 
-    sw <- sw
-  } else if (!missing(par)){
-    sw <- par
-    parMult <- 0.4957
-    sw <- sw*parMult
-  } else {  
-    stop("no SW equivalent file available\n")
-  }
-  
-  # Get air temperature
-  if(!missing(airT)){ 
-    airT <- airT
-  } else {  
-    stop("no air temp data available")
-  }
-  
-  # Get relative humidity data
-  if(!missing(RH)){ 
-    RH <- RH
-  } else {  
-    stop("no relative humidity data available")
-  }
-  
-  # Get long wave radiation data
- 
-  if(!missing(lwnet)){ 
-    lwnet <- lwnet
-  #} else if(!missing(lw)){
-  #  lw_in <- lw # long wave in
-  #  Tk <- Ts+Kelvin # water temperature in Kelvin
-  #  LWo <- S_B*emiss*Tk^4 # long wave out
-  #  lwnet <- lw_in-LWo
-  } else {  
-    stop("no longwave radiation available")
-  }
 
   # impose limit on wind speed
   rpcI <- wnd < mnWnd
