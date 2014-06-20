@@ -100,17 +100,8 @@ get.vars <- function(data, var.names){
 get.Ts <- function(data,s.range=c(0,1)){
   wtr <- get.vars(data,'wtr') 
   datetimeI <- var.indx(wtr,'datetime')
-  head.nm <- names(wtr)
-  head.chnk <- strsplit(names(wtr),'_')
-  depths <- vector(length = length(head.chnk))*NA
-  for (i in seq_len(length(head.chnk))){
-    if (length(head.chnk[[i]]) == 2){
-      depths[i] <- as.numeric(head.chnk[[i]][2])
-    }
-  }
-  
+  depths <- c(NA, get.offsets(wtr)) # append NA for datetime col
   depths[depths > s.range[2] | depths < s.range[1]] <- NA
-  
   varI <- which.min(depths)
   
   if (length(varI)==0){
