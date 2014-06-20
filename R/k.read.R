@@ -93,7 +93,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
     stop("Data must have PAR or SW column\n")
   }
   
-  wtr <- get.vars('wtr')
+  wtr <- get.vars(data,'wtr')
   Ts <- get.Ts(data)
 
   airT <- get.vars(data, 'airt')
