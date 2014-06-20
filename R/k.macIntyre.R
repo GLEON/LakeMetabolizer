@@ -67,15 +67,12 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   
 }
 
-k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet){
+k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){
   
   #Constants
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
-  
-  dT <- 0.5   # change in temp for mixed layer depth. Step change in temperature from the surface
-  #temperature is set equivalent to the accuracy of the loggers.
   albedo_SW <- 0.07
   vonK <- 0.41 #von Karman constant
   swRat <- 0.46 # percentage of SW radiation that penetrates the water column
@@ -102,7 +99,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   rho_w <- water.density(Ts)
   
   # calculate u*
-  if (wnd.z != 10) { ## ok, WTF is this. It's late, but I don't think I know this conversion
+  if (wnd.z != 10) {
     e1 <- sqrt(C_D)
     u10 <- wnd/(1-e1/vonK*log(10/wnd.z))
   }else{
@@ -113,16 +110,6 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wn
   vonK <- 0.41 # von Karman  constant
   tau <- C_D*u10^2*rhoAir
   uSt <- sqrt(tau/rho_w)
-  
-  
-  # find Z_aml
-  #if(!is.na(wtr[1] - wtr[length(wtr)]) && wtr[1] - wtr[length(wtr)] <= dT){
-  #  z_aml <- depth[length(depth)]
-  #} else {
-  #  zI <- depth[wtr[1] - dT > wtr]
-  #  z_aml <- zI[1]
-  #}
-  z_aml = z.mix
   
   # calculate the effective heat flux
   q1 <- 2-2*exp(z_aml*-Kd)
