@@ -33,7 +33,7 @@ k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, l
 
 \item{Ts}{Numeric vector of surface water temperature, (Units(deg C)}
 
-\item{z.mix}{Numeric vector of  mixed layer depths. Must be the same length as the Ts parameter}
+\item{z.aml}{Numeric vector of actively mixed layer depths. Must be the same length as the Ts parameter}
 
 \item{airT}{Numeric value of air temperature, Units(deg C)}
 
@@ -58,7 +58,7 @@ lake.area <- 5000
 atm.press <- 1013
 dateTime <- as.POSIXct("2013-12-30 14:00")
 Ts <- 16.5
-z.mix <- 2.32
+z.aml <- 2.32
 airT <- 20
 wnd <- 6
 RH <- 90
@@ -72,9 +72,9 @@ k600_cole <- k.cole.base(U10)
 
 k600_crusius <- k.crusius.base(U10)
 
-k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.mix, airT, wnd, RH, sw, lwnet)
+k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
 \author{
 R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
