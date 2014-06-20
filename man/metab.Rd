@@ -73,7 +73,7 @@ Returns daily time series of gross primary production (GPP), respiration (R), an
 	m.ols <- metab(data, "ols", lake.lat=42.6)
 	m.mle <- metab(data, "mle", lake.lat=42.6)
 	m.kal <- metab(data, "kalman", lake.lat=42.6)
-	m.bay <- metab(data, "bayesian", lake.lat=42.6)
+	\dontrun{m.bay <- metab(data, "bayesian", lake.lat=42.6)}
 
 # example attributes
 names(attributes(m.ols))
