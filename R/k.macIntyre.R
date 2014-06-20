@@ -112,9 +112,9 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wn
   uSt <- sqrt(tau/rho_w)
   
   # calculate the effective heat flux
-  q1 <- 2-2*exp(z_aml*-Kd)
-  q2 <- z_aml*Kd
-  q3 <- exp(z_aml*-Kd)
+  q1 <- 2-2*exp(z.aml*-Kd)
+  q2 <- z.aml*Kd
+  q3 <- exp(z.aml*-Kd)
   H_star <- dUdt-Qo*(q1/q2-q3) # Kim 1976
   
   
@@ -152,7 +152,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wn
   
   
   KeNm = uSt^3
-  SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z_aml))
+  SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z.aml))
   SmE[SmE<0] = 0    # set negative to 0
   Sk   = SmE*kinV
   Sk   = Sk*100^4*3600^4 # Sally's K now in cm4/h4
