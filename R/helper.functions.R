@@ -404,6 +404,7 @@ conquerList <- function(x, naming=NULL){
 # = Simple way of estimating watts entering water layer =
 # =======================================================
 #RDB
+#'@export
 watts.in <- function(top, bot, irr, z1perc){
   # top = the top of the layer in meters (e.g., 2)
   # bottom = the bottom of the layer in meters (e.g., 4)
