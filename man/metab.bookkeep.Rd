@@ -65,6 +65,6 @@ Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell.
 Limnology and Oceanography 45 (8): 1718-1730. doi:10.4319/lo.2000.45.8.1718.
 }
 \seealso{
-\link{metab.bayesian}, \link{metab.mle}
+\link{metab.bayesian}, \link{metab.mle}, \link{metab.kalman}
 }
 

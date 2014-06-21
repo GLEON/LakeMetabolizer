@@ -201,7 +201,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'Limnology and Oceanography 55 (3): 1047-1062. doi:10.4319/lo.2010.55.3.1047. 
 #'http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
 #'@seealso
-#'\link{metab.mle}, \link{metab.bookkeep}
+#'\link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
 #'@author Ryan Batt, Luke A. Winslow
 #'@examples
 #'\dontrun{
