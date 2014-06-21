@@ -4,13 +4,14 @@
 #'o2.at.sat
 #'o2.at.sat.base
 #'@usage
+#'o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia")
 #'o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "garcia")
-#'o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
 #'@description
 #'Used to calculate the equilibrium concentration of oxygen in water. 
 #'The equilibration concentration of oxygen in water varies with both 
 #'temperature, salinity, and the partial pressure of oxygen in contact 
 #'with the water (calculated from supplied elevation or barometric pressure).
+#'@param ts.data Object of class data.frame with named columns datetime and k600 and wtr (water temp in deg C). Other columns are ignored
 #'@param temp a numeric vector of water temperature in degrees Celsius.
 #'@param baro barometric pressure in millibars.
 #'@param altitude a numeric value indicating the elevation above mean sea level in meters. 
@@ -43,14 +44,14 @@
 #'plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 #'
 #'@export
-o2.at.sat <- function(temp, baro, altitude=0, salinity=0, model='garcia'){
-	if(ncol(temp) > 2){
-		stop('Temp can only have two columns, "datetime" and temperature')
+o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
+	if(ncol(ts.data) > 2){
+		stop('Temp can only have two columns, "datetime" and "wtr"')
 	}
 
-	dosat <- o2.at.sat(temp[,2], baro, altitude, salinity, model)
+	dosat <- o2.at.sat.base(ts.data$wtr, baro, altitude, salinity, model)
 
-	return(data.frame(datetime=temp$datetime, dosat=dosat))  
+	return(data.frame(datetime=temp$datetime, do.sat=dosat))  
 }
 
 #'@export
