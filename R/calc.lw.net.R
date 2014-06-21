@@ -1,5 +1,7 @@
 #'@name calc.lw.net
-#'@aliases calc.lw.net.base
+#'@aliases 
+#'calc.lw.net
+#'calc.lw.net.base
 #'@title Estimate net long wave heat radiation
 #'@description 
 #'Returns the net long wave radiation based on Crawford and Duchon, 1999.
