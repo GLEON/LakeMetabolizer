@@ -16,7 +16,7 @@ metab(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...)
 
  \code{"k.gas"} = numeric vector of gas exchange coefficient values in m/day, should be 0 when depth of do.obs is shallower than z.mix
 
- \code{"z.mix"} = numeric vector of mixign depth values in meters
+ \code{"z.mix"} = numeric vector of mixing depth values in meters
 
  \code{"irr"} = numeric vector of PAR values, arbitrary units
 

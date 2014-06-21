@@ -1,7 +1,7 @@
 #'@title Metabolism model based on a maximum likelihood parameter estimation framework.
 #'@description This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data. This is a 
 #'common approach that allows for the concurrent estimation of metabolism paramters from a timeseries.
-#'@param do.obs Vector of dissovled oxygen concentration observations, mg L^-1
+#'@param do.obs Vector of dissolved oxygen concentration observations, mg L^-1
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}

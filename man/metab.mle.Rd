@@ -6,7 +6,7 @@
 metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 }
 \arguments{
-\item{do.obs}{Vector of dissovled oxygen concentration observations, mg L^-1}
+\item{do.obs}{Vector of dissolved oxygen concentration observations, mg L^-1}
 
 \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}}
 
