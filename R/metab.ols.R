@@ -19,7 +19,6 @@
 #'@seealso
 #'\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.mle}, \link{metab}
 #'@examples
-#'\dontrun{
 #'library(rLakeAnalyzer)
 #'doobs = load.ts(system.file('extdata', 
 #'                            'Sparkling.doobs', package="LakeMetabolizer"))
@@ -43,7 +42,6 @@
 #'do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 #'
 #'metab.ole(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
-#'}
 #'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 

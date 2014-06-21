@@ -22,7 +22,6 @@
 #'@seealso
 #'\link{metab.bayesian}, \link{metab.mle}, \link{metab.kalman}
 #'@examples
-#'\dontrun{
 #'library(rLakeAnalyzer)
 #'Sys.setenv(TZ='GMT')
 #'
@@ -46,7 +45,6 @@
 #'irr = as.integer(is.day(doobs[,1], 45))
 #'
 #'metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr)
-#'}
 #'@export
 metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 

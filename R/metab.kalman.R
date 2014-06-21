@@ -245,7 +245,6 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 #'\link{temp.kalman}, \link{watts.in}, \link{metab}, \link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
 #'@author Ryan Batt, Luke A. Winslow
 #'@examples
-#'\dontrun{
 #'doobs <- load.ts(system.file('extdata', 
 #'                             'Sparkling.doobs', package="LakeMetabolizer"))
 #'wtr <- load.ts(system.file('extdata', 
@@ -270,7 +269,6 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 #'metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
 #'             do.sat=do.sat, wtr=wtr[,2],
 #'             k.gas=k.gas, do.obs=doobs[,2])
-#'}
 #'@export
 metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	
