@@ -34,7 +34,6 @@ Uses a Kalman filter to fit parameters relating irr to GPP, log(wtr) to R, proce
 Also provides a smoothed time series of oxygen concentration.
 }
 \examples{
-\dontrun{
 doobs <- load.ts(system.file('extdata',
                             'Sparkling.doobs', package="LakeMetabolizer"))
 wtr <- load.ts(system.file('extdata',
@@ -59,7 +58,6 @@ do.sat <- o2.at.sat.base(wtr[,3], altitude=300)
 metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)),
             do.sat=do.sat, wtr=wtr[,2],
             k.gas=k.gas, do.obs=doobs[,2])
-}
 }
 \author{
 Ryan Batt, Luke A. Winslow

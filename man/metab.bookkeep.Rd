@@ -30,7 +30,6 @@ the day are due to NEP and gas exchange. Respiration is estimated from night-tim
 GPP is calculated from the algebraic manipulation of NEP and R. Based on Cole et al 2000.
 }
 \examples{
-\dontrun{
 library(rLakeAnalyzer)
 Sys.setenv(TZ='GMT')
 
@@ -54,7 +53,6 @@ do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 irr = as.integer(is.day(doobs[,1], 45))
 
 metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr)
-}
 }
 \author{
 R. Iestyn Woolway, Hilary Dugan, Luke A Winslow, Ryan Batt, Jordan S Read, GLEON fellows

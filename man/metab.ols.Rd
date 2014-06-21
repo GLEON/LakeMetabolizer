@@ -34,7 +34,6 @@ This function runs the ordinary least squares metabolism model on the supplied g
 common approach that allows for the concurrent estimation of metabolism paramters from a timeseries.
 }
 \examples{
-\dontrun{
 library(rLakeAnalyzer)
 doobs = load.ts(system.file('extdata',
                            'Sparkling.doobs', package="LakeMetabolizer"))
@@ -58,7 +57,6 @@ k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
 do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 
 metab.ole(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
-}
 }
 \author{
 Luke A Winslow, Ryan Batt, GLEON Fellows
