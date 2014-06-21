@@ -1,27 +1,64 @@
-#'@title Metabolism model based on a maximum likelihood parameter estimation framework.
-#'@description This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data. This is a 
-#'common approach that allows for the concurrent estimation of metabolism paramters from a timeseries.
-#'@param do.obs Vector of dissolved oxygen concentration observations, mg L^-1
+#'@title Metabolism calculated from the maximum likelihood estimates of the parameters in a standard linear regression model
+#'@description Process-error-only model with parameters fitted via maximum likelihood estimation (MLE). This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data.
+#'@param do.obs Vector of dissolved oxygen concentration observations, \eqn{mg O[2] L^{-1}}{mg O2 / L}
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
-#'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param ... additional arguments to be passed
 #'@return
-#'A named list of parameter estimates.
-#'\item{GPP}{Estimated Gross Primary Productivity}
-#'\item{R}{Estimated ecosystem respiration}
+#'A data.frame with columns corresponding to components of metabolism 
+#'\describe{
+	#'\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+#'}
+#' The maximum likelihood estimates of model parameters can be accessed via \code{attributes(metab.mle(...))[["params"]]}
+#' 
+#'@details
+#'The model has the three parameters, \eqn{c1, c2, \epsilon}{c1, c2, epsilon}, and has the form
+#'
+#'\deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
+#'
+#'\deqn{a_t = c_1*irr_{t-1} + c_2*log_e(wtr_{t-1}) + v_{t-1}*do.sat_{t-1}}{a[t] = c1*irr[t-1] + c2*log(wtr[t-1]) + v[t-1]*do.sat[t-1]}
+#'
+#'\deqn{\beta = e^{-v}}{beta = exp(-v)}
+#'
+#'\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + \beta_{t-1}*\do.obs_{t-1} + \epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
+#'
+#'
+#' The above model is used during model fitting, but if gas flux is not integrated between time steps, those equations simplify to the following:
+#'
+#' \deqn{F_{t-1} = k.gas_{t-1}*(do.sat_{t-1} - do.obs_{t-1})/z.mix_{t-1}}{F[t-1] = k.gas[t-1]*(do.sat[t-1] - do.obs[t-1])/z.mix[t-1]}
+#'
+#'\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + \epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
+#'
+#'
+#'The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings. 
+#'
+#'GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}. 
+#'
+#'Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}. 
+#'
+#'NEP is the sum of GPP and R. 
+#'
+#'@note Currently, missing values in any arguments will result in an error, so freq must always equal nobs.
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@references
+#'Hanson, PC, SR Carpenter, N Kimura, C Wu, SP Cornelius, TK Kratz. 2008 
+#'\emph{Evaluation of metabolism models for free-water dissolved oxygen in lakes}. 
+#'Limnology and Oceanography: Methods 6: 454:465.
+#'
 #'Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget, 
 #'R Adrian, B Leroux Babin, CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell, 
-#'ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw 2013. 
+#'ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw. 2013. 
 #'\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
-#'Limnology and Oceanograph 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
+#'Limnology and Oceanography 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
+#'
 #'@seealso
-#'\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.ols}
+#'\link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.kalman}, \link{metab.bayesian}
 #'@examples
 #'library(rLakeAnalyzer)
 #'doobs = load.ts(system.file('extdata', 
