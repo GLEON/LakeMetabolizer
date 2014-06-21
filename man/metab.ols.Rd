@@ -62,6 +62,6 @@ metab.ole(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 Luke A Winslow, Ryan Batt, GLEON Fellows
 }
 \seealso{
-\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.mle}, \link{metab}
+\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab}
 }
 

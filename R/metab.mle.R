@@ -22,7 +22,7 @@
 #'\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
 #'Limnology and Oceanograph 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 #'@seealso
-#'\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.ols}
+#'\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.ols}
 #'@examples
 #'library(rLakeAnalyzer)
 #'doobs = load.ts(system.file('extdata', 

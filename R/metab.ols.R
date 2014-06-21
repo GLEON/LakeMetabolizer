@@ -17,7 +17,7 @@
 #'\item{NEP}{Net Ecosystem Productivity}
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@seealso
-#'\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.mle}, \link{metab}
+#'\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab}
 #'@examples
 #'library(rLakeAnalyzer)
 #'doobs = load.ts(system.file('extdata', 

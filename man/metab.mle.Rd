@@ -68,6 +68,6 @@ ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw 2013.
 Limnology and Oceanograph 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 }
 \seealso{
-\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.ols}
+\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.ols}
 }
 
