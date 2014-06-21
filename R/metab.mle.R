@@ -1,7 +1,54 @@
-
-# ====================
-# = Main mle wrapper =
-# ====================
+#'@title Metabolism model based on a maximum likelihood parameter estimation framework.
+#'@description This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data. This is a 
+#'common approach that allows for the concurrent estimation of metabolism paramters from a timeseries.
+#'@param do.obs Vector of dissovled oxygen concentration observations, mg L^-1
+#'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
+#'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
+#'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
+#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
+#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
+#'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
+#'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
+#'@param ... additional arguments to be passed
+#'@return
+#'A named list of parameter estimates.
+#'\item{GPP}{Estimated Gross Primary Productivity}
+#'\item{R}{Estimated ecosystem respiration}
+#'@author Luke A Winslow, Ryan Batt, GLEON Fellows
+#'@references
+#'Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget, 
+#'R Adrian, B Leroux Babin, CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell, 
+#'ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw 2013. 
+#'\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
+#'Limnology and Oceanograph 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
+#'@seealso
+#'\link{metab.bayesian}, \link{metab.bookeep}, \link{metab.ols}
+#'@examples
+#'\dontrun{
+#'library(rLakeAnalyzer)
+#'doobs = load.ts(system.file('extdata', 
+#'                            'Sparkling.doobs', package="LakeMetabolizer"))
+#'wtr = load.ts(system.file('extdata', 
+#'                          'Sparkling.wtr', package="LakeMetabolizer"))
+#'wnd = load.ts(system.file('extdata', 
+#'                          'Sparkling.wnd', package="LakeMetabolizer"))
+#'irr = load.ts(system.file('extdata', 
+#'                          'Sparkling.par', package="LakeMetabolizer"))
+#'
+#'#Subset a day
+#'mod.date = as.POSIXct('2009-08-12')
+#'doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
+#'wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
+#'wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
+#'irr = irr[trunc(irr$datetime, 'day') == mod.date, ]
+#'z.mix = ts.thermo.depth(wtr)
+#'
+#'k600 = k.cole.base(wnd[,2])
+#'k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
+#'do.sat = o2.at.sat.base(wtr[,3], altitude=300)
+#'
+#'metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
+#'}
 #'@export
 metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
