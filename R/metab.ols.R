@@ -8,7 +8,6 @@
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in umoles/m2/s
 #'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
-#'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
 #'@param ... additional arguments to be passed
 #'@return
 #'A named list of parameter estimates.
@@ -41,7 +40,7 @@
 #'k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
 #'do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 #'
-#'metab.ole(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
+#'metab.ols(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 #'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
