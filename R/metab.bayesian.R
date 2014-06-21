@@ -177,7 +177,60 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	)) # need to clean up format, and maybe include a return of the sd's of the estimates
 }
 
-
+#'@title Metabolism model based on a bayesian parameter estimation framework
+#'@description This function runs the bayesian metabolism model on the supplied 
+#'gas concentration and other supporting data. This allows for both estimates of 
+#'metabolism along with uncertainty around the parameters.
+#'@param do.obs Vector of dissovled oxygen concentration observations, mg L^-1
+#'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
+#'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
+#'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
+#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
+#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
+#'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
+#'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
+#'@param ... additional arguments to be passed
+#'@return
+#'A named list of parameter estimates.
+#'\item{GPP}{Estimated Gross Primary Productivity}
+#'\item{R}{Estimated ecosystem respiration}
+#'@references
+#'Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar. 
+#'2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration 
+#'Using a Bayesian Statistical Model of Oxygen Dynamics}. 
+#'Limnology and Oceanography 55 (3): 1047-1062. doi:10.4319/lo.2010.55.3.1047. 
+#'http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
+#'@seealso
+#'\link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
+#'@author Ryan Batt, Luke A. Winslow
+#'@examples
+#'\dontrun{
+#'library(rLakeAnalyzer)
+#'
+#'doobs = load.ts(system.file('extdata', 
+#'                            'Sparkling.doobs', package="LakeMetabolizer"))
+#'wtr = load.ts(system.file('extdata', 
+#'                          'Sparkling.wtr', package="LakeMetabolizer"))
+#'wnd = load.ts(system.file('extdata', 
+#'                          'Sparkling.wnd', package="LakeMetabolizer"))
+#'irr = load.ts(system.file('extdata', 
+#'                          'Sparkling.par', package="LakeMetabolizer"))
+#'
+#'#Subset a day
+#'mod.date = as.POSIXct('2009-08-12')
+#'doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
+#'wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
+#'wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
+#'irr = irr[trunc(irr$datetime, 'day') == mod.date, ]
+#'
+#'k600 = k.cole.base(wnd[,2])
+#'k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
+#'do.sat = o2.at.sat(wtr[,3], altitude=300)
+#'
+#'metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
+#'               do.sat=do.sat, wtr=wtr[,2],
+#'               k.gas=k.gas, do.obs=doobs[,2])
+#'}
 #'@export
 metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	
