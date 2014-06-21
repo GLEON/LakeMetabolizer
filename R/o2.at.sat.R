@@ -11,7 +11,7 @@
 #'The equilibration concentration of oxygen in water varies with both 
 #'temperature, salinity, and the partial pressure of oxygen in contact 
 #'with the water (calculated from supplied elevation or barometric pressure).
-#'@param ts.data Object of class data.frame with named columns datetime and k600 and wtr (water temp in deg C). Other columns are ignored
+#'@param ts.data Object of class data.frame with two named columns \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).
 #'@param temp a numeric vector of water temperature in degrees Celsius.
 #'@param baro barometric pressure in millibars.
 #'@param altitude a numeric value indicating the elevation above mean sea level in meters. 
