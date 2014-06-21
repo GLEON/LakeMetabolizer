@@ -11,11 +11,14 @@
 #'The equilibration concentration of oxygen in water varies with both 
 #'temperature, salinity, and the partial pressure of oxygen in contact 
 #'with the water (calculated from supplied elevation or barometric pressure).
-#'@param temp
-#'@param baro
-#'@param altitude
-#'@param salinity
-#'@param model
+#'@param temp a numeric vector of water temperature in degrees Celsius.
+#'@param baro barometric pressure in millibars.
+#'@param altitude a numeric value indicating the elevation above mean sea level in meters. 
+#'Defaults to mean sea level. An alternative to supplying barometric pressure.
+#'@param salinity a numeric vector of salinity in PSU. Defaults to zero. 
+#'Length must be one or equal to length of temperature.
+#'@param model the empirical model to be used, \code{"weiss"} and \code{"benson"} are the two available options. They correspond to the references described below.
+#'
 #'@return
 #'The equilibration concentration at the supplied conditions in mg/L of oxygen.
 #'@author

@@ -8,15 +8,17 @@ o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model 
 o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
 }
 \arguments{
-\item{temp}{}
+\item{temp}{a numeric vector of water temperature in degrees Celsius.}
 
-\item{baro}{}
+\item{baro}{barometric pressure in millibars.}
 
-\item{altitude}{}
+\item{altitude}{a numeric value indicating the elevation above mean sea level in meters.
+Defaults to mean sea level. An alternative to supplying barometric pressure.}
 
-\item{salinity}{}
+\item{salinity}{a numeric vector of salinity in PSU. Defaults to zero.
+Length must be one or equal to length of temperature.}
 
-\item{model}{}
+\item{model}{the empirical model to be used, \code{"weiss"} and \code{"benson"} are the two available options. They correspond to the references described below.}
 }
 \value{
 The equilibration concentration at the supplied conditions in mg/L of oxygen.
