@@ -5,10 +5,12 @@
 \title{Calculates the equilibrium saturation concentration of oxygen in water at the supplied conditions}
 \usage{
 o2.at.sat.base(temp, baro, altitude = 0,
-salinity = rep(0, length(temp)), model = "garcia")
+   salinity = rep(0, length(temp)), model = "garcia")
 o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
 }
 \arguments{
+\item{ts.data}{Object of class data.frame with two named columns \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).}
+
 \item{temp}{a numeric vector of water temperature in degrees Celsius.}
 
 \item{baro}{barometric pressure in millibars.}
