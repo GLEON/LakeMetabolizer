@@ -275,6 +275,11 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	nobs <- length(do.obs)
 	
 	mm.args <- list(...)
+  
+	if(any(z.mix <= 0)){
+	  stop("z.mix cannot be zero.")
+	}
+  
 	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
 		datetime <- mm.args$datetime # extract datetime
 		freq <- calc.freq(datetime) # calculate sampling frequency from datetime

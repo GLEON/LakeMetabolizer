@@ -51,6 +51,11 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 	nobs <- length(do.obs)  
 
 	mb.args <- list(...)
+  
+	if(any(z.mix <= 0)){
+	  stop("z.mix cannot be zero.")
+	}
+  
 	if("datetime"%in%names(mb.args)){ # check to see if datetime is in the ... args
 		datetime <- mb.args$datetime # extract datetime
 		freq <- calc.freq(datetime) # calculate sampling frequency from datetime

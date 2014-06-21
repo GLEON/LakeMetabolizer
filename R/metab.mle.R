@@ -52,6 +52,11 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	nobs <- length(do.obs)
 	
 	mm.args <- list(...)
+  
+  if(any(z.mix <= 0)){
+    stop("z.mix cannot be zero.")
+  }
+  
 	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
 		datetime <- mm.args$datetime # extract datetime
 		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
@@ -96,6 +101,7 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 # = The R loop for mle NLL =
 # ==========================
 mleLoopR <- function(alpha, doobs, c1, c2, beta, irr, wtr, kz, dosat){
+  browser()
 	nobs <- length(doobs)
 	a.loop <- .C("mleLoopC", alpha=as.double(alpha), as.double(doobs), as.double(c1), as.double(c2), as.double(beta), as.double(irr), as.double(wtr), as.double(kz), as.double(dosat), as.integer(nobs), PACKAGE="LakeMetabolizer")
 	return(a.loop[["alpha"]])

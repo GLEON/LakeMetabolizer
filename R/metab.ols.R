@@ -47,6 +47,11 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	nobs <- length(do.obs)
 	
 	mo.args <- list(...)
+  
+	if(any(z.mix <= 0)){
+	  stop("z.mix cannot be zero.")
+	}
+  
 	if("datetime"%in%names(mo.args)){ # check to see if datetime is in the ... args
 		datetime <- mo.args$datetime # extract datetime
 		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
