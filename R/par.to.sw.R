@@ -1,5 +1,5 @@
 
-#default functions
+#'@export
 par.to.sw.base = function(par){
   
   sw = par* 2.114

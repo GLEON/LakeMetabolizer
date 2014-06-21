@@ -24,7 +24,7 @@ metabData <- function(do.ts, wtrAll.ts, wnd.ts, irr.ts, atmPress=716/0.75006168,
 	m1.ts <- merge(wnd.ts, wtrAll.ts[,1:2], all=TRUE)
 	names(m1.ts) <- c("datetime", "wnd", "wtr")
 	
-	wind <- scale.exp.wind(m1.ts[,"wnd"], wndHeight) # convert wind
+	wind <- wind.scale(m1.ts[,"wnd"], wndHeight) # convert wind
 	Kvec <- k600.2.kGAS(k.cole(wind), m1.ts[,"wtr"], "O2")/Freq # calculate K for relevant sampling frequency
 	m2.ts <- cbind(m1.ts, "k.gas"=Kvec)
 	

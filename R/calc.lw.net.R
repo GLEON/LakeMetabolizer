@@ -1,5 +1,7 @@
 #'@name calc.lw.net
-#'@aliases calc.lw.net.base
+#'@aliases 
+#'calc.lw.net
+#'calc.lw.net.base
 #'@title Estimate net long wave heat radiation
 #'@description 
 #'Returns the net long wave radiation based on Crawford and Duchon, 1999.
@@ -85,7 +87,7 @@ calc.lw.net = function(ts.data, lat, atm.press){
   return(data.frame(datetime=ts.data$datetime, lwnet=lw.calc))
 }
 
-
+#'@export
 calc.lw.net.base <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   
   # estimate clear sky short wave radiation
