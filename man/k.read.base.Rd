@@ -17,7 +17,7 @@ k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, l
 \arguments{
 \item{wnd}{Numeric value of wind speed, (Units:m/s)}
 
-\item{method}{Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"}
+\item{method}{Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"}
 
 \item{wnd.z}{Height of wind measurement, (Units: m)}
 
@@ -66,7 +66,7 @@ sw <- 800
 lwnet <- -55
 timeStep <- 30
 
-U10 <- scale.exp.wind.base(wnd, wnd.z)
+U10 <- wind.scale.base(wnd, wnd.z)
 
 k600_cole <- k.cole.base(U10)
 

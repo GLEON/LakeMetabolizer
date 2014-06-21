@@ -13,7 +13,7 @@ wind.scale <- function(ts.data, wndZ){
 		stop('too many columns supplied to scale.exp.wind. Please supply only one datetime and wnd columns.')
 	}
 	
-	u10 = scale.exp.wind.base(wnd[,2], wndZ)
+	u10 = wind.scale.base(wnd[,2], wndZ)
 	
 	return(data.frame(datetime=ts.data$datetime, wnd_10=u10))
 }
