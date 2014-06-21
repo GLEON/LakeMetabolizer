@@ -17,7 +17,7 @@
 #
 # Initial Author: Luke Winslow
 ###########################################################################
-
+#'@export
 o2.at.sat <- function(temp, baro, altitude=0, salinity=0, model='garcia'){
 	if(ncol(temp) > 2){
 		stop('Temp can only have two columns, "datetime" and temperature')
@@ -28,7 +28,7 @@ o2.at.sat <- function(temp, baro, altitude=0, salinity=0, model='garcia'){
 	return(data.frame(datetime=temp$datetime, dosat=dosat))  
 }
 
-
+#'@export
 o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
 

@@ -225,6 +225,7 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 # = Wrapper function =
 # ====================
 # Kalman filter metabolism w/ main recursion in NLL function written in C
+#'@export
 metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	
 	nobs <- length(do.obs)

@@ -48,7 +48,7 @@ k600.2.kGAS.base	<-	function(k600,temperature,gas="O2"){
 	return(kGAS)
 }
 
-
+#'@export
 k600.2.kGAS = function(ts.data, gas="O2"){
   
 	k600 = get.vars(ts.data, 'k600')

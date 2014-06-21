@@ -10,7 +10,7 @@
 #'@return a boolean vector of same length as \code{var.names} 
 #'
 #'@keywords methods
-
+#'@import plyr
 #'@author
 #'Luke A. Winslow
 #'@seealso 

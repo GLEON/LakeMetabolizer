@@ -1,6 +1,4 @@
-
-
-
+#'@export
 sw.to.par.base = function(sw){
   
   par = sw * 0.473

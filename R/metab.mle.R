@@ -2,6 +2,7 @@
 # ====================
 # = Main mle wrapper =
 # ====================
+#'@export
 metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
 	nobs <- length(do.obs)

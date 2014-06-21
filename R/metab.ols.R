@@ -1,3 +1,4 @@
+#'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
 	nobs <- length(do.obs)

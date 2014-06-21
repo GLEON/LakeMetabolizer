@@ -178,7 +178,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 }
 
 
-
+#'@export
 metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	
 	mb.args <- list(...)

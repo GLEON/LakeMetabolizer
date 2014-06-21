@@ -23,6 +23,8 @@
 #'@param lat Latitude, degrees north
 #'@param lake.area Lake area, m^2
 #'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
+#'@import rLakeAnalyzer
+#'@useDynLib LakeMetabolizer
 #'@keywords methods math
 #'@references
 #'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
@@ -54,7 +56,7 @@
 #'
 #'#calculate U10 and add it back onto the original 
 #'
-#'u10 = scale.exp.wind(ts.data)
+#'u10 = wind.scale(ts.data)
 #'ts.data = rmv.vars(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
 #'ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset  
 #'
@@ -145,7 +147,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'@param wnd Numeric value of wind speed, (Units:m/s)
-#'@param method Only for \link{k.crusius.base}. String of valid method . Either "linear", "bilinear", or "power"
+#'@param method Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"
 #'@param wnd.z Height of wind measurement, (Units: m)
 #'@param Kd Light attenuation coefficient (Units: m^-1)
 #'@param lat Latitude, degrees north
@@ -199,7 +201,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'lwnet <- -55
 #'timeStep <- 30
 #'
-#'U10 <- scale.exp.wind.base(wnd, wnd.z)
+#'U10 <- wind.scale.base(wnd, wnd.z)
 #'
 #'k600_cole <- k.cole.base(U10)
 #'

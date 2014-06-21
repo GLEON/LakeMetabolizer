@@ -1,4 +1,4 @@
-
+#'@export
 metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 	#do.obs     - Concentration units
 	#do.sat     - concentration units

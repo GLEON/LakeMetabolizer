@@ -18,8 +18,7 @@
 # OUTPUT: returns the gas exchange velocity for O2 in units of m/(timeStep*min) (i.e. 30 minute sampling 
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
-
-
+#'@export
 k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   # Get short wave radiation data 
   if(has.vars(ts.data, 'sw')){ 
@@ -66,7 +65,7 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   return(data.frame(datetime=ts.data$datetime, k600=k600))
   
 }
-
+#'@export
 k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){
   
   #Constants
