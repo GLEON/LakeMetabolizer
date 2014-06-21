@@ -4,8 +4,9 @@
 #'o2.at.sat
 #'o2.at.sat.base
 #'@usage
-#'o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia")
-#'o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "garcia")
+#'o2.at.sat.base(temp, baro, altitude = 0, 
+#'    salinity = rep(0, length(temp)), model = "garcia")
+#'o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
 #'@description
 #'Used to calculate the equilibrium concentration of oxygen in water. 
 #'The equilibration concentration of oxygen in water varies with both 
@@ -40,7 +41,8 @@
 #'sal.range = 1:25
 #'
 #'par(mfrow=c(1,2))
-#'plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
+#'plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', 
+#'ylab='Oxygen Saturation (mg/L)')
 #'plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 #'
 #'@export

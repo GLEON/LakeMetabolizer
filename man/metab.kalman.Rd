@@ -19,8 +19,6 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
 \item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
 
-\item{priors}{Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}
-
 \item{...}{additional arguments to be passed to \link{optim}}
 }
 \value{
@@ -34,6 +32,7 @@ Uses a Kalman filter to fit parameters relating irr to GPP, log(wtr) to R, proce
 Also provides a smoothed time series of oxygen concentration.
 }
 \examples{
+library(rLakeAnalyzer)
 doobs <- load.ts(system.file('extdata',
                             'Sparkling.doobs', package="LakeMetabolizer"))
 wtr <- load.ts(system.file('extdata',

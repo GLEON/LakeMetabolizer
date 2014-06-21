@@ -8,7 +8,6 @@
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in umoles/m2/s
 #'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
-#'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
 #'@param ... additional arguments to be passed
 #'@return
 #'A named list of parameter estimates.

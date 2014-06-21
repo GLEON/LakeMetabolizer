@@ -19,8 +19,6 @@ metab.ols(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
 \item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
 
-\item{priors}{Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}
-
 \item{...}{additional arguments to be passed}
 }
 \value{

@@ -4,8 +4,9 @@
 \alias{o2.at.sat.base}
 \title{Calculates the equilibrium saturation concentration of oxygen in water at the supplied conditions}
 \usage{
-o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia")
-o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)), model = "garcia")
+o2.at.sat.base(temp, baro, altitude = 0,
+   salinity = rep(0, length(temp)), model = "garcia")
+o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
 }
 \arguments{
 \item{ts.data}{Object of class data.frame with two named columns \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).}
@@ -36,7 +37,8 @@ temp.range = 1:25
 sal.range = 1:25
 
 par(mfrow=c(1,2))
-plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', ylab='Oxygen Saturation (mg/L)')
+plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)',
+ylab='Oxygen Saturation (mg/L)')
 plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 }
 \author{
