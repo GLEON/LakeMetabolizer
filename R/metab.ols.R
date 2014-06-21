@@ -41,7 +41,7 @@
 #'k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
 #'do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 #'
-#'metab.ole(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
+#'metab.ols(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 #'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
