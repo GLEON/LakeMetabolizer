@@ -143,7 +143,8 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k.crusius.base(wnd, method='power')
 #'
-#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
+#'airT, wnd, RH, sw, lwnet)
 #'
 #'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'@param wnd Numeric value of wind speed, (Units:m/s)
@@ -207,10 +208,12 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
+#'z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
-
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
+#'z.aml, airT, wnd, RH, sw, lwnet)
+#'
 #'@export
 k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){ 
   

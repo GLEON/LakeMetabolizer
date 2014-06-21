@@ -10,7 +10,8 @@ k.cole.base(wnd)
 
 k.crusius.base(wnd, method='power')
 
-k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
+airT, wnd, RH, sw, lwnet)
 
 k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
@@ -72,9 +73,11 @@ k600_cole <- k.cole.base(U10)
 
 k600_crusius <- k.crusius.base(U10)
 
-k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts,
+z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
+z.aml, airT, wnd, RH, sw, lwnet)
 }
 \author{
 R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
