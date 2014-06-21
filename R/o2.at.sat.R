@@ -6,7 +6,7 @@
 #'@usage
 #'o2.at.sat.base(temp, baro, altitude = 0, 
 #'    salinity = rep(0, length(temp)), model = "garcia")
-#'o2.at.sat(temp, baro, altitude = 0, salinity = 0, model = "garcia")
+#'o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia")
 #'@description
 #'Used to calculate the equilibrium concentration of oxygen in water. 
 #'The equilibration concentration of oxygen in water varies with both 
