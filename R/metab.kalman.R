@@ -235,8 +235,8 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 #'@param ... additional arguments to be passed to \link{optim}
 #'@return
 #'A named list of parameter estimates.
-#'\item{smoothDO} {smoothed time series of oxygen concentration, from Kalman smoother}
-#'\item{params} {parameters estimated by the Kalman filter}
+#'\item{smoothDO}{smoothed time series of oxygen concentration, from Kalman smoother}
+#'\item{params}{parameters estimated by the Kalman filter}
 #'\item{metab}{daily metabolism estimates in mg O2 / L / day}
 #'@references
 #'Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 

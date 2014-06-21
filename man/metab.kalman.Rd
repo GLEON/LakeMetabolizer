@@ -25,8 +25,8 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 }
 \value{
 A named list of parameter estimates.
-\item{smoothDO} {smoothed time series of oxygen concentration, from Kalman smoother}
-\item{params} {parameters estimated by the Kalman filter}
+\item{smoothDO}{smoothed time series of oxygen concentration, from Kalman smoother}
+\item{params}{parameters estimated by the Kalman filter}
 \item{metab}{daily metabolism estimates in mg O2 / L / day}
 }
 \description{
