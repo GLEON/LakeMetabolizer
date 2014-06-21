@@ -56,7 +56,7 @@ k600.2.kGAS = function(ts.data, gas="O2"){
   
   kGAS = data.frame(datetime=ts.data$datetime)
   
-  kGAS$kGAS = k600.2.kGAS.base(k600[,2], temperature[,2], gas)
+  kGAS$k.gas = k600.2.kGAS.base(k600[,2], temperature[,2], gas)
   
   return(kGAS)
 }
