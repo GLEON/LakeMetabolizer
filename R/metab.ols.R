@@ -10,10 +10,12 @@
 #'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
 #'@param ... additional arguments to be passed
 #'@return
-#'A named list of parameter estimates.
-#'\item{GPP}{Estimated Gross Primary Production}
-#'\item{R}{Estimated ecosystem Respiration}
-#'\item{NEP}{Net Ecosystem Production}
+#'A data.frame with columns corresponding to components of metabolism 
+#'\describe{
+	#'\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+#'}
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@seealso
 #'\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian}, 

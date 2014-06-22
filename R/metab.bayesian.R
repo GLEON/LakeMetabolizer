@@ -191,9 +191,12 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
 #'@param ... additional arguments to be passed
 #'@return
-#'A named list of parameter estimates.
-#'\item{GPP}{Estimated Gross Primary Productivity}
-#'\item{R}{Estimated ecosystem respiration}
+#'A data.frame with columns corresponding to components of metabolism 
+#'\describe{
+	#'\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+#'}
 #'@references
 #'Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar. 
 #'2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration 
