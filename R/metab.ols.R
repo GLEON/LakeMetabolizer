@@ -11,12 +11,12 @@
 #'@param ... additional arguments to be passed
 #'@return
 #'A named list of parameter estimates.
-#'\item{GPP}{Estimated Gross Primary Productivity}
+#'\item{GPP}{Estimated Gross Primary Production}
 #'\item{R}{Estimated ecosystem Respiration}
-#'\item{NEP}{Net Ecosystem Productivity}
+#'\item{NEP}{Net Ecosystem Production}
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@seealso
-#'\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab}
+#'\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian}, 
 #'@examples
 #'library(rLakeAnalyzer)
 #'doobs = load.ts(system.file('extdata', 
@@ -49,7 +49,7 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	mo.args <- list(...)
   
 	if(any(z.mix <= 0)){
-	  stop("z.mix cannot be zero.")
+	  stop("z.mix must be greater than zero.")
 	}
   
 	if("datetime"%in%names(mo.args)){ # check to see if datetime is in the ... args

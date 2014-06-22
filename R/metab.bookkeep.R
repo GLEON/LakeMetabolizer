@@ -53,7 +53,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 	mb.args <- list(...)
   
 	if(any(z.mix <= 0)){
-	  stop("z.mix cannot be zero.")
+	  stop("z.mix must be greater than zero.")
 	}
   
 	if("datetime"%in%names(mb.args)){ # check to see if datetime is in the ... args

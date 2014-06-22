@@ -221,28 +221,65 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 	return(a.loop[["nlls"]])
 }
 
-#'@title Estimate metabolism using a Kalman filter
-#'@description Uses a Kalman filter to fit parameters relating irr to GPP, log(wtr) to R, process error, and observation error. 
+#'@title Metabolism calculated from parameters estimated using a Kalman filter
+#'@description A state space model accounting for process and observation error, with the maximum likelihood of parameteres estimated using a Kalman filter.
 #'Also provides a smoothed time series of oxygen concentration.
-#'@param do.obs Vector of dissovled oxygen concentration observations, mg L^-1
+#'@param do.obs Vector of dissovled oxygen concentration observations, \eqn{mg O[2] L^{-1}}{mg O2 / L}
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
-#'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
+#'@param k.gas Vector of kGAS values calculated from any of the gas flux models
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
-#'@param wtr Vector of water temperatures in deg C. Used in scaling respiration with temperature
-#'@param ... additional arguments to be passed to \link{optim}
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
+#'@param ... additional arguments passed from \link{metab} to \code{metab.kalman}
 #'@return
-#'A named list of parameter estimates.
-#'\item{smoothDO}{smoothed time series of oxygen concentration, from Kalman smoother}
-#'\item{params}{parameters estimated by the Kalman filter}
-#'\item{metab}{daily metabolism estimates in mg O2 / L / day}
+#'A data.frame with columns corresponding to components of metabolism
+#'\describe{
+	#'\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+	#'\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+#'}
+#'
+#'
+#' Use \link{attributes} to access more model output:
+#'\item{smoothDO}{smoothed time series of oxygen concentration (\eqn{mg O[2] L^{-1}}{mg O2 / L}), from Kalman smoother}
+#'\item{params}{parameters estimated by the Kalman filter (\eqn{c_1, c_2, Q, H}{c1, c2, Q, H})}
+#' 
+#'@details
+#'The model has four parameters, \eqn{c_1, c_2, Q, H}{c1, c2, Q, H}, and consists of equations involving the prediction of upcoming state conditional on information of the previous state (eqn{a_{t|t-1}}{a[t|t-1]}, eqn{P_{t|t-1}}{P[t|t-1]}), as well as updates of those predictions that are conditional upon information of the current state (eqn{a_{t|t}}{a[t|t]}, eqn{P_{t|t}}{P[t|t]}). \eqn{a} is the 
+#'
+#'\deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
+#'
+#'\deqn{a_t = c_1*irr_{t-1} + c_2*log_e(wtr_{t-1}) + v_{t-1}*do.sat_{t-1}}{a[t] = c1*irr[t-1] + c2*log(wtr[t-1]) + v[t-1]*do.sat[t-1]}
+#'
+#'\deqn{\beta = e^{-v}}{beta = exp(-v)}
+#'
+#'\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + \beta_{t-1}*\do.obs_{t-1} + \epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
+#'
+#'
+#' The above model is used during model fitting, but if gas flux is not integrated between time steps, those equations simplify to the following:
+#'
+#' \deqn{F_{t-1} = k.gas_{t-1}*(do.sat_{t-1} - do.obs_{t-1})/z.mix_{t-1}}{F[t-1] = k.gas[t-1]*(do.sat[t-1] - do.obs[t-1])/z.mix[t-1]}
+#'
+#'\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + \epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
+#'
+#'
+#'The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings. 
+#'
+#'GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}. 
+#'
+#'Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}. 
+#'
+#'NEP is the sum of GPP and R. 
+#'
 #'@references
 #'Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 
 #'addressing noisy time series with a Kalman filter}. Limnology and Oceanography: Methods 10: 20-30. doi: 10.4319/lom.2012.10.20
 #'@seealso
-#'\link{temp.kalman}, \link{watts.in}, \link{metab}, \link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
+#'\link{temp.kalman}, \link{watts.in}, \link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.mle}, \link{metab.bayesian}
 #'@author Ryan Batt, Luke A. Winslow
+#'note If observation error is substantial, consider applying a Kalman filter to the water temperature time series by supplying 
+#' \code{wtr} as the output from \link{temp.kalman}
 #'@examples
 #'library(rLakeAnalyzer)
 #'doobs <- load.ts(system.file('extdata', 
@@ -277,7 +314,7 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	mm.args <- list(...)
   
 	if(any(z.mix <= 0)){
-	  stop("z.mix cannot be zero.")
+	  stop("z.mix must be greater than zero.")
 	}
   
 	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args

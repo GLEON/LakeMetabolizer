@@ -7,7 +7,7 @@
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
-#'@param ... additional arguments to be passed
+#'@param ... additional arguments passed from \link{metab} to \code{metab.mle}
 #'@return
 #'A data.frame with columns corresponding to components of metabolism 
 #'\describe{
@@ -18,7 +18,7 @@
 #' The maximum likelihood estimates of model parameters can be accessed via \code{attributes(metab.mle(...))[["params"]]}
 #' 
 #'@details
-#'The model has the three parameters, \eqn{c1, c2, \epsilon}{c1, c2, epsilon}, and has the form
+#'The model has the three parameters, \eqn{c_1, c_2, \epsilon}{c1, c2, epsilon}, and has the form
 #'
 #'\deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
 #'
@@ -91,7 +91,7 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	mm.args <- list(...)
   
   if(any(z.mix <= 0)){
-    stop("z.mix cannot be zero.")
+    stop("z.mix must be greater than zero.")
   }
   
 	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
@@ -138,7 +138,6 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 # = The R loop for mle NLL =
 # ==========================
 mleLoopR <- function(alpha, doobs, c1, c2, beta, irr, wtr, kz, dosat){
-  browser()
 	nobs <- length(doobs)
 	a.loop <- .C("mleLoopC", alpha=as.double(alpha), as.double(doobs), as.double(c1), as.double(c2), as.double(beta), as.double(irr), as.double(wtr), as.double(kz), as.double(dosat), as.integer(nobs), PACKAGE="LakeMetabolizer")
 	return(a.loop[["alpha"]])
