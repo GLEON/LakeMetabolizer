@@ -93,6 +93,9 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
   if(any(z.mix <= 0)){
     stop("z.mix must be greater than zero.")
   }
+	if(any(wtr <= 0)){
+		stop("all wtr must be positive.")
+	}
   
 	if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
 		datetime <- mm.args$datetime # extract datetime
