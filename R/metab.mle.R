@@ -7,7 +7,7 @@
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
-#'@param ... additional arguments passed from \link{metab} to \code{metab.mle}
+#'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
 #'A data.frame with columns corresponding to components of metabolism 
 #'\describe{

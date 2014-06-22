@@ -7,8 +7,8 @@
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in umoles/m2/s
-#'@param ... additional arguments to be passed
+#'@param irr Integer vector of 1's (daytime) and 0's (nighttime), or numeric vector of irradiance that will be converted to boolean 1's and 0's if "datetime" is passed via \code{...}
+#'@param ... additional arguments to be passed, particularly \clode{POSIXct} class "datetime"
 #'@return
 #'A data.frame with columns corresponding to components of metabolism 
 #'\describe{
