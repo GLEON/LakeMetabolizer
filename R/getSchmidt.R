@@ -1,7 +1,7 @@
 #'@title Returns Schmidt number for a specific gas at a given temperature
 #'@description 
 #'Schmidt number is temperature dependant, and is the ratio of the kinematic viscosity of water 
-#'to a diffusion coefﬁcient. Coefficients are included for He, O2, CO2, CH4, SF6, N2O, Ar, and N2.\cr
+#'to a diffusion coefficient. Coefficients are included for He, O2, CO2, CH4, SF6, N2O, Ar, and N2.\cr
 #'
 #'@usage
 #'getSchmidt(temperature, gas)

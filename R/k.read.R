@@ -36,7 +36,7 @@
 #'coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
 #'
 #'Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
-#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake‐size dependency of wind shear and convection 
+#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection 
 #'as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 #'
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
@@ -174,7 +174,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
 #'
 #'Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
-#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake‐size dependency of wind shear and convection 
+#'John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection 
 #'as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 #'
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
