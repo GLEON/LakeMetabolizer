@@ -31,7 +31,7 @@
 #'                          'Sparkling.par', package="LakeMetabolizer"))
 #'
 #'#Subset a day
-#'mod.date = as.POSIXct('2009-08-12')
+#'mod.date = as.POSIXct('2009-07-08')
 #'doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
 #'wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
 #'wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]

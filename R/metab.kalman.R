@@ -293,7 +293,7 @@ kalmanLoopR <- function(nlls, alpha, doobs, c1, c2, P, Q, H, beta, irr, wtr, kz,
 #'
 #'#Subset a day
 #'Sys.setenv(TZ='GMT')
-#'mod.date <- as.POSIXct('2009-08-12')
+#'mod.date <- as.POSIXct('2009-07-08', 'GMT')
 #'doobs <- doobs[trunc(doobs$datetime, 'day') == mod.date, ]
 #'wtr <- wtr[trunc(wtr$datetime, 'day') == mod.date, ]
 #'wnd <- wnd[trunc(wnd$datetime, 'day') == mod.date, ]
