@@ -53,7 +53,7 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 
 	dosat <- o2.at.sat.base(ts.data$wtr, baro, altitude, salinity, model)
 
-	return(data.frame(datetime=temp$datetime, do.sat=dosat))  
+	return(data.frame(datetime=ts.data$datetime, do.sat=dosat))  
 }
 
 #'@export
