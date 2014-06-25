@@ -26,14 +26,17 @@ addNAs <- function(x, ...){
 	}else{
 		# NOTE: if a "doy" column is not created, byeShort will not work.
 		# NOTE: if a "doy" column is not created here, it will have to be created in byeShort anyway
-	  x[,"doy"] = as.POSIXlt(x$datetime)$yday+1
+		x[,"doy"] <- date2doy(x[,"datetime"])
+		# warning("No 'doy' column found")
+		
 	}
 	if(any(yL)){ # look for "year" column
 		names(x)[yL] <- "year"
 	}else{
 		# NOTE: if a "year" column is not created, byeShort will not work.
 		# NOTE: if a "year" column is not created here, it will have to be created in byeShort anyway
-	  x[,"year"] = as.POSIXlt(x$datetime)$year+1900
+		x[,"year"] <- as.integer(format.Date(x[,"datetime"], format="%Y"))
+		# warning("No 'year' column found")
 	}
 
 	rdig <- 4
@@ -41,12 +44,11 @@ addNAs <- function(x, ...){
 			ux <- unique(x)
 			ux[which.max(tabulate(match(x, ux)))]
 	}
-	#ex <- round(Mode(1/diff(x[,"doy"]))) # note that this is the freq that's calculated in metab.xx()
-	mins <- Mode(diff(x$datetime)/60)
-  ex = 1440/mins
+	ex <- round(Mode(1/diff(x[,"doy"]))) # note that this is the freq that's calculated in metab.xx()
+	mins <- 1/ex*24*60
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){abs(x - round(x)) < tol}
 	if(!is.wholenumber(mins)){warning("Time between samples not whole number")}
-	x1 <- byeShort(X=x, Expected=ex, ...)
+	x1 <- byeShort(X=x, Expected=ex, ToCount="doy", TruncToCount=TRUE, ...)
 	if(nrow(x1)==0){
 		return(x1)
 	}
