@@ -62,9 +62,9 @@ load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
 		merge.out <- pred.merge(data, tmp, all=TRUE)
 		if(merge.out$merge > 1.5*merge.out$desired){
 			if(checkMerge){
-				stop("a data frame to be merged contains many duplicated values in merge column")
+				stop("A file contains many duplicated values in merge column:", files[i])
 			}else{
-				warning("a data frame to be merged contains many duplicated values in merge column")
+				warning("A file contains many duplicated values in merge column:", files[i])
 			}
 		}
 
