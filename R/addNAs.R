@@ -41,11 +41,12 @@ addNAs <- function(x, ...){
 			ux <- unique(x)
 			ux[which.max(tabulate(match(x, ux)))]
 	}
-	ex <- round(Mode(1/diff(x[,"doy"]))) # note that this is the freq that's calculated in metab.xx()
-	mins <- 1/ex*24*60
+	#ex <- round(Mode(1/diff(x[,"doy"]))) # note that this is the freq that's calculated in metab.xx()
+	mins <- Mode(diff(x$datetime)/60)
+  ex = 1440/mins
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){abs(x - round(x)) < tol}
 	if(!is.wholenumber(mins)){warning("Time between samples not whole number")}
-	x1 <- byeShort(X=x, Expected=ex, ToCount="doy", TruncToCount=TRUE, ...)
+	x1 <- byeShort(X=x, Expected=ex, ...)
 	if(nrow(x1)==0){
 		return(x1)
 	}
