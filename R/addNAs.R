@@ -26,17 +26,14 @@ addNAs <- function(x, ...){
 	}else{
 		# NOTE: if a "doy" column is not created, byeShort will not work.
 		# NOTE: if a "doy" column is not created here, it will have to be created in byeShort anyway
-		x[,"doy"] <- date2doy(x[,"datetime"])
-		# warning("No 'doy' column found")
-		
+	  x[,"doy"] = as.POSIXlt(x$datetime)$yday+1
 	}
 	if(any(yL)){ # look for "year" column
 		names(x)[yL] <- "year"
 	}else{
 		# NOTE: if a "year" column is not created, byeShort will not work.
 		# NOTE: if a "year" column is not created here, it will have to be created in byeShort anyway
-		x[,"year"] <- as.integer(format.Date(x[,"datetime"], format="%Y"))
-		# warning("No 'year' column found")
+	  x[,"year"] = as.POSIXlt(x$datetime)$year+1900]
 	}
 
 	rdig <- 4
