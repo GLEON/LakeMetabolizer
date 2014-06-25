@@ -33,7 +33,7 @@ addNAs <- function(x, ...){
 	}else{
 		# NOTE: if a "year" column is not created, byeShort will not work.
 		# NOTE: if a "year" column is not created here, it will have to be created in byeShort anyway
-	  x[,"year"] = as.POSIXlt(x$datetime)$year+1900]
+	  x[,"year"] = as.POSIXlt(x$datetime)$year+1900
 	}
 
 	rdig <- 4
