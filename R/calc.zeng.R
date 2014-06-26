@@ -204,22 +204,22 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
     zeta[zeta > zeta_thres] <- zeta_thres
 
     # calculate transfer coefficients corrected for atmospheric stability
-    C_H <- (-rho_a*const_SpecificHeatAir*ustar*tstar)/(rho_a*const_SpecificHeatAir*Uz*(Ts - airT))
+    C_H <- (-rho_a*const_SpecificHeatAir*ustar*tstar)/(rho_a*const_SpecificHeatAir*Uz*(Ts - airT)) # RDB: if both numerator and denominator are 0, gives NaN
     C_E <- (-rho_a*xlv*ustar*qstar)/(rho_a*xlv*Uz*(q_s - q_z))
     C_D <- (ustar*ustar)/(Uz*Uz)
 
     # calculate tau and sensible and latent heat fluxes
     tau <- C_D*rho_a*ustar*ustar
-    ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT)
+    ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT) # RDB: NaN's propagate to here from C_H
     alh <- rho_a*xlv*C_E*Uz*(q_s - q_z)
 
     # calculate new monin obukhov length
-    obu <- (-rho_a*t_virt*(ustar*ustar*ustar))/(const_Gravity*const_vonKarman*((ash/const_SpecificHeatAir) + (0.61*(airT + 273.16)*alh/xlv)))
+    obu <- (-rho_a*t_virt*(ustar*ustar*ustar))/(const_Gravity*const_vonKarman*((ash/const_SpecificHeatAir) + (0.61*(airT + 273.16)*alh/xlv))) # RDB: Nan's propagate to here from ash from C_H
 
     # alter zeta in stable cases
-    zeta <- wnd.z/obu
-    idx <- zeta >= 1
-    Uz[idx] <- max(Uz[idx],0.1)
+    zeta <- wnd.z/obu # RDB: NaN's from obu from ash from C_H
+    idx <- zeta >= 1 & !is.na(zeta) # RDB: NaN's from zeta from obu from ash from C_H; RDB added !is.na(zeta)
+    Uz[idx] <- max(Uz[idx],0.1) # RDB: *many* NaN's appear here (from 2 in Uz to 1985, for test run .. due to bad indexing)
 
     # avoid singularity at um = 0 for unstable conditions     
     idx <- zeta < 0 & !is.na(zeta)
