@@ -236,7 +236,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'}
 #'@export
 metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
-	if(any(z.imx <= 0)){
+	if(any(z.mix <= 0)){
 		stop("z.mix must be greater than zero.")
 	}
 	if(any(wtr <= 0)){
