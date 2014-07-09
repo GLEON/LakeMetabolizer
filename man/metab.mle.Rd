@@ -19,7 +19,7 @@ metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
 \item{wtr}{Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature}
 
-\item{...}{additional arguments to be passed}
+\item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
 \value{
 A data.frame with columns corresponding to components of metabolism
@@ -34,7 +34,7 @@ The maximum likelihood estimates of model parameters can be accessed via \code{a
 Process-error-only model with parameters fitted via maximum likelihood estimation (MLE). This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data.
 }
 \details{
-The model has the three parameters, \eqn{c1, c2, \epsilon}{c1, c2, epsilon}, and has the form
+The model has the three parameters, \eqn{c_1, c_2, \epsilon}{c1, c2, epsilon}, and has the form
 
 \deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
 
@@ -75,7 +75,7 @@ irr = load.ts(system.file('extdata',
                          'Sparkling.par', package="LakeMetabolizer"))
 
 #Subset a day
-mod.date = as.POSIXct('2009-08-12')
+mod.date = as.POSIXct('2009-07-08', 'GMT')
 doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
 wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
 wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]

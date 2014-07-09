@@ -15,17 +15,19 @@ metab.ols(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
 \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
 
-\item{irr}{Vector of photosynthetically active radiation in umoles/m2/s}
+\item{irr}{Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}}
 
-\item{wtr}{Vector of water temperatures in deg C. Used in scaling respiration with temperature}
+\item{wtr}{Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature}
 
-\item{...}{additional arguments to be passed}
+\item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
 \value{
-A named list of parameter estimates.
-\item{GPP}{Estimated Gross Primary Productivity}
-\item{R}{Estimated ecosystem Respiration}
-\item{NEP}{Net Ecosystem Productivity}
+A data.frame with columns corresponding to components of metabolism
+\describe{
+\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+}
 }
 \description{
 This function runs the ordinary least squares metabolism model on the supplied gas concentration and other supporting data. This is a
@@ -43,7 +45,7 @@ irr = load.ts(system.file('extdata',
                          'Sparkling.par', package="LakeMetabolizer"))
 
 #Subset a day
-mod.date = as.POSIXct('2009-08-12')
+mod.date = as.POSIXct('2009-07-08')
 doobs = doobs[trunc(doobs$datetime, 'day') == mod.date, ]
 wtr = wtr[trunc(wtr$datetime, 'day') == mod.date, ]
 wnd = wnd[trunc(wnd$datetime, 'day') == mod.date, ]
@@ -60,6 +62,6 @@ metab.ols(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 Luke A Winslow, Ryan Batt, GLEON Fellows
 }
 \seealso{
-\link{metab.bayesian}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab}
+\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian},
 }
 
