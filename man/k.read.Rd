@@ -64,10 +64,11 @@ lake.area = tb.data$metadata$lakearea
 
 lwnet = calc.lw.net(ts.data, lat, atm.press)
 ts.data = merge(ts.data, lwnet)
-
+\dontrun{
 k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
 
 k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
+}
 }
 \author{
 Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway, Jordan S. Read
