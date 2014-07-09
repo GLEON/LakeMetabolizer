@@ -47,7 +47,7 @@
 #'# Must supply 1 for daytime timesteps and 0 for nighttime timesteps
 #'irr = as.integer(is.day(doobs[,1], 45))
 #'
-#'metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr)
+#'metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr, datetime=doobs$datetime)
 #'@export
 metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 
