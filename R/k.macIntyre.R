@@ -20,6 +20,11 @@
 
 #'@export
 k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
+  
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  emiss <- 0.972 # emissivity;
+  Kelvin = 273.15 #conversion from C to Kelvin
+  
   # Get short wave radiation data 
   if(has.vars(ts.data, 'sw')){ 
     sw <- get.vars(ts.data, 'sw')

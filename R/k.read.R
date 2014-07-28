@@ -84,6 +84,10 @@
 #'@export
 k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  emiss <- 0.972 # emissivity;
+  Kelvin = 273.15 #conversion from C to Kelvin
+  
   data = ts.data
   # Get short wave radiation data 
   if(has.vars(data, 'sw')){ 
