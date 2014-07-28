@@ -1,0 +1,26 @@
+model
+{
+    for (i in 2:N) {
+        Y[i] ~ dnorm(a[i], tauV)
+        K[i - 1] ~ dnorm(kP[i - 1, 1], 1/kP[i - 1, 2])
+        kz[i - 1] <- K[i - 1]/Zmix[i - 1]
+        kzSafe[i - 1] <- ifelse(kz[i - 1] == 0.00000E+00, 1, kz[i - 
+            1])
+        kzCancel[i - 1] <- ifelse(kzSafe[i - 1] == 1, 0.00000E+00, 
+            1)
+        pCancel[i - 1] <- ifelse(kzSafe[i - 1] == 1, 1, 0.00000E+00)
+        a1[i] <- U[i - 1, ] %*% C + kz[i - 1] * satO[i - 1]
+        aHat[i] <- (a1[i]/kzSafe[i - 1] + -exp(-1 * kzSafe[i - 
+            1]) * a1[i]/kzSafe[i - 1] + exp(-kzSafe[i - 1]) * 
+            a[i - 1]) * kzCancel[i - 1] + (a[i - 1] + a1[i]) * 
+            pCancel[i - 1]
+        a[i] ~ dnorm(aHat[i], tauW)
+    }
+    a[1] <- a0
+    C[1] ~ dnorm(cP[1, 1], 1/cP[1, 2])
+    C[2] ~ dnorm(cP[2, 1], 1/cP[2, 2])
+    tauV ~ dgamma(0.001, 0.001)
+    tauW ~ dgamma(0.001, 0.001)
+    sigmaV <- 1/sqrt(tauV)
+    sigmaW <- 1/sqrt(tauW)
+}

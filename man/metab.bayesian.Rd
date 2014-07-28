@@ -58,10 +58,10 @@ irr = irr[trunc(irr$datetime, 'day') == mod.date, ]
 
 k600 = k.cole.base(wnd[,2])
 k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
-do.sat = o2.at.sat(wtr[,3], altitude=300)
+do.sat = o2.at.sat(wtr[,1:2], altitude=300)
 
 metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)),
-              do.sat=do.sat, wtr=wtr[,2],
+              do.sat=do.sat[,2], wtr=wtr[,2],
               k.gas=k.gas, do.obs=doobs[,2])
 }
 }
