@@ -68,13 +68,13 @@ NEP is the sum of GPP and R.
 \examples{
 library(rLakeAnalyzer)
 doobs <- load.ts(system.file('extdata',
-                            'Sparkling.doobs', package="LakeMetabolizer"))
+                            'sparkling.doobs', package="LakeMetabolizer"))
 wtr <- load.ts(system.file('extdata',
-                          'Sparkling.wtr', package="LakeMetabolizer"))
+                          'sparkling.wtr', package="LakeMetabolizer"))
 wnd <- load.ts(system.file('extdata',
-                          'Sparkling.wnd', package="LakeMetabolizer"))
+                          'sparkling.wnd', package="LakeMetabolizer"))
 irr <- load.ts(system.file('extdata',
-                          'Sparkling.par', package="LakeMetabolizer"))
+                          'sparkling.par', package="LakeMetabolizer"))
 
 #Subset a day
 Sys.setenv(TZ='GMT')

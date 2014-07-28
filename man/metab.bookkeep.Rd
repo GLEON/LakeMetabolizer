@@ -37,11 +37,11 @@ library(rLakeAnalyzer)
 Sys.setenv(TZ='GMT')
 
 doobs = load.ts(system.file('extdata',
-                           'Sparkling.doobs', package="LakeMetabolizer"))
+                           'sparkling.doobs', package="LakeMetabolizer"))
 wtr = load.ts(system.file('extdata',
-                         'Sparkling.wtr', package="LakeMetabolizer"))
+                         'sparkling.wtr', package="LakeMetabolizer"))
 wnd = load.ts(system.file('extdata',
-                         'Sparkling.wnd', package="LakeMetabolizer"))
+                         'sparkling.wnd', package="LakeMetabolizer"))
 
 #Subset a day
 mod.date = as.POSIXct('2009-07-08', 'GMT')
