@@ -140,6 +140,7 @@ bayes.makeModel <- function(k.gas){
 # ================================
 # = Supply Data and run bayesFit =
 # ================================
+utils::globalVariables('jags')
 bayesFit <- function(data, params, mf, tend="median", ...){ #function that writes jags model, traces params, supplies data, etc
 	
 	bf.args <- list(...)
