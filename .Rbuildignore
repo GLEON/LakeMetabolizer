@@ -1,3 +1,5 @@
+man/LakeMetabolizer.Rd
+R/LakeMetabolizer.R
 .gitignore
 .travis.yml
 ^.*\.Rproj$
