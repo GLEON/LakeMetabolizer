@@ -6,7 +6,7 @@
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return

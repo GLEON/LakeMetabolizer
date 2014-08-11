@@ -15,7 +15,7 @@ metab.kalman(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 
 \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
 
-\item{irr}{Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}}
+\item{irr}{Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}}
 
 \item{wtr}{Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature}
 

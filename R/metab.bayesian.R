@@ -5,8 +5,8 @@
 # ====================================
 bayes.makeModel <- function(k.gas){
   
-	if(!require("R2jags") | !require("R2WinBUGS")){
-    stop('metab.bayesian requires R2jags and R2WinBUGS')
+	if(!require("R2jags")){
+    stop('metab.bayesian requires R2jags')
 	}
 	
 	finite.1oK <- is.finite(1/k.gas)
@@ -188,7 +188,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
@@ -285,7 +285,6 @@ metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 	}
 	
 	require("R2jags")
-	require("R2WinBUGS")
 	
 	# Define model and write to file
 	# Model choice depends on k values (all 0, all non-0, mixture)
