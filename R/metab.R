@@ -18,7 +18,7 @@
 #'
 #'  \code{"do.sat"} = numeric vector of saturated oxygen concentration in mg/L
 #'
-#'  \code{"k.gas"} = numeric vector of gas exchange coefficient values in m/day, should be 0 when depth of do.obs is shallower than z.mix
+#'  \code{"k.gas"} = numeric vector of gas exchange coefficient values in m/day, should be 0 when depth of do.obs is deeper than z.mix
 #'
 #'  \code{"z.mix"} = numeric vector of mixing depth values in meters
 #'
