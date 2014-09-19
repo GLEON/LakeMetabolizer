@@ -210,8 +210,10 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
 
     # calculate tau and sensible and latent heat fluxes
     tau <- C_D*rho_a*ustar*ustar
-    ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT)
-    alh <- rho_a*xlv*C_E*Uz*(q_s - q_z)
+    #ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT)
+    #alh <- rho_a*xlv*C_E*Uz*(q_s - q_z)
+    ash <- -rho_a*const_SpecificHeatAir*ustar*tstar
+    alh <- -rho_a*xlv*ustar*qstar
 
     # calculate new monin obukhov length
     obu <- (-rho_a*t_virt*(ustar*ustar*ustar))/(const_Gravity*const_vonKarman*((ash/const_SpecificHeatAir) + (0.61*(airT + 273.16)*alh/xlv)))
