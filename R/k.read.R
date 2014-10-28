@@ -18,7 +18,7 @@
 #'@param ts.data vector of datetime in POSIXct format
 #'@param method Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"
 #'@param wnd.z height of wind measurement, m
-#'@param Kd numeric value of air temperature, degC
+#'@param Kd Light attenuation coefficient (Units:m^-1)
 #'@param atm.press atmospheric pressure in mb
 #'@param lat Latitude, degrees north
 #'@param lake.area Lake area, m^2
