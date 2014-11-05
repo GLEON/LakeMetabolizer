@@ -12,6 +12,7 @@ sun.rise.set(datetimes, lat)
 }
 \value{
 A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format.
+Value is NA when there is no defined sunrise or sunset for that day (winter/summer at high and low latitudes).
 }
 \description{
 Calculates the time of sunrise and sunset based on latitude and date.

@@ -58,7 +58,8 @@ is.night <- function(datetimes, lat){
 #'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
 #'@param lat Single latitude value of site. South should be negative, north positive
 #'
-#'@return A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format.
+#'@return A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format. 
+#'Value is NA when there is no defined sunrise or sunset for that day (winter/summer at high and low latitudes).
 #'@references
 #'Iqbal, Muhammad. 1983. An Introduction to Solar Radiation. Elsevier.
 #'
@@ -88,11 +89,12 @@ sun.rise.set <- function(datetimes, lat){
 
 	#Sunrise hour angle "omega" (degrees). Iqbal 1983 Eq. 1.5.4
 	latRad <- lat*degToRad
-	sunriseHourAngle <- acos(-tan(latRad)*tan(dec))*radToDeg
-
-	#If we don't have a sunrise, then sunriseHourAngle is imaginary, replace with NaN
-	sunriseHourAngle[is.complex(sunriseHourAngle)] <- NA
-
+	omegaInput <- -tan(latRad)*tan(dec)
+	
+	#If we don't have a sunrise, replace with NA
+	omegaInput[omegaInput > 1 | omegaInput < -1 ] <- NA
+	sunriseHourAngle <- acos(omegaInput)*radToDeg
+	
 	#Sunrise and sunset times (decimal hours, relative to solar time) Iqbal 1983 Ex. 1.5.1
 	sr <- 12 - sunriseHourAngle/15
 	ss <- 12 + sunriseHourAngle/15
