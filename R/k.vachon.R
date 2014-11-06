@@ -17,10 +17,10 @@
 #'@export
 k.vachon <- function(ts.data,lake.area,parA=2.51,parB=1.48,parC=0.39){
   if(!has.vars(ts.data, 'wnd')){
-    stop('k.cole requires a "wnd" column in the supplied data')
+    stop('k.vachon requires a "wnd" column in the supplied data')
   }
   wnd <- get.vars(ts.data, 'wnd')
-  k600 <- k.vachon.base(wnd[,2],lakearea,range)
+  k600 <- k.vachon.base(wnd[,2],lake.area,parA,parB,parC)
   return(data.frame(datetime=ts.data$datetime, k600=k600))
 }
 
