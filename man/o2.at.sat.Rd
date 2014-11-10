@@ -45,6 +45,9 @@ plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab
 Luke A Winslow
 }
 \references{
+Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in
+seawater: Better fitting equations}, Limnol. Oceanogr., 37(6).
+
 Benson, B. B., & Krause, D. (1984). \emph{The concentration and isotopic
 fractionation of oxygen dissolved in freshwater and seawater in
 equilibrium with the atmosphere}. Limnology and Oceanography,
