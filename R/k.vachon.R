@@ -15,7 +15,7 @@
 #Before use, should be converted to appropriate gas using k600.2.kGAS.
 
 #'@export
-k.vachon <- function(ts.data,lake.area,params=c(2.51,1.48,0.39){
+k.vachon <- function(ts.data,lake.area,params=c(2.51,1.48,0.39)){
   if(!has.vars(ts.data, 'wnd')){
     stop('k.vachon requires a "wnd" column in the supplied data')
   }
