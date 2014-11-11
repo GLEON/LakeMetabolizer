@@ -1,7 +1,7 @@
 # ---Author: Hilary Dugan, 2014-11-06 --- 
 # -- References ----
-#JOUNI J. HEISKANEN, IVAN MAMMARELLA, SAMI HAAPANALA, JUKKA PUMPANEN, TIMO VESALA, SALLY MACINTYRE, ANNE OJALA
-#2010. Effects of cooling and internal wave motions on gas
+##Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#Anne Ojala. 2010. Effects of cooling and internal wave motions on gas
 #transfer coefficients in a boreal lake.
 #Tellus B 2014, 66, 22827, http://dx.doi.org/10.3402/tellusb.v66.22827 
 
