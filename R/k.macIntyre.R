@@ -19,7 +19,7 @@
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
 #'@export
-k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
+k.macIntyre = function(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784)){
   
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
   emiss <- 0.972 # emissivity;
@@ -65,7 +65,7 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   m.d = ts.meta.depths(wtr)
   
   k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, Ts[,2], m.d$top, 
-                airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
+                airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2],params)
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
   

@@ -192,7 +192,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
 #'@param lwnet Numeric value net long wave radiation, W m^-2
-#'@param params Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'@param params Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
 #'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
 #'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre 
 #'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
