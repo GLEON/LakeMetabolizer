@@ -1,7 +1,7 @@
 # ---Author: Hilary Dugan, 2014-11-06 --- 
 # -- References ----
-#JOUNI J. HEISKANEN, IVAN MAMMARELLA, SAMI HAAPANALA, JUKKA PUMPANEN, TIMO VESALA, SALLY MACINTYRE, ANNE OJALA
-#2010. Effects of cooling and internal wave motions on gas
+##Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#Anne Ojala. 2010. Effects of cooling and internal wave motions on gas
 #transfer coefficients in a boreal lake.
 #Tellus B 2014, 66, 22827, http://dx.doi.org/10.3402/tellusb.v66.22827 
 
@@ -22,7 +22,7 @@
 #Before use, should be converted to appropriate gas using k600.2.kGAS.
 
 #'@export
-k.heiskanen = function(ts.data, wnd.z, Kd, atm.press){
+k.heiskanen <- function(ts.data, wnd.z, Kd, atm.press){
   
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
   emiss <- 0.972 # emissivity;
@@ -141,7 +141,7 @@ k.heiskanen.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wn
   B2 = rho_w*C_w # mean density of the water column * specific heat of water at constant pressure
   Bflx = B1/B2
   
-  wstar  = (Bflx*z.aml)^(1/3) #penetrative convective velocity Heiskanen 2014 (Imberger 1985)
+  wstar = ifelse(Bflx < 0,(-Bflx*z.aml)^(1/3),0) #penetrative convective velocity Heiskanen 2014 (Imberger 1985)
   Hk   = sqrt((0.00015*u10)^2 + (0.07*wstar)^2) 
   Hk   = Hk*100*3600 # Heiskanen's K in cm/hr
   Hk600 = Hk*600^(-0.5)

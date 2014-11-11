@@ -19,7 +19,7 @@
 #          interval will return kO2 in units of m/(1/48) - converts to fraction of day)
 
 #'@export
-k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
+k.macIntyre = function(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784)){
   
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
   emiss <- 0.972 # emissivity;
@@ -65,13 +65,14 @@ k.macIntyre = function(ts.data, wnd.z, Kd, atm.press){
   m.d = ts.meta.depths(wtr)
   
   k600 = k.macIntyre.base(wnd.z, Kd, atm.press, ts.data$datetime, Ts[,2], m.d$top, 
-                airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2])
+                airT[,2], wnd[,2], RH[,2], sw[,2], lwnet[,2],params)
   
   return(data.frame(datetime=ts.data$datetime, k600=k600))
   
 }
 #'@export
-k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){
+k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,
+                             params=c(1.2,0.4872,1.4784)){
   
   #Constants
   S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
@@ -153,15 +154,15 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wn
     return(v)
   }
   kinV <- getKinematicVis(Ts)
-  
-  
   KeNm = uSt^3
-  SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z.aml))
+  
+  #SmE   = 0.84*(-0.58*Bflx+1.76*KeNm/(vonK*z.aml))
+  SmE = params[1]*-Bflx+params[2]*KeNm/(vonK*z.aml) #change to two coefficients
   SmE[SmE<0] = 0    # set negative to 0
   Sk   = SmE*kinV
   Sk   = Sk*100^4*3600^4 # Sally's K now in cm4/h4
-  Sk600 = 1.2*600^(-0.5)*Sk^(1/4) # in cm/hr (Total)
-    
+  Sk600 = params[3]*600^(-0.5)*Sk^(1/4) # in cm/hr (Total) 
+  
   k600 <- as.numeric(Sk600) # why is this not already numeric?
   k600 <- k600*24/100 #units in m d-1
   return(k600)
