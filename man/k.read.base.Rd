@@ -2,8 +2,10 @@
 \name{k.read.base}
 \alias{k.cole.base}
 \alias{k.crusius.base}
+\alias{k.heiskanen.base}
 \alias{k.macIntyre.base}
 \alias{k.read.base}
+\alias{k.vachon.base}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
 k.cole.base(wnd)
@@ -13,7 +15,11 @@ k.crusius.base(wnd, method='power')
 k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
 airT, wnd, RH, sw, lwnet)
 
-k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
+
+k.vachon.base(wnd,lake.area,params=c(2.51,1.48,0.39))
+
+k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
 \arguments{
 \item{wnd.z}{Height of wind measurement, (Units: m)}
@@ -43,6 +49,8 @@ k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, l
 \item{lwnet}{Numeric value net long wave radiation, W m^-2}
 
 \item{method}{Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"}
+
+\item{params}{Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre}. See details.}
 }
 \value{
 Numeric value of gas exchange velocity (k600) in units of m/day. Before use,
@@ -50,6 +58,11 @@ should be converted to appropriate gas using \link{k600.2.kGAS}.
 }
 \description{
 Returns the gas exchange velocity based on the chosen model in units of m/day
+}
+\details{
+Can change default parameters of MacIntyre and Vachon models. Default for Vachon is
+c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre
+model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 }
 \examples{
 wnd.z <- 2
@@ -97,12 +110,22 @@ as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 
 Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'
+#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
+of gas transfer velocity versus wind speed relationships in lakes}.
+Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
+
+#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
+transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
 }
 \seealso{
 \link{k.cole}
 \link{k.read}
 \link{k.crusius}
 \link{k.macIntyre}
+\link{k.vachon}
+\link{k.heiskanen}
 }
 \keyword{math}
 \keyword{methods}
