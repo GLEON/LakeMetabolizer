@@ -204,14 +204,10 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
     zeta[zeta > zeta_thres] <- zeta_thres
 
     # calculate transfer coefficients corrected for atmospheric stability
-    C_H <- (-rho_a*const_SpecificHeatAir*ustar*tstar)/(rho_a*const_SpecificHeatAir*Uz*(Ts - airT))
-    C_E <- (-rho_a*xlv*ustar*qstar)/(rho_a*xlv*Uz*(q_s - q_z))
     C_D <- (ustar*ustar)/(Uz*Uz)
 
     # calculate tau and sensible and latent heat fluxes
     tau <- C_D*rho_a*ustar*ustar
-    #ash <- rho_a*const_SpecificHeatAir*C_H*Uz*(Ts - airT)
-    #alh <- rho_a*xlv*C_E*Uz*(q_s - q_z)
     ash <- -rho_a*const_SpecificHeatAir*ustar*tstar
     alh <- -rho_a*xlv*ustar*qstar
 
@@ -228,23 +224,14 @@ calc.zeng <- function(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z,airT.z,RH.z){
     th <- (airT + 273.16)*(1000/atm.press)^(287.1/1004.67) # potential temperature  
     thvstar <- tstar*(1 + 0.61*q_z/1000) + 0.61*th*qstar # temperature scaling parameter
     thv <- th*(1 + 0.61*q_z/1000) #virtual potential temperature    
-    wc[idx] <- 1*(-const_Gravity*ustar[idx]*thvstar[idx]/thv[idx])^0.333
-    Uz[idx] <- sqrt(Uz[idx]*Uz[idx] + wc[idx]*wc[idx])
   }
 
   # take real values to remove any complex values that arise from missing data or NA.
   C_D <- Re(C_D)
-  C_E <- Re(C_E)
-  C_H <- Re(C_H)
-  zo <- Re(zo)
-  zoq <- Re(zoq)
-  zot <- Re(zot)
   
   # store results in data.frame and merge with original dateTime
   mm <- data.frame(dateTime = dat$dateTime,
-                   Ts = Ts,airT = airT,RH = RH,Uz = Uz,
-                   C_D = C_D,C_E = C_E,C_H = C_H,zo = zo,zot = zot,
-                   zoq = zoq,ustar = ustar,alh = alh,ash = ash)
+                   C_D = C_D,alh = alh,ash = ash)
   mm <- merge(mm,original_dates,all = TRUE)
   return(mm)
   
