@@ -2,8 +2,10 @@
 \name{k.read}
 \alias{k.cole}
 \alias{k.crusius}
+\alias{k.heiskanen}
 \alias{k.macIntyre}
 \alias{k.read}
+\alias{k.vachon}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
 k.cole(ts.data)
@@ -12,7 +14,11 @@ k.crusius(ts.data, method='power')
 
 k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 
-k.macIntyre(ts.data, wnd.z, Kd, atm.press)
+k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
+
+k.vachon(ts.data,lake.area,params=c(2.51,1.48,0.39)
+
+k.heiskanen(ts.data, wnd.z, Kd, atm.press)
 }
 \arguments{
 \item{ts.data}{vector of datetime in POSIXct format}
@@ -28,12 +34,19 @@ k.macIntyre(ts.data, wnd.z, Kd, atm.press)
 \item{lake.area}{Lake area, m^2}
 
 \item{method}{Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"}
+
+\item{params}{Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.}
 }
 \value{
 Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
 }
 \description{
 Returns the gas exchange velocity based on the chosen model in units of m/day
+}
+\details{
+Can change default parameters of MacIntyre and Vachon models. Default for Vachon is
+c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre
+model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 }
 \examples{
 data.path = system.file('extdata', package="LakeMetabolizer")
@@ -88,11 +101,21 @@ as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 
 Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+
+#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
+of gas transfer velocity versus wind speed relationships in lakes}.
+Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
+
+#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
+transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
 }
 \seealso{
 \link{k.cole}
 \link{k.crusius}
 \link{k.macIntyre}
+\link{k.vachon}
+\link{k.heiskanen}
 }
 \keyword{math}
 \keyword{methods}
