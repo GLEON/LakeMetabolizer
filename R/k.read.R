@@ -16,7 +16,7 @@
 #'
 #'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
-#'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
+#'k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
 #'
 #'k.vachon(ts.data,lake.area,params=c(2.51,1.48,0.39)
 #'
@@ -28,7 +28,10 @@
 #'@param atm.press atmospheric pressure in mb
 #'@param lat Latitude, degrees north
 #'@param lake.area Lake area, m^2
-#'@param params Only for \link{k.vachon.base}. Can change default parameters of c(2.51,1.48,0.39).
+#'@param params Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
+#'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre 
+#'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 #'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
 #'@import rLakeAnalyzer
 #'@useDynLib LakeMetabolizer
@@ -62,6 +65,8 @@
 #'\link{k.cole}
 #'\link{k.crusius}
 #'\link{k.macIntyre}
+#'\link{k.vachon}
+#'\link{k.heiskanen}
 #'@examples 
 #'data.path = system.file('extdata', package="LakeMetabolizer")
 #'
@@ -168,9 +173,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
 #'airT, wnd, RH, sw, lwnet)
 #'
-#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
 #'
-#'k.vachon.base(wnd,lake.area,parA=2.51,parB=1.48,parC=0.39)
+#'k.vachon.base(wnd,lake.area,params=c(2.51,1.48,0.39))
 #'
 #'k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'@param wnd Numeric value of wind speed, (Units:m/s)
@@ -187,7 +192,10 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
 #'@param lwnet Numeric value net long wave radiation, W m^-2
-#'@param params Only for \link{k.vachon.base}. Can change default parameters of c(2.51,1.48,0.39).
+#'@param params Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
+#'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre 
+#'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 #'@return Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
 #'should be converted to appropriate gas using \link{k600.2.kGAS}.
 #'@keywords methods math
