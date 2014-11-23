@@ -106,15 +106,27 @@ metab <- function(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.
 	
 	#Rename the WTR column to be used (must be wtr to easily be passed to meta.* functions)
 	if(wtr.name != "wtr"){
-		names(data)[names(data)==wtr.name] <- "wtr"
+		if(!"wtr"%in%names(data)){
+			names(data)[names(data)==wtr.name] <- "wtr"
+		}else{
+			data[,"wtr"] <- data[,wtr.name]
+		}
 	}
 	
 	if(irr.name != "irr"){
-		names(data)[names(data)==irr.name] <- "irr"
+		if(!"irr"%in%names(data)){
+			names(data)[names(data)==irr.name] <- "irr"
+		}else{
+			data[,"irr"] <- data[,irr.name]
+		}
 	}
 	
-	if(do.obs.name != "irr"){
-		names(data)[names(data)==do.obs.name] <- "do.obs"
+	if(do.obs.name != "do.obs"){
+		if(!"do.obs"%in%names(data)){
+			names(data)[names(data)==do.obs.name] <- "do.obs"
+		}else{
+			data[,"do.obs"] <- data[,do.obs.name]
+		}
 	}
 	
 	
