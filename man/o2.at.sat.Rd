@@ -20,7 +20,7 @@ Defaults to mean sea level. An alternative to supplying barometric pressure.}
 \item{salinity}{a numeric vector of salinity in PSU. Defaults to zero.
 Length must be one or equal to length of temperature.}
 
-\item{model}{the empirical model to be used, \code{"weiss"} and \code{"benson"} are the two available options. They correspond to the references described below.}
+\item{model}{the empirical model to be used, \code{"garcia"}, \code{"weiss"} and \code{"benson"} are the available options. They correspond to the references described below.}
 
 \item{temp}{a numeric vector of water temperature in degrees Celsius.}
 }

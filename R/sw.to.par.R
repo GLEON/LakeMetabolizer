@@ -11,9 +11,9 @@ sw.to.par.base = function(sw, coeff=2.114){
 #'Returns PAR by converting incoming shortwave radiation measuremt.
 #'
 #'@usage
-#'sw.to.par(data, sw.col='sw')
+#'sw.to.par(data, sw.col='sw', coeff=2.114)
 #'
-#'sw.to.par.base(sw)
+#'sw.to.par.base(sw, coeff=2.114)
 #'
 #'@param data Object of class data.frame with column name \code{sw} (or specified alternate)
 #'@param sw.col Name of column containing shortwave data (units must be W/m^2)
