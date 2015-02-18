@@ -1,7 +1,7 @@
 #'@export
-sw.to.par.base = function(sw){
+sw.to.par.base = function(sw, coeff=2.114){
   
-  par = sw * 0.473
+  par = sw * coeff
 }
 
 #'@name sw.to.par
@@ -18,6 +18,10 @@ sw.to.par.base = function(sw){
 #'@param data Object of class data.frame with column name \code{sw} (or specified alternate)
 #'@param sw.col Name of column containing shortwave data (units must be W/m^2)
 #'@param sw Numeric shortwave value in W/m^2
+#'@param coeff 
+#'Numerical coefficient to convert SW (W/m^2) to PAR (umol/m^2/sec). 
+#'Defaults to value from Britton and Dodd (1976).
+#'
 #'
 #'@return 
 #'#For sw.to.par
@@ -41,7 +45,7 @@ sw.to.par.base = function(sw){
 #'sw.to.par.base(sw)
 #'
 #'@export
-sw.to.par = function(data, sw.col='sw'){
+sw.to.par = function(data, sw.col='sw', coeff=2.114){
   
   output = data
   
