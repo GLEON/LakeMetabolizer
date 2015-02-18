@@ -13,6 +13,4 @@ Suggests:
 Depends:
     R (>= 2.15.0),
     rLakeAnalyzer (>= 1.4)
-Packaged: 2014-07-07 09:09:24 UTC; Luke
 Repository: http://github.com/GLEON/LakeMetabolizer
-Date/Publication: 2014-07-07 09:09:24
