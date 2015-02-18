@@ -432,3 +432,23 @@ calc.freq <- function(datetime){
   freq <- round(Mode(1/diff(date2doy(datetime))))
 }
 
+# =================================
+# = Checks all inputs for NA vals =
+# =================================
+# if error=TRUE, will throw an error when 
+# NA in input is found
+complete.inputs <- function(..., error=FALSE){
+  
+  inputs = list(...)
+  for(i in 1:length(inputs)){
+    if(!is.null(inputs[[i]]) && any(is.na(inputs[[i]]))){
+      if(error){
+        stop('Input ', names(inputs[i]), ' contains NA value')
+      }else{
+        return(FALSE)
+    
+      }
+    }
+  }
+  return(TRUE)
+}

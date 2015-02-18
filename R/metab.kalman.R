@@ -86,6 +86,9 @@
 #'@export
 metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
   
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+                  z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
+  
   nobs <- length(do.obs)
   
   mm.args <- list(...)
