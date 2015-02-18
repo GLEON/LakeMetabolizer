@@ -1,3 +1,8 @@
+#Build files
+src-i386
+src-x64
+src/LakeMetabolizer.dll
+
 # History files
 .Rhistory
 .Rapp.history
