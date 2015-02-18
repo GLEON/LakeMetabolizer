@@ -5,9 +5,9 @@
 \alias{sw.to.par.base}
 \title{Convert shortwave radiation to PAR}
 \usage{
-sw.to.par(data, sw.col='sw')
+sw.to.par(data, sw.col='sw', coeff=2.114)
 
-sw.to.par.base(sw)
+sw.to.par.base(sw, coeff=2.114)
 }
 \arguments{
 \item{data}{Object of class data.frame with column name \code{sw} (or specified alternate)}

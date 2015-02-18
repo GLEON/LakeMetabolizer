@@ -5,9 +5,9 @@
 \alias{par.to.sw.base}
 \title{Convert PAR to shortwave}
 \usage{
-par.to.sw.base(par)
+par.to.sw.base(par, coeff=0.473)
 
-par.to.sw(data, par.col='par')
+par.to.sw(data, par.col='par', coeff=0.47)
 }
 \arguments{
 \item{data}{Object of class data.frame with column name 'par' (units umol/m^2/sec)}
