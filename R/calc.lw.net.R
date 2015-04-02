@@ -90,6 +90,10 @@ calc.lw.net = function(ts.data, lat, atm.press){
 #'@export
 calc.lw.net.base <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   
+	if(!inherits(dateTime, "POSIXt")){
+		stop('dateTime supplied to calc.lw.net must be of POSIXct class. See ?as.POSIXct')
+	}
+	
   # estimate clear sky short wave radiation
   clearsky <- calc.clearsky(dateTime,lat,atm.press,airT,RH)
   
@@ -101,7 +105,7 @@ calc.lw.net.base <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   clf[clf>1] <- 1 
   
   # determine month of year
-  month <- as.numeric(format(dateTime,"%m")) #extract month
+  month <- as.POSIXlt(dateTime)$mon + 1 #extract month
   
   # estimate the vapor pressure of air
   SatVaporFromTemp <- function(airT){    
@@ -166,8 +170,8 @@ calc.clearsky <- function(dateTime,lat,atm.press,airT,RH){
   }
   
   t_noon = 12.5;          #solar noon (actually will depend on timezone)
-  n = strptime(dateTime, "%Y-%m-%d %H:%M")$yday+1 #julian day
-  t  = strptime(dateTime, "%Y-%m-%d %H:%M")$hour # time (hours)
+  n = as.POSIXlt(dateTime)$yday+1 #julian day
+  t = as.POSIXlt(dateTime)$hour # time (hours)
   
   cosN = 1+0.034*cos(2*pi*(n-1)/365)
   I0 = 1353*(cosN^2)    # Meyers & Dale 1983
@@ -260,7 +264,7 @@ GetSmithGamma <- function(latitude,dateTime){
   #colnames(gammatable)=c("winter","spring","summer","fall")
   
   latitude=ceiling(latitude/10)
-  n = strptime(dateTime,"%Y-%m-%d %H:%M")$yday+1 #julian day
+  n = as.POSIXlt(dateTime)$yday+1 #julian day
   
   season = rep(1,length(n))
   for (i in 1:length(season)) {
