@@ -21,7 +21,7 @@
 #'
 #'k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
 #'
-#'k.vachon(ts.data,lake.area,params=c(2.51,1.48,0.39)
+#'k.vachon(ts.data, lake.area, params=c(2.51,1.48,0.39))
 #'
 #'k.heiskanen(ts.data, wnd.z, Kd, atm.press)
 #'@param ts.data vector of datetime in POSIXct format
@@ -32,13 +32,16 @@
 #'@param lat Latitude, degrees north
 #'@param lake.area Lake area, m^2
 #'@param params Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'
 #'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
 #'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre 
 #'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
+#'
 #'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
 #'@import rLakeAnalyzer
 #'@useDynLib LakeMetabolizer
 #'@keywords methods math
+#'
 #'@references
 #'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
 #'in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
@@ -105,10 +108,11 @@
 #'lwnet = calc.lw.net(ts.data, lat, atm.press)
 #'ts.data = merge(ts.data, lwnet)
 #'\dontrun{
-#'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+#'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, 
+#'	lat=lat, lake.area=lake.area)
 #'
 #'k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd, 
-#'											atm.press=atm.press, lat=lat, lake.area=lake.area)
+#'	atm.press=atm.press, lat=lat, lake.area=lake.area)
 #'
 #'k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
 #'}
@@ -188,11 +192,13 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
 #'airT, wnd, RH, sw, lwnet)
 #'
-#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, 
+#'lwnet, params=c(1.2,0.4872,1.4784))
 #'
-#'k.vachon.base(wnd,lake.area,params=c(2.51,1.48,0.39))
+#'k.vachon.base(wnd, lake.area, params=c(2.51,1.48,0.39))
 #'
 #'k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'
 #'@param wnd Numeric value of wind speed, (Units:m/s)
 #'@param method Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"
 #'@param wnd.z Height of wind measurement, (Units: m)
@@ -207,7 +213,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
 #'@param lwnet Numeric value net long wave radiation, W m^-2
-#'@param params Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'@param params Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre.base}. See details.
 #'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
 #'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre 
 #'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
@@ -273,14 +279,14 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
-#'z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, 
+#'dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
-#'z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, 
+#'atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
-#'z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, 
+#'dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
 #'@export
 k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){ 

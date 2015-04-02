@@ -16,7 +16,7 @@ par.to.sw.base = function(par, coeff=0.473){
 #'@usage
 #'par.to.sw.base(par, coeff=0.473)
 #'
-#'par.to.sw(data, par.col='par', coeff=0.47)
+#'par.to.sw(data, par.col='par', coeff=0.473)
 #'
 #'@param data Object of class data.frame with column name 'par' (units umol/m^2/sec)
 #'@param par.col String of alternative name for PAR column 

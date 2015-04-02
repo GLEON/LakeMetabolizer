@@ -20,7 +20,7 @@ k.read.soloviev(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 
 k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
 
-k.vachon(ts.data,lake.area,params=c(2.51,1.48,0.39)
+k.vachon(ts.data, lake.area, params=c(2.51,1.48,0.39))
 
 k.heiskanen(ts.data, wnd.z, Kd, atm.press)
 }
@@ -82,10 +82,11 @@ lake.area = tb.data$metadata$lakearea
 lwnet = calc.lw.net(ts.data, lat, atm.press)
 ts.data = merge(ts.data, lwnet)
 \dontrun{
-k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press,
+	lat=lat, lake.area=lake.area)
 
 k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd,
-											atm.press=atm.press, lat=lat, lake.area=lake.area)
+	atm.press=atm.press, lat=lat, lake.area=lake.area)
 
 k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
 }

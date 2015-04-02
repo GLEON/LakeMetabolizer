@@ -15,7 +15,7 @@
 #Before use, should be converted to appropriate gas using k600.2.kGAS.
 
 #'@export
-k.vachon <- function(ts.data,lake.area,params=c(2.51,1.48,0.39)){
+k.vachon <- function(ts.data, lake.area, params=c(2.51,1.48,0.39)){
   if(!has.vars(ts.data, 'wnd')){
     stop('k.vachon requires a "wnd" column in the supplied data')
   }
@@ -25,7 +25,7 @@ k.vachon <- function(ts.data,lake.area,params=c(2.51,1.48,0.39)){
 }
 
 #'@export
-k.vachon.base <- function(wnd,lake.area,params=c(2.51,1.48,0.39)){
+k.vachon.base <- function(wnd, lake.area, params=c(2.51,1.48,0.39)){
   U10 <- wnd  #This function uses just the wind speed it is supplied
   k600 <- params[1] + params[2]*U10 + params[3]*U10*log10(lake.area/1000000) # units in cm h-1
   k600 <- k600*24/100 #units in m d-1

@@ -1,4 +1,5 @@
 
+if(getRversion() >= "2.15.1")  utils::globalVariables("jags")
 
 # ====================================
 # = Function to write the jags model =

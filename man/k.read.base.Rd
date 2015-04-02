@@ -20,9 +20,10 @@ airT, wnd, RH, sw, lwnet)
 k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
 airT, wnd, RH, sw, lwnet)
 
-k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
+k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw,
+lwnet, params=c(1.2,0.4872,1.4784))
 
-k.vachon.base(wnd,lake.area,params=c(2.51,1.48,0.39))
+k.vachon.base(wnd, lake.area, params=c(2.51,1.48,0.39))
 
 k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
@@ -55,7 +56,7 @@ k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, l
 
 \item{method}{Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"}
 
-\item{params}{Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre}. See details.}
+\item{params}{Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre.base}. See details.}
 }
 \value{
 Numeric value of gas exchange velocity (k600) in units of m/day. Before use,
@@ -91,14 +92,14 @@ k600_cole <- k.cole.base(U10)
 
 k600_crusius <- k.crusius.base(U10)
 
-k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts,
-z.aml, airT, wnd, RH, sw, lwnet)
+k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
+dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts,
-z.aml, airT, wnd, RH, sw, lwnet)
+k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area,
+atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
-z.aml, airT, wnd, RH, sw, lwnet)
+k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press,
+dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 }
 \author{
 R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows

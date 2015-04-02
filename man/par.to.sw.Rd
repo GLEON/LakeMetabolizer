@@ -7,7 +7,7 @@
 \usage{
 par.to.sw.base(par, coeff=0.473)
 
-par.to.sw(data, par.col='par', coeff=0.47)
+par.to.sw(data, par.col='par', coeff=0.473)
 }
 \arguments{
 \item{data}{Object of class data.frame with column name 'par' (units umol/m^2/sec)}
