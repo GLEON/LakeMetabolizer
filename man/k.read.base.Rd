@@ -6,6 +6,7 @@
 \alias{k.heiskanen.base}
 \alias{k.macIntyre.base}
 \alias{k.read.base}
+\alias{k.read.soloviev.base}
 \alias{k.vachon.base}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
@@ -14,6 +15,9 @@ k.cole.base(wnd)
 k.crusius.base(wnd, method='power')
 
 k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
+airT, wnd, RH, sw, lwnet)
+
+k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
 airT, wnd, RH, sw, lwnet)
 
 k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
@@ -90,6 +94,9 @@ k600_crusius <- k.crusius.base(U10)
 k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts,
 z.aml, airT, wnd, RH, sw, lwnet)
 
+k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts,
+z.aml, airT, wnd, RH, sw, lwnet)
+
 k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts,
 z.aml, airT, wnd, RH, sw, lwnet)
 }
@@ -111,14 +118,18 @@ as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 
 Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
-#'
-#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
-of gas transfer velocity versus wind speed relationships in lakes}.
-Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
 
-#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
+of gas transfer velocity versus wind speed relationships in lakes}.
+Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
+
+Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
 Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
 transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+
+Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
 }
 \seealso{
 \link{k.cole}

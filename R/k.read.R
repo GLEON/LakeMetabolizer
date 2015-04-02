@@ -1,6 +1,7 @@
 #'@name k.read
 #'@aliases 
 #'k.read
+#'k.read.soloviev
 #'k.cole
 #'k.macIntyre
 #'k.crusius
@@ -15,6 +16,8 @@
 #'k.crusius(ts.data, method='power')
 #'
 #'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
+#'
+#'k.read.soloviev(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
 #'k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
 #'
@@ -52,13 +55,18 @@
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
 #'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 #'
-#'#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+#'Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
 #'of gas transfer velocity versus wind speed relationships in lakes}.
-#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
+#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
 #'
-#'#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#'Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
 #'Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
 #'transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+#'
+#'Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+#'\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+#'velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
+#'
 #'@author
 #'Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway, Jordan S. Read
 #'@seealso 
@@ -98,6 +106,9 @@
 #'ts.data = merge(ts.data, lwnet)
 #'\dontrun{
 #'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+#'
+#'k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd, 
+#'											atm.press=atm.press, lat=lat, lake.area=lake.area)
 #'
 #'k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
 #'}
@@ -157,6 +168,7 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@name k.read.base
 #'@aliases 
 #'k.read.base
+#'k.read.soloviev.base
 #'k.cole.base
 #'k.macIntyre.base
 #'k.crusius.base
@@ -171,6 +183,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'k.crusius.base(wnd, method='power')
 #'
 #'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
+#'airT, wnd, RH, sw, lwnet)
+#'
+#'k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
 #'airT, wnd, RH, sw, lwnet)
 #'
 #'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet,params=c(1.2,0.4872,1.4784))
@@ -214,14 +229,19 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
 #'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
-#'#'
-#'#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
-#'of gas transfer velocity versus wind speed relationships in lakes}.
-#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
 #'
-#'#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#'Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+#'of gas transfer velocity versus wind speed relationships in lakes}.
+#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
+#'
+#'Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
 #'Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
 #'transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+#'
+#'Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+#'\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+#'velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
+#'
 #'@author
 #'R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
 #'@seealso 
@@ -254,6 +274,9 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'k600_crusius <- k.crusius.base(U10)
 #'
 #'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
+#'z.aml, airT, wnd, RH, sw, lwnet)
+#'
+#'k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
 #'z.aml, airT, wnd, RH, sw, lwnet)
 #'
 #'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
