@@ -6,6 +6,7 @@
 \alias{k.heiskanen}
 \alias{k.macIntyre}
 \alias{k.read}
+\alias{k.read.soloviev}
 \alias{k.vachon}
 \title{Returns a timeseries of gas exchange velocity}
 \usage{
@@ -15,9 +16,11 @@ k.crusius(ts.data, method='power')
 
 k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 
+k.read.soloviev(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
+
 k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
 
-k.vachon(ts.data,lake.area,params=c(2.51,1.48,0.39)
+k.vachon(ts.data, lake.area, params=c(2.51,1.48,0.39))
 
 k.heiskanen(ts.data, wnd.z, Kd, atm.press)
 }
@@ -79,7 +82,11 @@ lake.area = tb.data$metadata$lakearea
 lwnet = calc.lw.net(ts.data, lat, atm.press)
 ts.data = merge(ts.data, lwnet)
 \dontrun{
-k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press,
+	lat=lat, lake.area=lake.area)
+
+k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd,
+	atm.press=atm.press, lat=lat, lake.area=lake.area)
 
 k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
 }
@@ -103,13 +110,17 @@ as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 
-#Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
+Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
 of gas transfer velocity versus wind speed relationships in lakes}.
-Can. J. Fish. Aquat. Sci. 70 (2013): 1757–1764.
+Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
 
-#Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
 Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
 transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+
+Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
 }
 \seealso{
 \link{k.cole}

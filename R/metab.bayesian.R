@@ -1,11 +1,12 @@
 
+if(getRversion() >= "2.15.1")  utils::globalVariables("jags")
 
 # ====================================
 # = Function to write the jags model =
 # ====================================
 bayes.makeModel <- function(k.gas){
   
-	if(!require("R2jags")){
+	if(!requireNamespace("R2jags")){
     stop('metab.bayesian requires R2jags')
 	}
 	
@@ -288,7 +289,7 @@ metab.bayesian <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...){
 		stop('All inputs to metab.bayes must be numeric vectors')
 	}
 	
-	require("R2jags")
+  requireNamespace("R2jags")
 	
 	# Define model and write to file
 	# Model choice depends on k values (all 0, all non-0, mixture)

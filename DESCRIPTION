@@ -1,9 +1,9 @@
 Package: LakeMetabolizer
 Title: Tools for the analysis of ecosystem metabolism
 Maintainer: Luke Winslow <lawinslow@gmail.com>
-Version: 1.2.0
+Version: 1.3.0
 Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul
-    Hanson, Gordon Holtgrieve, Aline Jaimes, Jordan Read, Richard Woolway
+    Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 Description: A collection of tools for the calculation of freewater metabolism.
 License: GPL (>= 2)
 Imports:
