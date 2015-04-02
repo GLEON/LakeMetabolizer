@@ -6,7 +6,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables("jags")
 # ====================================
 bayes.makeModel <- function(k.gas){
   
-	if(!require("R2jags")){
+	if(!requireNamespace("R2jags")){
     stop('metab.bayesian requires R2jags')
 	}
 	
