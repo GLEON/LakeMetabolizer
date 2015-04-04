@@ -127,7 +127,7 @@ calc.lw.net.base <- function(dateTime,sw,Ts,lat,atm.press,airT,RH){
   cl2 <- 1.22+0.06*sin((month+2)*pi/6)
   cl3 <- vp/T_k
   T_k1 <- T_k^4
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   LWin <- T_k1*(clf+cl1*cl2*cl3^(1/7))*S_B
   
   # estimate outgoing longwave radiation
@@ -241,7 +241,7 @@ SatVaporFromTemp <- function(airT) {
 
 VaporPressure <- function(airT,RelativeHumidity) {
   
-  #airT in °C, relative Humidity as decimal (1 > Rh > 0)
+  #airT in C, relative Humidity as decimal (1 > Rh > 0)
   #VaporPressure in mb
   
   satPressure = SatVaporFromTemp(airT )*1000 #satP in mb
