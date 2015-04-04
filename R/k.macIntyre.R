@@ -8,7 +8,7 @@
 # dateTime: date and time vector
 # wtr: dataframe of water temperatures 
 # depth: vector of water temperature depths
-# airT: vector of air temperatures in °C
+# airT: vector of air temperatures in C
 # Uz: vector of wind speed in m/s
 # Rh: vector of relative humidity in %
 # sw: vector of shortwave radiation in W/m2
@@ -21,7 +21,7 @@
 #'@export
 k.macIntyre = function(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784)){
   
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
   
@@ -75,7 +75,7 @@ k.macIntyre.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wn
                              params=c(1.2,0.4872,1.4784)){
   
   #Constants
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
   albedo_SW <- 0.07

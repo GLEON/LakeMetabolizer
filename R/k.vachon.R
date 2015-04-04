@@ -3,10 +3,10 @@
 #Dominic Vachon and Yves T. Prairie (2013)
 #The ecosystem size and shape dependence of gas transfer velocity 
 #versus wind speed relationships in lakes
-#Can. J. Fish. Aquat. Sci. 70: 1757–1764 dx.doi.org/10.1139/cjfas-2013-0241
+#Can. J. Fish. Aquat. Sci. 70: 1757-1764 dx.doi.org/10.1139/cjfas-2013-0241
 
 # INPUTS;
-# wnd: wind speed 10 m height (m·s−1). Use wind.scale function to scale wind speed if necessary. 
+# wnd: wind speed 10 m height (m/s). Use wind.scale function to scale wind speed if necessary. 
 # lake.area: lake area (m2)
 # parA,parB,parC = option to change parameters from  
 # default values of parameters parA=2.51, parB=1.48, parC=0.39

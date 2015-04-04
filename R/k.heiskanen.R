@@ -12,7 +12,7 @@
 # dateTime: date and time vector in POSIXct
 # Ts: numeric vector of surface water temperature, Units(deg C)
 # z.aml: Numeric vector of actively mixed layer depths. Must be the same length as Ts parameter
-# airT: vector of air temperatures in °C
+# airT: vector of air temperatures in C
 # wnd: vector of wind speed in m/s
 # Rh: vector of relative humidity in %
 # sw: vector of shortwave radiation in W/m2
@@ -24,7 +24,7 @@
 #'@export
 k.heiskanen <- function(ts.data, wnd.z, Kd, atm.press){
   
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
   
@@ -77,7 +77,7 @@ k.heiskanen <- function(ts.data, wnd.z, Kd, atm.press){
 k.heiskanen.base <- function(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){
   
   #Constants
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   emiss <- 0.972 # emissivity
   Kelvin = 273.15 #conversion from C to Kelvin
   albedo_SW <- 0.07

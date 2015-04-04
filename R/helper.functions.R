@@ -240,7 +240,7 @@ pred.merge <- function(x1, x2, all=FALSE){
 # example: round.time(x, "5 minutes")
 # example: round.time(x, "90 min")
 # example: round.time(x, "0.5 hours")
-# x is a time format – preferably POSIXct, or can be coerced w/ as.POSIXct
+# x is a time format, preferably POSIXct, or can be coerced w/ as.POSIXct
 # if x needs to be converted to POSIX, define input.format if x currently isn't in a 'standard unambiguous format'
 # default output.format=NULL leads to output of class POSIXct, character otherwise
 round.time <- function(x, units, input.format=NULL, output.format=NULL){
@@ -280,7 +280,7 @@ round.time <- function(x, units, input.format=NULL, output.format=NULL){
     return(format.Date(x, format=output.format))
   } else
     
-    # Fractional time intervals – convert to smaller unit
+    # Fractional time intervals  convert to smaller unit
     if((trunc(u.time)-u.time)!=0){
       if(sign(u.time)==1L){
         while((trunc(u.time)-u.time)!=0){
