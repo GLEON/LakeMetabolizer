@@ -145,7 +145,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 	
 	bf.args <- list(...)
 	
-	jags.m <- jags(data, NULL, parameters.to.save=params, mf)
+	jags.m <- R2jags::jags(data, NULL, parameters.to.save=params, mf)
 
 	tF <- function(x, tend){ # tendency function
 		switch(tend,
