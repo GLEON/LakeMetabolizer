@@ -1,4 +1,5 @@
 #figure generation code for a metabolism example
+library(LakeMetabolizer)
 
 data.path = system.file('extdata/', package="LakeMetabolizer")
 sp.data = load.all.data('sparkling', data.path)
