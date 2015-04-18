@@ -104,3 +104,19 @@ res = book.res
 cat('metab.bookkeep GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
 
 
+#impossible values removed
+cat('Averages after removal of impossible GPP and R values\n')
+res = ols.res
+cat('metab.ols GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = mle.res
+cat('metab.mle GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:',mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = kalman.res
+cat('metab.kalman GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = bayes.res
+cat('metab.bayesian GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = book.res
+cat('metab.bookkeep GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+
+
+
+
