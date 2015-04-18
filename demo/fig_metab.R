@@ -1,4 +1,5 @@
 #figure generation code for a metabolism example
+library(LakeMetabolizer)
 
 data.path = system.file('extdata/', package="LakeMetabolizer")
 sp.data = load.all.data('sparkling', data.path)
@@ -89,4 +90,33 @@ abline(0,0)
 
 
 dev.off()
+
+#summary stats
+res = ols.res
+cat('metab.ols GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
+res = mle.res
+cat('metab.mle GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
+res = kalman.res
+cat('metab.kalman GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
+res = bayes.res
+cat('metab.bayesian GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
+res = book.res
+cat('metab.bookkeep GPP:', mean(res[,3]), ' R:', mean(res[,4]), 'NEP:', mean(res[,5]), '\n')
+
+
+#impossible values removed
+cat('Averages after removal of impossible GPP and R values\n')
+res = ols.res
+cat('metab.ols GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = mle.res
+cat('metab.mle GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:',mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = kalman.res
+cat('metab.kalman GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = bayes.res
+cat('metab.bayesian GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+res = book.res
+cat('metab.bookkeep GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+
+
+
 
