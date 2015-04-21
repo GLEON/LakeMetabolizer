@@ -170,7 +170,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 
 	GPPsd <- sqrt(sum(sdSim[1]^2*data$U[,1]^2))
 	Rsd <- sqrt(sum(sdSim[2]^2*data$U[,2]^2))
-	NEPsd <- GPPsd^2 + Rsd^2
+	NEPsd <- sqrt(GPPsd^2 + Rsd^2)
 
 	return(list(
 		"model" = jags.m, 
