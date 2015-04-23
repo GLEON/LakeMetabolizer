@@ -1,6 +1,7 @@
 LakeMetabolizer
 ===============
 [![Build Status](https://travis-ci.org/GLEON/LakeMetabolizer.svg?branch=master)](https://travis-ci.org/GLEON/LakeMetabolizer)
+![Download Count](http://cranlogs.r-pkg.org/badges/LakeMetabolizer)
 
 Collection of Lake Metabolism Functions
 
