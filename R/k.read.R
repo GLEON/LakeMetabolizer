@@ -387,7 +387,6 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.am
   
   # calculate viscous sublayer
   Sv <- C1*kinV/uTanS
-  cat(Sv$y)
   eu_N <- uTanS^3      # e_u(0) = (tau_t/rho)^1.5/(vonK*Sv)
   eu_D <- vonK*Sv       # denominator
   eu_0 <- eu_N/eu_D    # in m2/s3
