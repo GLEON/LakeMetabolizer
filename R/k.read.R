@@ -243,7 +243,8 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.am
   
   # calculate sensible and latent heat fluxes
   mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wnd.z)
-  C_D <- mm$C_D # drag coefficient for momentum
+  C_D <- 0.0013
+  #C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
   
@@ -318,6 +319,7 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.am
   
   # calculate viscous sublayer
   Sv <- C1*kinV/uTanS
+  cat(Sv$y)
   eu_N <- uTanS^3      # e_u(0) = (tau_t/rho)^1.5/(vonK*Sv)
   eu_D <- vonK*Sv       # denominator
   eu_0 <- eu_N/eu_D    # in m2/s3
