@@ -89,6 +89,7 @@
 #'
 #' # run each metabolism model
 #'	m.bk <- metab(data, "bookkeep", lake.lat=42.6)
+#'  m.bk <- metab(data, lake.lat=42.6) # no method defaults to "bookeep" 
 #'	m.ols <- metab(data, "ols", lake.lat=42.6)
 #'	m.mle <- metab(data, "mle", lake.lat=42.6)
 #'	m.kal <- metab(data, "kalman", lake.lat=42.6)
@@ -100,7 +101,7 @@
 #'
 #'@export
 
-metab <- function(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...){
+metab <- function(data, method = NULL, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...){
 	
 	m.args <- list(...)
 	
@@ -133,12 +134,9 @@ metab <- function(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.
 	# ===================
 	# = Identify method =
 	# ===================
-	possibleMethods <- c("bayesian", "bookkeep", "kalman", "ols", "mle")
-	mtd <- possibleMethods[which.min(adist(method, possibleMethods, ignore.case=TRUE))]
-	if(!method%in%possibleMethods){
-		warning(paste("method '",method,"' matched to '",mtd,"'. Supply perfect match to avoid warning.", sep=""))
-	}
-	stopifnot(length(mtd)==1)
+	possibleMethods <- c("bookkeep", "bayesian",  "kalman", "ols", "mle")
+	mtd <- match.arg(method, possibleMethods)
+	
 	mtdCall <- paste("metab",mtd, sep=".")
 	
 	# ==============
