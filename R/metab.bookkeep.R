@@ -51,6 +51,9 @@
 #'@export
 metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+                  z.mix=z.mix, irr=irr, error=TRUE)
+  
 	nobs <- length(do.obs)  
 
 	mb.args <- list(...)

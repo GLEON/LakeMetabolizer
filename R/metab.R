@@ -18,7 +18,7 @@
 #'
 #'  \code{"do.sat"} = numeric vector of saturated oxygen concentration in mg/L
 #'
-#'  \code{"k.gas"} = numeric vector of gas exchange coefficient values in m/day, should be 0 when depth of do.obs is shallower than z.mix
+#'  \code{"k.gas"} = numeric vector of gas exchange coefficient values in m/day, should be 0 when depth of do.obs is deeper than z.mix
 #'
 #'  \code{"z.mix"} = numeric vector of mixing depth values in meters
 #'
@@ -106,15 +106,27 @@ metab <- function(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.
 	
 	#Rename the WTR column to be used (must be wtr to easily be passed to meta.* functions)
 	if(wtr.name != "wtr"){
-		names(data)[names(data)==wtr.name] <- "wtr"
+		if(!"wtr"%in%names(data)){
+			names(data)[names(data)==wtr.name] <- "wtr"
+		}else{
+			data[,"wtr"] <- data[,wtr.name]
+		}
 	}
 	
 	if(irr.name != "irr"){
-		names(data)[names(data)==irr.name] <- "irr"
+		if(!"irr"%in%names(data)){
+			names(data)[names(data)==irr.name] <- "irr"
+		}else{
+			data[,"irr"] <- data[,irr.name]
+		}
 	}
 	
-	if(do.obs.name != "irr"){
-		names(data)[names(data)==do.obs.name] <- "do.obs"
+	if(do.obs.name != "do.obs"){
+		if(!"do.obs"%in%names(data)){
+			names(data)[names(data)==do.obs.name] <- "do.obs"
+		}else{
+			data[,"do.obs"] <- data[,do.obs.name]
+		}
 	}
 	
 	

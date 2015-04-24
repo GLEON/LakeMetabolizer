@@ -1,8 +1,8 @@
 
 #'@export
-par.to.sw.base = function(par){
+par.to.sw.base = function(par, coeff=0.473){
   
-  sw = par* 2.114
+  sw = par* coeff
 }
 
 
@@ -14,13 +14,16 @@ par.to.sw.base = function(par){
 #'Returns incoming shortwave radiation by converting PAR measuremt.
 #'
 #'@usage
-#'par.to.sw.base(par)
+#'par.to.sw.base(par, coeff=0.473)
 #'
-#'par.to.sw(data, par.col='par')
+#'par.to.sw(data, par.col='par', coeff=0.473)
 #'
 #'@param data Object of class data.frame with column name 'par' (units umol/m^2/sec)
 #'@param par.col String of alternative name for PAR column 
-#'@param par Numeric vector of PAR values
+#'@param par Numeric vector of PAR values (umol/m^2/sec)
+#'@param coeff 
+#'Numerical coefficient to convert PAR (umol/m^2/sec) to SW (W/m^2). 
+#'Defaults to value from Britton and Dodd (1976).
 #'
 #'
 #'@return 
@@ -43,13 +46,13 @@ par.to.sw.base = function(par){
 #'par <- 800
 #'par.to.sw.base(par)
 #'@export
-par.to.sw = function(data, par.col='par'){
+par.to.sw = function(data, par.col='par', coeff=0.473){
   
   output = data
   
   indx = var.indx(data, par.col)
   
-  data[,indx] = par.to.sw.base(data[,indx])
+  data[,indx] = par.to.sw.base(data[,indx], coeff=coeff)
   names(data)[indx] = 'sw' #rename to par
   
   return(data)

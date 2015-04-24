@@ -240,7 +240,7 @@ pred.merge <- function(x1, x2, all=FALSE){
 # example: round.time(x, "5 minutes")
 # example: round.time(x, "90 min")
 # example: round.time(x, "0.5 hours")
-# x is a time format – preferably POSIXct, or can be coerced w/ as.POSIXct
+# x is a time format, preferably POSIXct, or can be coerced w/ as.POSIXct
 # if x needs to be converted to POSIX, define input.format if x currently isn't in a 'standard unambiguous format'
 # default output.format=NULL leads to output of class POSIXct, character otherwise
 round.time <- function(x, units, input.format=NULL, output.format=NULL){
@@ -280,7 +280,7 @@ round.time <- function(x, units, input.format=NULL, output.format=NULL){
     return(format.Date(x, format=output.format))
   } else
     
-    # Fractional time intervals – convert to smaller unit
+    # Fractional time intervals  convert to smaller unit
     if((trunc(u.time)-u.time)!=0){
       if(sign(u.time)==1L){
         while((trunc(u.time)-u.time)!=0){
@@ -432,3 +432,23 @@ calc.freq <- function(datetime){
   freq <- round(Mode(1/diff(date2doy(datetime))))
 }
 
+# =================================
+# = Checks all inputs for NA vals =
+# =================================
+# if error=TRUE, will throw an error when 
+# NA in input is found
+complete.inputs <- function(..., error=FALSE){
+  
+  inputs = list(...)
+  for(i in 1:length(inputs)){
+    if(!is.null(inputs[[i]]) && any(is.na(inputs[[i]]))){
+      if(error){
+        stop('Input ', names(inputs[i]), ' contains NA value')
+      }else{
+        return(FALSE)
+    
+      }
+    }
+  }
+  return(TRUE)
+}

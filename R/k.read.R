@@ -1,9 +1,12 @@
 #'@name k.read
 #'@aliases 
 #'k.read
+#'k.read.soloviev
 #'k.cole
 #'k.macIntyre
 #'k.crusius
+#'k.vachon
+#'k.heiskanen
 #'@title Returns a timeseries of gas exchange velocity
 #'@description 
 #'Returns the gas exchange velocity based on the chosen model in units of m/day
@@ -14,18 +17,31 @@
 #'
 #'k.read(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
 #'
-#'k.macIntyre(ts.data, wnd.z, Kd, atm.press)
+#'k.read.soloviev(ts.data, wnd.z, Kd, atm.press, lat, lake.area)
+#'
+#'k.macIntyre(ts.data, wnd.z, Kd, atm.press,params=c(1.2,0.4872,1.4784))
+#'
+#'k.vachon(ts.data, lake.area, params=c(2.51,1.48,0.39))
+#'
+#'k.heiskanen(ts.data, wnd.z, Kd, atm.press)
 #'@param ts.data vector of datetime in POSIXct format
 #'@param method Only for \link{k.crusius}. String of valid method . Either "linear", "bilinear", or "power"
 #'@param wnd.z height of wind measurement, m
-#'@param Kd numeric value of air temperature, degC
+#'@param Kd Light attenuation coefficient (Units:m^-1)
 #'@param atm.press atmospheric pressure in mb
 #'@param lat Latitude, degrees north
 #'@param lake.area Lake area, m^2
+#'@param params Only for \link{k.vachon.base} and \link{k.macIntyre}. See details.
+#'
+#'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
+#'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre 
+#'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
+#'
 #'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
 #'@import rLakeAnalyzer
 #'@useDynLib LakeMetabolizer
 #'@keywords methods math
+#'
 #'@references
 #'Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
 #'in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
@@ -41,12 +57,27 @@
 #'
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
 #'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'
+#'Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+#'of gas transfer velocity versus wind speed relationships in lakes}.
+#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
+#'
+#'Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#'Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
+#'transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+#'
+#'Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+#'\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+#'velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
+#'
 #'@author
 #'Hilary Dugan, Jake Zwart, Luke Winslow, R. Iestyn. Woolway, Jordan S. Read
 #'@seealso 
 #'\link{k.cole}
 #'\link{k.crusius}
 #'\link{k.macIntyre}
+#'\link{k.vachon}
+#'\link{k.heiskanen}
 #'@examples 
 #'data.path = system.file('extdata', package="LakeMetabolizer")
 #'
@@ -77,14 +108,18 @@
 #'lwnet = calc.lw.net(ts.data, lat, atm.press)
 #'ts.data = merge(ts.data, lwnet)
 #'\dontrun{
-#'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, lat=lat, lake.area=lake.area)
+#'k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, 
+#'	lat=lat, lake.area=lake.area)
+#'
+#'k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd, 
+#'	atm.press=atm.press, lat=lat, lake.area=lake.area)
 #'
 #'k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
 #'}
 #'@export
 k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
   
-  S_B <- 5.67E-8 # Stefan-Boltzman constant (°K is used)
+  S_B <- 5.67E-8 # Stefan-Boltzman constant (K is used)
   emiss <- 0.972 # emissivity;
   Kelvin = 273.15 #conversion from C to Kelvin
   
@@ -137,9 +172,12 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@name k.read.base
 #'@aliases 
 #'k.read.base
+#'k.read.soloviev.base
 #'k.cole.base
 #'k.macIntyre.base
 #'k.crusius.base
+#'k.vachon.base
+#'k.heiskanen.base
 #'@title Returns a timeseries of gas exchange velocity
 #'@description 
 #'Returns the gas exchange velocity based on the chosen model in units of m/day
@@ -151,7 +189,16 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
 #'airT, wnd, RH, sw, lwnet)
 #'
-#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
+#'airT, wnd, RH, sw, lwnet)
+#'
+#'k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, 
+#'lwnet, params=c(1.2,0.4872,1.4784))
+#'
+#'k.vachon.base(wnd, lake.area, params=c(2.51,1.48,0.39))
+#'
+#'k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'
 #'@param wnd Numeric value of wind speed, (Units:m/s)
 #'@param method Only for \link{k.crusius.base}. String of valid method . Either "constant", "bilinear", or "power"
 #'@param wnd.z Height of wind measurement, (Units: m)
@@ -166,6 +213,10 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'@param RH Numeric value of relative humidity, \%
 #'@param sw Numeric value of short wave radiation, W m^-2
 #'@param lwnet Numeric value net long wave radiation, W m^-2
+#'@param params Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre.base}. See details.
+#'@details Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
+#'c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre 
+#'model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 #'@return Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
 #'should be converted to appropriate gas using \link{k600.2.kGAS}.
 #'@keywords methods math
@@ -184,6 +235,19 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
 #'wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
+#'
+#'Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+#'of gas transfer velocity versus wind speed relationships in lakes}.
+#'Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
+#'
+#'Jouni J. Heiskanen, Ivan Mammarella, Sami Haapanala, Jukka Pumpanen, Timo Vesala, Sally MacIntyre
+#'Anne Ojala.\emph{ Effects of cooling and internal wave motions on gas
+#'transfer coefficients in a boreal lake}. Tellus B 66, no.22827 (2014)
+#'
+#'Alexander Soloviev, Mark Donelan, Hans Graber, Brian Haus, Peter Schlussel.
+#'\emph{An approach to estimation of near-surface turbulence and CO2 transfer
+#'velocity from remote sensing data}. Journal of Marine Systems 66, (2007): 182-194.
+#'
 #'@author
 #'R. Iestyn. Woolway, Hilary Dugan, Luke Winslow, Jordan S Read, GLEON fellows
 #'@seealso 
@@ -191,6 +255,8 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'\link{k.read}
 #'\link{k.crusius}
 #'\link{k.macIntyre}
+#'\link{k.vachon}
+#'\link{k.heiskanen}
 #'@examples 
 #'wnd.z <- 2
 #'Kd <- 2
@@ -213,11 +279,14 @@ k.read = function(ts.data, wnd.z, Kd, atm.press, lat, lake.area){
 #'
 #'k600_crusius <- k.crusius.base(U10)
 #'
-#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, 
-#'z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, 
+#'dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
-#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, 
-#'z.aml, airT, wnd, RH, sw, lwnet)
+#'k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, 
+#'atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
+#'
+#'k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, 
+#'dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 #'
 #'@export
 k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet){ 

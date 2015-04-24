@@ -5,7 +5,7 @@
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
@@ -86,6 +86,9 @@
 #'@export
 metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+                  z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
+  
 	nobs <- length(do.obs)
 	
 	mm.args <- list(...)
@@ -124,9 +127,10 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	guesses <- c(1E-4, 1E-4, log(Q0))
 	
 	fit <- optim(guesses, fn=mleNLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
+	
 	pars0 <- fit$par
 	
-	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]))
+	pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]), "nll"=fit$value)
 	
 	# ====================================
 	# = Use fits to calculate metabolism =

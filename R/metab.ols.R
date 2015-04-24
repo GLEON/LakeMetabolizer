@@ -6,7 +6,7 @@
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
-#'@param irr Vector of photosynthetically active radiation in \eqn{\mumols m^{-2} s^{-2}}{micro mols / m^2 / s}
+#'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
@@ -46,6 +46,9 @@
 #'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+                  z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
+  
 	nobs <- length(do.obs)
 	
 	mo.args <- list(...)
@@ -95,7 +98,7 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	# nep = rho + gpp
 	# nep = sum(fitted(mod), na.rm=TRUE) # even if there are NA's in the response variable, they shouldn't be included in fitted() ....
 	# sum(noflux.do.diff) # i think this should be the same as sum(fitted(mod)) b/c model residuals sum to 0 ... right?
-	# also note that NEP is gpp+rho (rho is negative by this convention, which is consistent w/ Kalman, Bayes, mle – unsure of BK)
+	# also note that NEP is gpp+rho (rho is negative by this convention, which is consistent w/ Kalman, Bayes, mle, unsure of BK)
 
 	results <- list("mod"=mod, "metab"=data.frame("GPP"=gpp, "R"=resp, "NEP"=nep))
 	# attr(results, "lm.mod") <- mod
