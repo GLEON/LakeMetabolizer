@@ -45,13 +45,13 @@ k600_vachon = k.vachon(ts.data, lake.area)
 
 
 # ---- figure ----
-cols <- c("#016450", "#02818A", "#3690C0", "#67A9CF", "#A6BDDB", 'grey50','grey25')
+cols <- c("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d")
 
 models <- list(
-  list('name'="MacIntyre", data = k600_macIntyre, col = cols[1], lty = 6, lwd = 1.7),
+  list('name'="MacIntyre", data = k600_macIntyre, col = cols[1], lty = 1, lwd = 1.2),
   list('name'="Cole", data = k600_cole, col = cols[2], lty = 2, lwd = 1.5),
   list('name'="Crusius", data = k600_crusius, col = cols[3], lty = 1, lwd = 1.2),
-  list('name'="Read", data = k600_read, col = cols[4], lty = 6, lwd = 1.3),
+  list('name'="Read", data = k600_read, col = cols[4], lty = 6, lwd = 1),
   list('name'="Soloviev", data = k600_soloviev, col = cols[5], lty = 2, lwd = 1.5),
   list('name'="Heiskanen", data = k600_heiskanen, col = cols[6], lty = 1, lwd = 1.2),
   list('name'="Vachon", data = k600_vachon, col = cols[7], lty = 6, lwd = 1.2))
