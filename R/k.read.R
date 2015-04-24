@@ -312,8 +312,7 @@ k.read.base <- function(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.am
   
   # calculate sensible and latent heat fluxes
   mm <- calc.zeng(dateTime,Ts,airT,wnd,RH,atm.press,wnd.z)
-  C_D <- 0.0013
-  #C_D <- mm$C_D # drag coefficient for momentum
+  C_D <- mm$C_D # drag coefficient for momentum
   E <- mm$alh # latent heat flux
   H <- mm$ash # sensible heat flux
   
