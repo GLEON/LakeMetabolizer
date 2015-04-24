@@ -19,11 +19,12 @@ k600_cole = k.cole(ts.data)
 
 k600_crusius = k.crusius(ts.data)
 
+ha2m2 <- 10000
 kd        = sp.data$metadata$averagekd
 wnd.z      = 10   #because we converted to u10
 atm.press  = 1018
 lat       = sp.data$metadata$latitude
-lake.area = sp.data$metadata$lakearea
+lake.area = sp.data$metadata$lakearea*ha2m2
 
 #for k.read and k.macIntyre, we need LW_net.
 #Calculate from the observations we have available.
@@ -45,16 +46,16 @@ k600_vachon = k.vachon(ts.data, lake.area)
 
 
 # ---- figure ----
-cols <- c("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "DodgerBlue", "#e6ab02", "#a6761d")
+cols <- c("#1b9e77", "#d95f02", "black", "#e7298a", "DodgerBlue", "#e6ab02", "grey50")
 
 models <- list(
-  list('name'="MacIntyre", data = k600_macIntyre, col = cols[1], lty = 1, lwd = 1.2),
-  list('name'="Cole", data = k600_cole, col = cols[2], lty = 2, lwd = 1.7),
-  list('name'="Crusius", data = k600_crusius, col = cols[3], lty = 1, lwd = 1.2),
-  list('name'="Read", data = k600_read, col = cols[4], lty = 1, lwd = 1),
-  list('name'="Soloviev", data = k600_soloviev, col = cols[5], lty = 2, lwd = 1.7),
+  list('name'="MacIntyre", data = k600_macIntyre, col = cols[1], lty = 6, lwd = 1.7),
+  list('name'="Cole", data = k600_cole, col = cols[2], lty = 1, lwd = 1.2),
+  list('name'="Vachon", data = k600_vachon, col = cols[3], lty = 1, lwd = 1.1),
+  list('name'="Read", data = k600_read, col = cols[4], lty = 1, lwd = 1.2),
+  list('name'="Soloviev", data = k600_soloviev, col = cols[5], lty = 6, lwd = 1.7),
   list('name'="Heiskanen", data = k600_heiskanen, col = cols[6], lty = 1, lwd = 1.2),
-  list('name'="Vachon", data = k600_vachon, col = cols[7], lty = 1, lwd = 1.2))
+  list('name'="Crusius", data = k600_crusius, col = cols[7], lty = 1, lwd = 1.2))
   
 add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt){
   prc_x = 0.1 # position for text relative to axes
@@ -100,7 +101,7 @@ add_legend <- function(models, xlim, ylim, prc_x = 0.26, prc_y = 0.06){
   
   y_strt <- ylim[2]-(ylim[2] - ylim[1])*prc_y
   y_spc <- (ylim[2] - ylim[1])*0.05
-  x_len <- (xlim[2] - xlim[1])*0.13
+  x_len <- (xlim[2] - xlim[1])*0.16
   x <- c((xlim[2] - xlim[1])*prc_x+xlim[1], (xlim[2] - xlim[1])*prc_x+xlim[1] + x_len)
   
   for (i in 1:length(models)){
