@@ -115,7 +115,7 @@ add_legend <- function(models, xlim, ylim, prc_x = 0.26, prc_y = 0.06){
 
 width = 3.37 # single column width for journal
 night_col = 'grey90'
-height = 2.2
+height = 1.9
 l_mar = 0.35
 b_mar = 0.3
 t_mar = 0.05
