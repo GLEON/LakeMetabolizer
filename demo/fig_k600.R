@@ -45,6 +45,7 @@ k600_vachon = k.vachon(ts.data, lake.area)
 
 
 # ---- figure ----
+# cols <- c("#016450", "#02818A", "#3690C0", "#67A9CF", "#A6BDDB", 'grey50','grey25')
 cols <- c("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d")
 
 models <- list(
