@@ -288,7 +288,7 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		if(is.finite(1/kz[i-1])){
 			
 			a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]	
-			alpha <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
+			alpha <- a1/kz[i-1] + -beta[i-1]*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
 			
 		}else{
 			
