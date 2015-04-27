@@ -80,13 +80,13 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	inst_flux <- (k.gas/freq) * (do.sat - do.obs)  # positive is into the lake
 	
 	# flux <- (inst_flux[1:(n.obs-1)] + inst_flux[-1])/2
-	flux <- inst_flux[-1]
+	flux <- inst_flux[-nobs]
 
 	
-	noflux.do.diff <- do.diff - flux/z.mix[-1]
+	noflux.do.diff <- do.diff - flux/z.mix[-nobs]
 	
 	lntemp <- log(wtr)
-	mod <- lm(noflux.do.diff ~ irr[-1] + lntemp[-1] -1) # note that if we decied to use resp=rho*log(Temp), you would do lm(do~irr+lntemp-1) (mind the -1)
+	mod <- lm(noflux.do.diff ~ irr[-nobs] + lntemp[-nobs] -1) # note that if we decied to use resp=rho*log(Temp), you would do lm(do~irr+lntemp-1) (mind the -1)
 
 	rho <- mod[[1]][2] 
 	iota <- mod[[1]][1]

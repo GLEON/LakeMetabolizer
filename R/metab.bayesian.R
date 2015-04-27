@@ -170,7 +170,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 
 	GPPsd <- sqrt(sum(sdSim[1]^2*data$U[,1]^2))
 	Rsd <- sqrt(sum(sdSim[2]^2*data$U[,2]^2))
-	NEPsd <- GPPsd^2 + Rsd^2
+	NEPsd <- sqrt(GPPsd^2 + Rsd^2)
 
 	return(list(
 		"model" = jags.m, 
@@ -191,7 +191,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
-#'@param priors Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
+#'@param priors Parameter priors supplied as a named numeric vector (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
 #'A data.frame with columns corresponding to components of metabolism 
