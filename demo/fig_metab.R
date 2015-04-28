@@ -137,7 +137,7 @@ par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0.1,0,0,r_mar),xpd=FALSE,
 		mgp = c(1.15,.05,0), mfrow=c(3,1))
 
 #Plot the metabolism results
-plot(kalman.res[,c(6,3)], type='l', col=cols[1], ylim=c(-1,1), xaxt = 'n', ylab=expression(GPP~(mg~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(kalman.res[,c(6,3)], type='l', col=cols[1], ylim=c(-1,1), xaxt = 'n', ylab=expression(GPP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0, 0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,3))
 #lines(mle.res[,c(6,3)], type='o', col=cols[2])
@@ -147,12 +147,12 @@ add_models(models, c(6,3))
 #abline(0,0)
 add_axes(xlim, ylim, panel.txt='a)')
 
-plot(kalman.res[,c(6,4)], type='o', col=cols[1], ylim=c(-1,1), xaxt='n', ylab=expression(R~(mg~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(kalman.res[,c(6,4)], type='o', col=cols[1], ylim=c(-1,1), xaxt='n', ylab=expression(R~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0,0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,4))
 add_axes(xlim, ylim, panel.txt='b)')
 
-plot(ols.res[,c(6,5)], type='o', col=cols[1], ylim=c(-0.5,0.5), ylab=expression(NEP~(mg~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(ols.res[,c(6,5)], type='o', col=cols[1], ylim=c(-0.5,0.5), ylab=expression(NEP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0,0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,5))
 add_axes(xlim, c(-0.5,0.5), panel.txt='c)', no.x=FALSE)
