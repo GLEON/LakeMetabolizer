@@ -140,7 +140,7 @@ plot(c(0,NA),c(0,NA), type='l',
      axes = FALSE,
      xaxs = 'i', yaxs = 'i',
      ylim=ylim, 
-     ylab=expression(k600~(m~day^-1)),
+     ylab=expression(k[600]~(m~day^-1)),
      xlab=strftime(mean(xlim[1:2]), '%Y-%m-%d'),
      xlim=xlim[1:2])
 add_night(xlim[1:2], ylim)
