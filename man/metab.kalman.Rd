@@ -40,7 +40,7 @@ A state space model accounting for process and observation error, with the maxim
 Also provides a smoothed time series of oxygen concentration.
 }
 \details{
-The model has four parameters, \eqn{c_1, c_2, Q, H}{c1, c2, Q, H}, and consists of equations involving the prediction of upcoming state conditional on information of the previous state (eqn{a_{t|t-1}}{a[t|t-1]}, eqn{P_{t|t-1}}{P[t|t-1]}), as well as updates of those predictions that are conditional upon information of the current state (eqn{a_{t|t}}{a[t|t]}, eqn{P_{t|t}}{P[t|t]}). \eqn{a} is the
+The model has four parameters, \eqn{c_1, c_2, Q, H}{c1, c2, Q, H}, and consists of equations involving the prediction of upcoming state conditional on information of the previous state (\eqn{a_{t|t-1}}{a[t|t-1]}, \eqn{P_{t|t-1}}{P[t|t-1]}), as well as updates of those predictions that are conditional upon information of the current state (\eqn{a_{t|t}}{a[t|t]}, \eqn{P_{t|t}}{P[t|t]}). \eqn{a} is the
 
 \deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
 
@@ -65,6 +65,10 @@ GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq
 Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}.
 
 NEP is the sum of GPP and R.
+}
+\note{
+If observation error is substantial, consider applying a Kalman filter to the water temperature time series by supplying
+\code{wtr} as the output from \link{temp.kalman}
 }
 \examples{
 library(rLakeAnalyzer)
@@ -95,8 +99,6 @@ metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)),
 }
 \author{
 Ryan Batt, Luke A. Winslow
-note If observation error is substantial, consider applying a Kalman filter to the water temperature time series by supplying
-\code{wtr} as the output from \link{temp.kalman}
 }
 \references{
 Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism:
