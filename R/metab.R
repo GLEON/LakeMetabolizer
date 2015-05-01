@@ -66,7 +66,7 @@
 #'	# fake data
 #'	datetime <- seq(as.POSIXct("2014-06-16 00:00:00", tz="GMT"), 
 #'      as.POSIXct("2014-06-17 23:55:00", tz="GMT"), length.out=288*2)
-#'	do.obs <- 2*sin(2*pi*(1/288)*(1:(288*2))+0.75*pi) + 8 + rnorm(288*2, 0, 0.5)
+#'	do.obs <- 2*sin(2*pi*(1/288)*(1:(288*2))+1.1*pi) + 8 + rnorm(288*2, 0, 0.5)
 #'	wtr <- 3*sin(2*pi*(1/288)*(1:(288*2))+pi) + 17 + rnorm(288*2, 0, 0.15)
 #'	do.sat <- LakeMetabolizer:::o2.at.sat.base(wtr, 960)
 #'	irr <- (1500*sin(2*pi*(1/288)*(1:(288*2))+1.5*pi) +650 + rnorm(288*2, 0, 0.25)) * 

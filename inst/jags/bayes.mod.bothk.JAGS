@@ -4,16 +4,11 @@ model
         Y[i] ~ dnorm(a[i], tauV)
         K[i - 1] ~ dnorm(kP[i - 1, 1], 1/kP[i - 1, 2])
         kz[i - 1] <- K[i - 1]/Zmix[i - 1]
-        kzSafe[i - 1] <- ifelse(kz[i - 1] == 0.00000E+00, 1, kz[i - 
-            1])
-        kzCancel[i - 1] <- ifelse(kzSafe[i - 1] == 1, 0.00000E+00, 
-            1)
+        kzSafe[i - 1] <- ifelse(kz[i - 1] == 0.00000E+00, 1, kz[i - 1])
+        kzCancel[i - 1] <- ifelse(kzSafe[i - 1] == 1, 0.00000E+00, 1)
         pCancel[i - 1] <- ifelse(kzSafe[i - 1] == 1, 1, 0.00000E+00)
         a1[i] <- U[i - 1, ] %*% C + kz[i - 1] * satO[i - 1]
-        aHat[i] <- (a1[i]/kzSafe[i - 1] + -exp(-1 * kzSafe[i - 
-            1]) * a1[i]/kzSafe[i - 1] + exp(-kzSafe[i - 1]) * 
-            a[i - 1]) * kzCancel[i - 1] + (a[i - 1] + a1[i]) * 
-            pCancel[i - 1]
+        aHat[i] <- (a1[i]/kzSafe[i - 1] + -exp(-1 * kzSafe[i - 1]) * a1[i]/kzSafe[i - 1] + exp(-kzSafe[i - 1]) * a[i - 1]) * kzCancel[i - 1] + (a[i - 1] + a1[i]) * pCancel[i - 1]
         a[i] ~ dnorm(aHat[i], tauW)
     }
     a[1] <- a0

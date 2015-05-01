@@ -5,8 +5,7 @@ model
         K[i - 1] ~ dnorm(kP[i - 1, 1], 1/kP[i - 1, 2])
         kz[i - 1] <- K[i - 1]/Zmix[i - 1]
         a1[i] <- U[i - 1, ] %*% C + kz[i - 1] * satO[i - 1]
-        aHat[i] <- a1[i]/kz[i - 1] + -exp(-1 * kz[i - 1]) * a1[i]/kz[i - 
-            1] + exp(-kz[i - 1]) * a[i - 1]
+        aHat[i] <- a1[i]/kz[i - 1] + -exp(-1 * kz[i - 1]) * a1[i]/kz[i - 1] + exp(-kz[i - 1]) * a[i - 1]
         a[i] ~ dnorm(aHat[i], tauW)
     }
     a[1] <- a0
