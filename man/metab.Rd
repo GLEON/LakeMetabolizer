@@ -75,6 +75,7 @@ Returns daily time series of gross primary production (GPP), respiration (R), an
 
 # run each metabolism model
 	m.bk <- metab(data, "bookkeep", lake.lat=42.6)
+ m.bk <- metab(data, lake.lat=42.6) # no method defaults to "bookeep"
 	m.ols <- metab(data, "ols", lake.lat=42.6)
 	m.mle <- metab(data, "mle", lake.lat=42.6)
 	m.kal <- metab(data, "kalman", lake.lat=42.6)

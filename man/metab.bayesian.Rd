@@ -20,7 +20,7 @@ metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 
 \item{wtr}{Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature}
 
-\item{priors}{Parameter priors supplied as a named list (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}
+\item{priors}{Parameter priors supplied as a named numeric vector (example: c("gppMu"=0, "gppSig2"=1E5, "rMu"=0, "rSig2"=1E5, "kSig2"=NA))}
 
 \item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
