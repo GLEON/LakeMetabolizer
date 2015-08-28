@@ -1,57 +1,64 @@
-#'@title Calculates the equilibrium saturation concentration of oxygen in water 
-#'  at the supplied conditions
-#'@name o2.at.sat
-#'@aliases o2.at.sat o2.at.sat.base
-#'@usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
-#'  length(temp)), model = "garcia") o2.at.sat(ts.data, baro, altitude = 0, 
-#'  salinity = 0, model = "garcia")
-#'@description Used to calculate the equilibrium concentration of oxygen in 
-#'  water. The equilibration concentration of oxygen in water varies with both 
-#'  temperature, salinity, and the partial pressure of oxygen in contact with 
-#'  the water (calculated from supplied elevation or barometric pressure).
-#'@param ts.data Object of class data.frame with two named columns 
-#'  \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).
-#'@param temp a numeric vector of water temperature in degrees Celsius.
-#'@param baro barometric pressure in millibars.
-#'@param altitude a numeric value indicating the elevation above mean sea level 
-#'  in meters. Defaults to mean sea level. An alternative to supplying 
-#'  barometric pressure.
-#'@param salinity a numeric vector of salinity in PSU. Defaults to zero. Length 
-#'  must be one or equal to length of temperature.
-#'@param model the empirical model to be used, \code{"garcia"}, 
-#'  \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the available
-#'  options. They correspond to the references described below, where both 
-#'  \code{"garcia"} and \code{"garcia-benson"} are from the first reference.
-#'  
-#'@return The equilibration concentration at the supplied conditions in mg/L of 
-#'  oxygen.
-#'@author Luke A Winslow
-#'@references
-#'
-#'Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in seawater: Better 
-#'fitting equations}, Limnol. Oceanogr., 37(6).
-#'
-#'Benson, B. B., & Krause, D. (1984). \emph{The concentration and isotopic 
-#'fractionation of oxygen dissolved in freshwater and seawater in equilibrium 
-#'with the atmosphere}. Limnology and Oceanography, 29(3), 620-632. 
-#'doi:10.4319/lo.1984.29.3.0620
-#'
-#'Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water 
-#'and seawater}. Deep Sea Research and Oceanographic Abstracts, 17(4), 721-735. 
-#'doi:10.1016/0011-7471(70)90037-9
-#'
-#'@seealso \link{water.density}, \link{o2.at.sat.base}
-#'@keywords math, methods
-#'@examples
-#'temp.range = 1:25
-#'sal.range = 1:25
-#'
-#'par(mfrow=c(1,2))
-#'plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', 
-#'ylab='Oxygen Saturation (mg/L)')
-#'plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
-#'
-#'@export
+#' @title Calculates the equilibrium saturation concentration of oxygen in water
+#'   at the supplied conditions
+#' @name o2.at.sat
+#' @aliases o2.at.sat o2.at.sat.base
+#' @usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
+#'   length(temp)), model = "garcia") o2.at.sat(ts.data, baro, altitude = 0, 
+#'   salinity = 0, model = "garcia")
+#' @description Used to calculate the equilibrium concentration of oxygen in 
+#'   water. The equilibration concentration of oxygen in water varies with both 
+#'   temperature, salinity, and the partial pressure of oxygen in contact with 
+#'   the water (calculated from supplied elevation or barometric pressure).
+#' @param ts.data Object of class data.frame with two named columns 
+#'   \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).
+#' @param temp a numeric vector of water temperature in degrees Celsius.
+#' @param baro barometric pressure in millibars.
+#' @param altitude a numeric value indicating the elevation above mean sea level
+#'   in meters. Defaults to mean sea level. An alternative to supplying 
+#'   barometric pressure.
+#' @param salinity a numeric vector of salinity in PSU. Defaults to zero. Length
+#'   must be one or equal to length of temperature.
+#' @param model the empirical model to be used, \code{"garcia"}, 
+#'   \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the
+#'   available options. They correspond to the references described below, where
+#'   both \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon
+#'   (1992).
+#'   
+#' @return The equilibration concentration at the supplied conditions in mg/L of
+#'   oxygen.
+#' @author Luke A Winslow
+#' @references
+#' 
+#' Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in seawater: Better
+#' fitting equations}, Limnol. Oceanogr., 37(6).
+#' 
+#' Benson, B. B., & Krause, D. (1984). \emph{The concentration and isotopic 
+#' fractionation of oxygen dissolved in freshwater and seawater in equilibrium 
+#' with the atmosphere}. Limnology and Oceanography, 29(3), 620-632. 
+#' doi:10.4319/lo.1984.29.3.0620
+#' 
+#' Staehr, Peter A., Darren Bade, Matthew C. Van de Bogert, Gregory R. Koch,
+#' Craig Williamson, Paul Hanson, Jonathan J. Cole, and Tim Kratz. “Lake
+#' Metabolism and the Diel Oxygen Technique: State of the Science.” Limnology
+#' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44.
+#' doi:10.4319/lom.2010.8.0628.
+#' 
+#' Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water
+#' and seawater}. Deep Sea Research and Oceanographic Abstracts, 17(4), 721-735.
+#' doi:10.1016/0011-7471(70)90037-9
+#' 
+#' @seealso \link{water.density}, \link{o2.at.sat.base}
+#' @keywords math, methods
+#' @examples
+#' temp.range = 1:25
+#' sal.range = 1:25
+#' 
+#' par(mfrow=c(1,2))
+#' plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', 
+#' ylab='Oxygen Saturation (mg/L)')
+#' plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
+#' 
+#' @export
 o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 	if(ncol(ts.data) > 2){
 		stop('Temp can only have two columns, "datetime" and "wtr"')
