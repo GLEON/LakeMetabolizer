@@ -5,9 +5,10 @@
 #'   temperature, salinity, and the partial pressure of oxygen in contact with 
 #'   the water (calculated from supplied elevation or barometric pressure).
 #' @details DO solubility is converted from mL/L to mg/L by multiplying by 
-#'   1.42905, per USGS memo 2011.03. Corrections for vapor pressure are made
+#'   1.42905, per USGS memo 2011.03. Corrections for vapor pressure are made 
 #'   according to barometric pressure as in Equations 2&3 of USGS memos 81.11 
-#'   and 81.15.
+#'   and 81.15. When barometric pressure is not supplied, it is estimated from 
+#'   altitude by the barometric formula as in Colt (2012).
 #' @name o2.at.sat
 #' @aliases o2.at.sat o2.at.sat.base
 #' @usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
@@ -24,14 +25,20 @@
 #'   must be one or equal to length of temperature.
 #' @param model the empirical model to be used, \code{"garcia"}, 
 #'   \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the 
-#'   available options. They correspond to the references described below, where
-#'   both \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon 
-#'   (1992).
+#'   available options. They correspond to the like-named references described 
+#'   below, where both \code{"garcia"} and \code{"garcia-benson"} are from 
+#'   Garcia & Gordon (1992).
 #'   
 #' @return The equilibration concentration at the supplied conditions in mg/L of
 #'   oxygen.
 #' @author Luke A Winslow
 #' @references
+#' 
+#' Colt, John. “1 - Solubility of Atmospheric Gases in Freshwater.” In
+#' Computation of Dissolved Gas Concentration in Water as Functions of
+#' Temperature, Salinity and Pressure (Second Edition), edited by John Colt,
+#' 1–71. London: Elsevier, 2012.
+#' http://www.sciencedirect.com/science/article/pii/B9780124159167000012.
 #' 
 #' Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in seawater: Better
 #' fitting equations}, Limnol. Oceanogr., 37(6).
