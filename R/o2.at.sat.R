@@ -4,8 +4,10 @@
 #'   water. The equilibration concentration of oxygen in water varies with both 
 #'   temperature, salinity, and the partial pressure of oxygen in contact with 
 #'   the water (calculated from supplied elevation or barometric pressure).
-#' @details DO solubility is converted from mL/L to mg/L by multiplying by
-#'   1.42905, per USGS memo 2011.03 (see references).
+#' @details DO solubility is converted from mL/L to mg/L by multiplying by 
+#'   1.42905, per USGS memo 2011.03. Corrections for vapor pressure are made
+#'   according to barometric pressure as in Equations 2&3 of USGS memos 81.11 
+#'   and 81.15.
 #' @name o2.at.sat
 #' @aliases o2.at.sat o2.at.sat.base
 #' @usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
@@ -39,13 +41,20 @@
 #' with the atmosphere}. Limnology and Oceanography, 29(3), 620-632. 
 #' doi:10.4319/lo.1984.29.3.0620
 #' 
-#' Staehr, Peter A., Darren Bade, Matthew C. Van de Bogert, Gregory R. Koch,
-#' Craig Williamson, Paul Hanson, Jonathan J. Cole, and Tim Kratz. “Lake
-#' Metabolism and the Diel Oxygen Technique: State of the Science.” Limnology
-#' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44.
+#' Staehr, Peter A., Darren Bade, Matthew C. Van de Bogert, Gregory R. Koch, 
+#' Craig Williamson, Paul Hanson, Jonathan J. Cole, and Tim Kratz. “Lake 
+#' Metabolism and the Diel Oxygen Technique: State of the Science.” Limnology 
+#' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44. 
 #' doi:10.4319/lom.2010.8.0628.
 #' 
-#' USGS. “Change to Solubility Equations for Oxygen in Water.” Technical
+#' USGS. “New Tables of Dissolved Oxygen Saturation Values.” Quality of Water 
+#' Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
+#' 
+#' USGS. “New Tables of Dissolved Oxygen Saturation Values; Amendment of Quality
+#' of Water Technical Memorandum No. 81.11.” Quality of Water Branch, 1981. 
+#' http://water.usgs.gov/admin/memo/QW/qw81.15.html.
+#' 
+#' USGS. “Change to Solubility Equations for Oxygen in Water.” Technical 
 #' Memorandum 2011.03. USGS Office of Water Quality, 2011.
 #' 
 #' Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water
@@ -81,11 +90,13 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
   # to mg/L per USGS memo 2011.03
   mgL_mlL <- 1.42905
 
-  # Correction for vapor pressure of water
-	if(!missing(baro)){#Calc using barometric pressure
-		press.corr <- (baro * 0.0987 - 0.0112)/100 # USGS memo #81.15 1981 as cited in Staehr et al. 2010
-	} else {
+  # Correction for air pressure; incorportes effects of altitude & vapor pressure of water
+	if(missing(baro)){
 		press.corr <- (0.0000005 * altitude^2 - 0.0118 * altitude + 99.979)/100 # USGS memo #81.15 1981 as cited in Staehr et al. 2010
+	} else {
+	  # pressure correction per USGS memos 81.11 and 81.15
+	  u <- 10 ^ (8.10765 - 1750.286 / (235 + temp)) # u is vapor pressure of water; water temp is used as an approximation for water & air temp at the air-water boundary
+	  press.corr <- (baro*0.750061683 - u) / (760 - u) # pressure correction is ratio of current to standard pressure after correcting for vapor pressure of water. 0.750061683 mmHg/mb
 	}
   
 	if(tolower(model) == 'garcia'){
