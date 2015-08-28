@@ -77,7 +77,8 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 #'@export
 o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
-  # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations) to mg/L
+  # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations)
+  # to mg/L per USGS memo 2011.03
   mgL_mlL <- 1.42905
 
   # Correction for vapor pressure of water
