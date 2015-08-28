@@ -88,7 +88,7 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
   
   # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations)
   # to mg/L per USGS memo 2011.03
-  mgL_mlL <- 1.42905
+  mgL.mlL <- 1.42905
 
   # Correction for air pressure; incorportes effects of altitude & vapor pressure of water
 	if(missing(baro)){
@@ -132,10 +132,10 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
 			warning('Benson model does not currently include salinity')
 		}
 
-
 	  o2.sat <- (-0.00006 * (temp)^3) + (0.00725 * (temp)^2) - (0.39571 * (temp)) + 14.59030
+	  
 	}
-	o2.sat <- o2.sat * mgL_mlL * press.corr
+	o2.sat <- o2.sat * mgL.mlL * press.corr
 
 	return(o2.sat)
 }
