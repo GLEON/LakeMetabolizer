@@ -10,10 +10,6 @@
 #'   and 81.15. When barometric pressure is not supplied, it is estimated from 
 #'   altitude by the barometric formula as in Colt (2012).
 #' @name o2.at.sat
-#' @aliases o2.at.sat o2.at.sat.base
-#' @usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
-#'   length(temp)), model = "garcia") o2.at.sat(ts.data, baro, altitude = 0, 
-#'   salinity = 0, model = "garcia")
 #' @param ts.data Object of class data.frame with two named columns 
 #'   \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).
 #' @param temp a numeric vector of water temperature in degrees Celsius.
@@ -34,7 +30,7 @@
 #' @author Luke A Winslow
 #' @references
 #' 
-#' Colt, John. “1 - Solubility of Atmospheric Gases in Freshwater.” In
+#' Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In
 #' Computation of Dissolved Gas Concentration in Water as Functions of
 #' Temperature, Salinity and Pressure (Second Edition), edited by John Colt,
 #' 1–71. London: Elsevier, 2012.
@@ -49,19 +45,19 @@
 #' doi:10.4319/lo.1984.29.3.0620
 #' 
 #' Staehr, Peter A., Darren Bade, Matthew C. Van de Bogert, Gregory R. Koch, 
-#' Craig Williamson, Paul Hanson, Jonathan J. Cole, and Tim Kratz. “Lake 
-#' Metabolism and the Diel Oxygen Technique: State of the Science.” Limnology 
+#' Craig Williamson, Paul Hanson, Jonathan J. Cole, and Tim Kratz. \emph{Lake 
+#' Metabolism and the Diel Oxygen Technique: State of the Science.} Limnology 
 #' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44. 
 #' doi:10.4319/lom.2010.8.0628.
 #' 
-#' USGS. “New Tables of Dissolved Oxygen Saturation Values.” Quality of Water 
+#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of Water 
 #' Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
 #' 
-#' USGS. “New Tables of Dissolved Oxygen Saturation Values; Amendment of Quality
-#' of Water Technical Memorandum No. 81.11.” Quality of Water Branch, 1981. 
+#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of Quality
+#' of Water Technical Memorandum No. 81.11.} Quality of Water Branch, 1981. 
 #' http://water.usgs.gov/admin/memo/QW/qw81.15.html.
 #' 
-#' USGS. “Change to Solubility Equations for Oxygen in Water.” Technical 
+#' USGS. \emph{Change to Solubility Equations for Oxygen in Water.} Technical 
 #' Memorandum 2011.03. USGS Office of Water Quality, 2011.
 #' 
 #' Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water
@@ -90,7 +86,9 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 	return(data.frame(datetime=ts.data$datetime, do.sat=dosat))  
 }
 
-#'@export
+
+#' @rdname o2.at.sat
+#' @export
 o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
   # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations)
