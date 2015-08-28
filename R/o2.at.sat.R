@@ -19,21 +19,21 @@
 #'   barometric pressure.
 #' @param salinity a numeric vector of salinity in PSU. Defaults to zero. Length
 #'   must be one or equal to length of temperature.
-#' @param model the empirical model to be used, \code{"garcia"}, 
-#'   \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the 
-#'   available options. They correspond to the like-named references described 
-#'   below, where both \code{"garcia"} and \code{"garcia-benson"} are from 
-#'   Garcia & Gordon (1992).
+#' @param model the empirical model to be used. \code{"garcia-benson"}, 
+#'   \code{"garcia"}, \code{"weiss"} and \code{"benson"} are the available 
+#'   options. \code{"garcia-benson"} is our current recommendation. The models
+#'   correspond to the like-named references described below, where both
+#'   \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon (1992).
 #'   
 #' @return The equilibration concentration at the supplied conditions in mg/L of
 #'   oxygen.
 #' @author Luke A Winslow
 #' @references
 #' 
-#' Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In
-#' Computation of Dissolved Gas Concentration in Water as Functions of
-#' Temperature, Salinity and Pressure (Second Edition), edited by John Colt,
-#' 1–71. London: Elsevier, 2012.
+#' Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In 
+#' Computation of Dissolved Gas Concentration in Water as Functions of 
+#' Temperature, Salinity and Pressure (Second Edition), edited by John Colt, 
+#' 1–71. London: Elsevier, 2012. 
 #' http://www.sciencedirect.com/science/article/pii/B9780124159167000012.
 #' 
 #' Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in seawater: Better
@@ -50,12 +50,12 @@
 #' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44. 
 #' doi:10.4319/lom.2010.8.0628.
 #' 
-#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of Water 
-#' Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
+#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of 
+#' Water Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
 #' 
-#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of Quality
-#' of Water Technical Memorandum No. 81.11.} Quality of Water Branch, 1981. 
-#' http://water.usgs.gov/admin/memo/QW/qw81.15.html.
+#' USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of 
+#' Quality of Water Technical Memorandum No. 81.11.} Quality of Water Branch, 
+#' 1981. http://water.usgs.gov/admin/memo/QW/qw81.15.html.
 #' 
 #' USGS. \emph{Change to Solubility Equations for Oxygen in Water.} Technical 
 #' Memorandum 2011.03. USGS Office of Water Quality, 2011.
@@ -76,7 +76,7 @@
 #' plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 #' 
 #' @export
-o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
+o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia-benson'){
 	if(ncol(ts.data) > 2){
 		stop('Temp can only have two columns, "datetime" and "wtr"')
 	}
@@ -89,7 +89,7 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 
 #' @rdname o2.at.sat
 #' @export
-o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
+o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia-benson'){
   
   # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations)
   # to mg/L per USGS memo 2011.03

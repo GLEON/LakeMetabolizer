@@ -6,10 +6,11 @@
 \title{Calculates the equilibrium saturation concentration of oxygen in water
   at the supplied conditions}
 \usage{
-o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia")
+o2.at.sat(ts.data, baro, altitude = 0, salinity = 0,
+  model = "garcia-benson")
 
 o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)),
-  model = "garcia")
+  model = "garcia-benson")
 }
 \arguments{
 \item{ts.data}{Object of class data.frame with two named columns
@@ -24,11 +25,11 @@ barometric pressure.}
 \item{salinity}{a numeric vector of salinity in PSU. Defaults to zero. Length
 must be one or equal to length of temperature.}
 
-\item{model}{the empirical model to be used, \code{"garcia"},
-  \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the
-  available options. They correspond to the like-named references described
-  below, where both \code{"garcia"} and \code{"garcia-benson"} are from
-  Garcia & Gordon (1992).}
+\item{model}{the empirical model to be used. \code{"garcia-benson"},
+  \code{"garcia"}, \code{"weiss"} and \code{"benson"} are the available
+  options. \code{"garcia-benson"} is our current recommendation. The models
+  correspond to the like-named references described below, where both
+  \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon (1992).}
 
 \item{temp}{a numeric vector of water temperature in degrees Celsius.}
 }
@@ -82,12 +83,12 @@ Metabolism and the Diel Oxygen Technique: State of the Science.} Limnology
 and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44.
 doi:10.4319/lom.2010.8.0628.
 
-USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of Water
-Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
+USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of
+Water Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
 
-USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of Quality
-of Water Technical Memorandum No. 81.11.} Quality of Water Branch, 1981.
-http://water.usgs.gov/admin/memo/QW/qw81.15.html.
+USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of
+Quality of Water Technical Memorandum No. 81.11.} Quality of Water Branch,
+1981. http://water.usgs.gov/admin/memo/QW/qw81.15.html.
 
 USGS. \emph{Change to Solubility Equations for Oxygen in Water.} Technical
 Memorandum 2011.03. USGS Office of Water Quality, 2011.
