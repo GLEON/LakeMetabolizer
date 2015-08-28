@@ -144,6 +144,8 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
 
 	  o2.sat <- (-0.00006 * (temp)^3) + (0.00725 * (temp)^2) - (0.39571 * (temp)) + 14.59030
 	  
+	  o2.sat <- o2.sat / mgL.mlL # undo the conversion (below) from ml/L to mg/L; Benson model appears to already predict in mg/L
+	  
 	}
 	o2.sat <- o2.sat * mgL.mlL * press.corr
 
