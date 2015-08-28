@@ -91,14 +91,24 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
   mgL.mlL <- 1.42905
 
   # Correction for air pressure; incorportes effects of altitude & vapor pressure of water
-	if(missing(baro)){
-		press.corr <- (0.0000005 * altitude^2 - 0.0118 * altitude + 99.979)/100 # USGS memo #81.15 1981 as cited in Staehr et al. 2010
-	} else {
-	  # pressure correction per USGS memos 81.11 and 81.15
-	  u <- 10 ^ (8.10765 - 1750.286 / (235 + temp)) # u is vapor pressure of water; water temp is used as an approximation for water & air temp at the air-water boundary
-	  press.corr <- (baro*0.750061683 - u) / (760 - u) # pressure correction is ratio of current to standard pressure after correcting for vapor pressure of water. 0.750061683 mmHg/mb
+  mmHg.mb <- 0.750061683 # conversion from mm Hg to millibars
+  if(missing(baro)){
+    mmHg.inHg <- 25.3970886 # conversion from inches Hg to mm Hg
+    standard.pressure.sea.level <- 29.92126 # Pb, inches Hg
+    standard.temperature.sea.level <- 15 + 273.15 # Tb, 15 C = 288.15 K
+    gravitational.acceleration <- 9.80665 # g0, m/s^2
+    air.molar.mass <- 0.0289644 # M, molar mass of Earth's air (kg/mol)
+    universal.gas.constant <- 8.31447 #8.31432 # R*, N*m/(mol*K)
+    
+    # estimate pressure by the barometric formula
+    baro <- (1/mmHg.mb) * mmHg.inHg * standard.pressure.sea.level * 
+	    exp( (-gravitational.acceleration * air.molar.mass * altitude) / (universal.gas.constant * standard.temperature.sea.level) )
 	}
+  # pressure correction per USGS memos 81.11 and 81.15. calculate u by Antoine equation.
+  u <- 10 ^ (8.10765 - 1750.286 / (235 + temp)) # u is vapor pressure of water; water temp is used as an approximation for water & air temp at the air-water boundary
+  press.corr <- (baro*mmHg.mb - u) / (760 - u) # pressure correction is ratio of current to standard pressure after correcting for vapor pressure of water. 0.750061683 mmHg/mb
   
+  # Estimate O2 at saturation in mL/L by several models
 	if(tolower(model) == 'garcia'){
 
 	  Ts <- log((298.15 - temp)/(273.15 + temp))
