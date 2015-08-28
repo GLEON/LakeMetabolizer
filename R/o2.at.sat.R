@@ -66,13 +66,13 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
 
+  # Correction for vapor pressure of water
 	if(!missing(baro)){#Calc using barometric pressure
-		press.corr <- (baro * 0.0987 - 0.0112)/100
-	}else{
-		press.corr <- (0.0000005 * altitude^2 - 0.0118 * altitude + 99.979)/100
+		press.corr <- (baro * 0.0987 - 0.0112)/100 # USGS memo #81.15 1981 as cited in Staehr et al. 2010
+	} else {
+		press.corr <- (0.0000005 * altitude^2 - 0.0118 * altitude + 99.979)/100 # USGS memo #81.15 1981 as cited in Staehr et al. 2010
 	}
-
-
+  
 	if(tolower(model) == 'garcia'){
 
 	  Ts <- log((298.15 - temp)/(273.15 + temp))
