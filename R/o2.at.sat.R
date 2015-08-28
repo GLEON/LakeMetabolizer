@@ -1,14 +1,16 @@
 #' @title Calculates the equilibrium saturation concentration of oxygen in water
 #'   at the supplied conditions
+#' @description Used to calculate the equilibrium concentration of oxygen in 
+#'   water. The equilibration concentration of oxygen in water varies with both 
+#'   temperature, salinity, and the partial pressure of oxygen in contact with 
+#'   the water (calculated from supplied elevation or barometric pressure).
+#' @details DO solubility is converted from mL/L to mg/L by multiplying by
+#'   1.42905, per USGS memo 2011.03 (see references).
 #' @name o2.at.sat
 #' @aliases o2.at.sat o2.at.sat.base
 #' @usage o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, 
 #'   length(temp)), model = "garcia") o2.at.sat(ts.data, baro, altitude = 0, 
 #'   salinity = 0, model = "garcia")
-#' @description Used to calculate the equilibrium concentration of oxygen in 
-#'   water. The equilibration concentration of oxygen in water varies with both 
-#'   temperature, salinity, and the partial pressure of oxygen in contact with 
-#'   the water (calculated from supplied elevation or barometric pressure).
 #' @param ts.data Object of class data.frame with two named columns 
 #'   \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).
 #' @param temp a numeric vector of water temperature in degrees Celsius.
@@ -19,9 +21,9 @@
 #' @param salinity a numeric vector of salinity in PSU. Defaults to zero. Length
 #'   must be one or equal to length of temperature.
 #' @param model the empirical model to be used, \code{"garcia"}, 
-#'   \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the
+#'   \code{"garcia-benson"}, \code{"weiss"} and \code{"benson"} are the 
 #'   available options. They correspond to the references described below, where
-#'   both \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon
+#'   both \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon 
 #'   (1992).
 #'   
 #' @return The equilibration concentration at the supplied conditions in mg/L of
@@ -42,6 +44,9 @@
 #' Metabolism and the Diel Oxygen Technique: State of the Science.” Limnology
 #' and Oceanography: Methods 8, no. 11 (November 1, 2010): 628–44.
 #' doi:10.4319/lom.2010.8.0628.
+#' 
+#' USGS. “Change to Solubility Equations for Oxygen in Water.” Technical
+#' Memorandum 2011.03. USGS Office of Water Quality, 2011.
 #' 
 #' Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water
 #' and seawater}. Deep Sea Research and Oceanographic Abstracts, 17(4), 721-735.
@@ -72,6 +77,8 @@ o2.at.sat <- function(ts.data, baro, altitude=0, salinity=0, model='garcia'){
 #'@export
 o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)), model='garcia'){
   
+  # Conversion from mL/L (the usual output of the garcia, weiss, etc. equations) to mg/L
+  mgL_mlL <- 1.42905
 
   # Correction for vapor pressure of water
 	if(!missing(baro)){#Calc using barometric pressure
@@ -87,7 +94,7 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
 	  lnC <- 2.00856 + 3.22400 *Ts + 3.99063*Ts^2 + 4.80299*Ts^3 + 9.78188e-1*Ts^4 + 
 	    1.71069*Ts^5 - salinity*(6.24097e-3 + 6.93498e-3*Ts + 6.90358e-3*Ts^2 + 4.29155e-3*Ts^3) - 3.1168e-7*salinity^2
 
-	  o2.sat <- exp(lnC)  * 1.42905 #convert from ml/l to mg/l
+	  o2.sat <- exp(lnC)
 
 	} else if(tolower(model) == 'garcia-benson'){
 	  
@@ -96,7 +103,7 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
 	  lnC <- 2.00907 + 3.22014*Ts + 4.05010*Ts^2 + 4.94457*Ts^3 + -2.56847e-1*Ts^4 + 
 	    3.88767*Ts^5 - salinity*(6.24523e-3 + 7.37614e-3*Ts + 1.03410e-2*Ts^2 + 8.17083e-3*Ts^3) - 4.88682e-7*salinity^2
 	  
-	  o2.sat <- exp(lnC)  * 1.42905 #convert from ml/l to mg/l
+	  o2.sat <- exp(lnC)
 	  
 	} else if(tolower(model) == 'weiss'){
 		tempk <- temp + 273.15
@@ -105,19 +112,18 @@ o2.at.sat.base <- function(temp, baro, altitude=0, salinity=rep(0,length(temp)),
 		log(tempk / 100) - 21.8492 * (tempk / 100) + 
 		salinity * (-0.033096 + 0.014259 * (tempk / 100) - 0.0017000 * (tempk / 100)^2)
           
-		o2.sat <- exp(lnC) * 1.423 #convert from ml/l to mg/l
+		o2.sat <- exp(lnC)
 
-	}else if(tolower(model) == 'benson'){
+	} else if(tolower(model) == 'benson'){
 		## TODO: Fix this to include salinity
 		if(!all(salinity==0)){
 			warning('Benson model does not currently include salinity')
 		}
 
-	o2.sat <- (-0.00006 * (temp)^3) + (0.00725 * (temp)^2) - (0.39571 * (temp)) + 14.59030
 
+	  o2.sat <- (-0.00006 * (temp)^3) + (0.00725 * (temp)^2) - (0.39571 * (temp)) + 14.59030
 	}
-
-	o2.sat <- o2.sat * press.corr
+	o2.sat <- o2.sat * mgL_mlL * press.corr
 
 	return(o2.sat)
 }
