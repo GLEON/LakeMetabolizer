@@ -43,7 +43,7 @@ A data.frame containing columns for year, doy (day of year, julian day plus frac
 \item{GPP}{numeric, gross primary production, in units of mg O2 per liter per day. By convention, this value is positive.}
 \item{R}{numeric, respiration, in units of mg O2 per liter per day. By convention, this value is negative}
 \item{NEP}{numeric, net ecosystem production, in units of mg O2 per liter per day. For most methods this equal GPP+R, but this is not necessarily the case for \code{"method"="bookkeep"}}
-Note that different models will have different \link{attributes} attached to them.
+Note that different models will have different \link{attributes} attached to them. See examples.
 }
 \description{
 Returns daily time series of gross primary production (GPP), respiration (R), and net ecosystem production (NEP). Depending on the method used, other information may be returned as well. Calculations are made using one of 5 statistical methods.
@@ -83,7 +83,12 @@ Returns daily time series of gross primary production (GPP), respiration (R), an
 
 # example attributes
 names(attributes(m.ols))
-attributes(m.ols)$mod
+attr(m.ols, "mod")
+
+# To get full JAGS model
+# including posterior draws:
+\dontrun{names(attributes(m.bay))}
+\dontrun{attr(m.bay, "model")}
 }
 \author{
 Ryan D. Batt
