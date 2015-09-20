@@ -62,32 +62,102 @@ bayes.res$datetime = ISOdate(bayes.res$year, 1, 1) + book.res$doy*3600*24 - 3600
 book.res$datetime = ISOdate(book.res$year, 1, 1) + book.res$doy*3600*24 - 3600*24
 
 
-png('~/fig_metab.png', res=300, width=1200, height=1800)
+
+add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt, no.x=TRUE){
+	prc_x = 0.14 # position for text relative to axes
+	prc_y = 0.07
+	tick_len <- 0.15
+	ext_x <- c(xlim[1]-86400, pretty(xlim,3), xlim[2]+86400)
+	ext_y <- c(ylim[1]-10, pretty(ylim,10), ylim[2]+10)
+	ylab <- c("",ylabel,"")
+	if (is.na(ylabel[1])) ylab = NA
+	#if(no.x) ext_x=NA
+	if(no.x){
+		axis(side = 1, at = ext_x , labels = FALSE, tcl = tick_len)
+	}else{
+		axis(side = 1, at = ext_x , labels = strftime(ext_x,'%m-%d'), tcl = tick_len)	
+	}
+	axis(side = 2, at = ext_y, labels = ylab, tcl = tick_len)
+	axis(side = 3, at = ext_x, labels = NA, tcl = tick_len)
+	axis(side = 4, at = ext_y, labels = NA, tcl = tick_len)
+	x_txt <- (xlim[2] - xlim[1])*prc_x+xlim[1]
+	y_txt <- ylim[2]-(ylim[2] - ylim[1])*prc_y
+	text(x = x_txt, y_txt,labels = panel.txt)
+}
+
+add_legend <- function(models, xlim, ylim, prc_x = 0.26, prc_y = 0.06){
+	
+	y_strt <- ylim[2]-(ylim[2] - ylim[1])*prc_y
+	y_spc <- (ylim[2] - ylim[1])*0.05
+	x_len <- (xlim[2] - xlim[1])*0.16
+	x <- c((xlim[2] - xlim[1])*prc_x+xlim[1], (xlim[2] - xlim[1])*prc_x+xlim[1] + x_len)
+	
+	for (i in 1:length(models)){
+		y = y_strt-(i-1)*y_spc
+		lines(x, c(y,y), 
+					col =models[[i]]$col, 
+					lty = models[[i]]$lty, 
+					lwd = models[[i]]$lwd)
+		text(x[2],y, models[[i]]$name, pos = 4, cex = 0.65)
+	}
+}
+
+add_models <- function(models, cols){
+	.empty = sapply(X = models, FUN = function(x) {
+		lines(x$data[,cols], col=x$col, lty = x$lty, lwd = x$lwd, type='o')
+	})
+}
+
+cols <- c("#1b9e77", "#d95f02", "black", "#e7298a", "DodgerBlue", "#e6ab02", "grey50")
+
+models <- list(
+	list('name'="ols", data = ols.res, col = cols[1], lty = 6, lwd = 1.7),
+	list('name'="mle", data = mle.res, col = cols[2], lty = 1, lwd = 1.2),
+	list('name'="kalman", data = kalman.res, col = cols[3], lty = 1, lwd = 1.1),
+	list('name'="bayesian", data = bayes.res, col = cols[4], lty = 1, lwd = 1.2),
+	list('name'="bookkeep", data = book.res, col = cols[5], lty = 6, lwd = 1.7))
+
+
+width = 3.37 # single column width for journal
+night_col = 'grey90'
+height = 5
+l_mar = 0.35
+b_mar = 0.1
+t_mar = 0.05
+r_mar= 0.05
+gapper = 0.15 # space between panels
+ylim = c(-1, 1.2)
+xlim = as.POSIXct(c('2009-07-01 16:00', '2009-07-11'))
+
+#Create plot and save in user home directory (on Windows, Documents folder, on Mac, Home folder)
+png('~/fig_metab.png', res=300, width=width, height=height, units = 'in')
+
+#layout(matrix(c(rep(1,10),rep(2,9)),ncol=1)) # 55% on the left panel
+par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0.1,0,0,r_mar),xpd=FALSE,
+		mgp = c(1.15,.05,0), mfrow=c(3,1))
+
 #Plot the metabolism results
-par(mfrow=c(3,1), mar=c(0.1,4.4,1,1), las=1, oma=c(3,0,0,0))
-plot(ols.res[,c(6,3)], type='o', col='black', ylim=c(-1,1), xaxt = 'n', ylab=expression(GPP~(mg~L^-1~day^-1)))
-lines(mle.res[,c(6,3)], type='o', col='green')
-lines(kalman.res[,c(6,3)], type='o', col='yellow')
-lines(bayes.res[,c(6,3)], type='o', col='red')
-lines(book.res[,c(6,3)], type='o', col='blue')
-abline(0,0)
-legend('bottomright', legend=c('metab.ols', 'metab.mle', 'metab.kalman', 'metab.bayesian', 'metab.bookkeep'), 
-			 col=c('black','green','yellow','red','blue'), lty=1, horiz=FALSE)
+plot(kalman.res[,c(6,3)], type='l', col=cols[1], ylim=c(-1,1.2), xaxt = 'n', ylab=expression(GPP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+abline(0, 0, col=rgb(0,0,0,0.5))
+add_models(models, c(6,3))
+#lines(mle.res[,c(6,3)], type='o', col=cols[2])
+#lines(kalman.res[,c(6,3)], type='o', col=cols[3])
+#lines(bayes.res[,c(6,3)], type='o', col=cols[4])
+#lines(book.res[,c(6,3)], type='o', col=cols[5])
+#abline(0,0)
+add_axes(xlim, ylim, panel.txt='a)')
 
-plot(ols.res[,c(6,4)], type='o', col='black', ylim=c(-1,1), xaxt='n', ylab=expression(R~(mg~L^-1~day^-1)))
-lines(mle.res[,c(6,4)], type='o', col='green')
-lines(kalman.res[,c(6,4)], type='o', col='yellow')
-lines(bayes.res[,c(6,4)], type='o', col='red')
-lines(book.res[,c(6,4)], type='o', col='blue')
-abline(0,0)
+plot(kalman.res[,c(6,4)], type='o', col=cols[1], ylim=c(-1,1), xaxt='n', ylab=expression(R~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+abline(0,0, col=rgb(0,0,0,0.5))
+add_models(models, c(6,4))
+add_axes(xlim, c(-1,1), panel.txt='b)')
 
-plot(ols.res[,c(6,5)], type='o', col='black', ylim=c(-0.5,0.5), ylab=expression(NEP~(mg~L^-1~day^-1)))
-lines(mle.res[,c(6,5)], type='o', col='green')
-lines(kalman.res[,c(6,5)], type='o', col='yellow')
-lines(bayes.res[,c(6,5)], type='o', col='red')
-lines(book.res[,c(6,5)], type='o', col='blue')
-abline(0,0)
+plot(ols.res[,c(6,5)], type='o', col=cols[1], ylim=c(-0.5,0.6), ylab=expression(NEP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+abline(0,0, col=rgb(0,0,0,0.5))
+add_models(models, c(6,5))
+add_axes(xlim, c(-0.5,0.6), panel.txt='c)', no.x=FALSE)
 
+add_legend(models, xlim, c(-0.5,0.6))
 
 dev.off()
 
@@ -116,6 +186,7 @@ res = bayes.res
 cat('metab.bayesian GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
 res = book.res
 cat('metab.bookkeep GPP:', mean(res[res[,3]>0,3]), ' R:', mean(res[res[,4]<0,4]), 'NEP:', mean(res[res[,3]>0,3]) + mean(res[res[,4]<0,4]), '\n')
+
 
 
 
