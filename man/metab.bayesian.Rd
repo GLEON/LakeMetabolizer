@@ -25,12 +25,16 @@ metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 \item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
 \value{
-A data.frame with columns corresponding to components of metabolism
+A list of length 4 with components:
+\item{model}{the jags model, including posterior draws (see \link{jags})}
+\item{params}{parameter estimates of interest from model (medians)}
+\item{metab.sd}{standard deviation of metabolism estimates}
+\item{metab}{daily metabolism estimates as a data.frame with columns corresponding to
 \describe{
-\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
-\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
-\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
-}
+\item{\code{GPP}}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{\code{R}}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{\code{NEP}}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+}}
 }
 \description{
 This function runs the bayesian metabolism model on the supplied

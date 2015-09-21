@@ -36,13 +36,14 @@
 #'@param do.obs.name the name of the column in data containing the DO observations (in mg/L) to be used as the response variable
 #'@param ... arguments to be passed on to the metabolism model specified by \code{method}
 #'
-#'@return A data.frame containing columns for year, doy (day of year, julian day plus fraction of day), GPP, R, and NEP
-#'\item{year}{integer year}
-#'\item{doy}{numeric, day of year + fraction of day, where the day is the julian day, and a fraction of 0.5 corresponds to noon}
-#'\item{GPP}{numeric, gross primary production, in units of mg O2 per liter per day. By convention, this value is positive.}
-#'\item{R}{numeric, respiration, in units of mg O2 per liter per day. By convention, this value is negative}
-#'\item{NEP}{numeric, net ecosystem production, in units of mg O2 per liter per day. For most methods this equal GPP+R, but this is not necessarily the case for \code{"method"="bookkeep"}}
-#' Note that different models will have different \link{attributes} attached to them.
+#' @return 
+#' A data.frame containing columns for year, doy (day of year, julian day plus fraction of day), GPP, R, and NEP
+#' \item{year}{integer year}
+#' \item{doy}{numeric, day of year + fraction of day, where the day is the julian day, and a fraction of 0.5 corresponds to noon}
+#' \item{GPP}{numeric, gross primary production, in units of mg O2 per liter per day. By convention, this value is positive.}
+#' \item{R}{numeric, respiration, in units of mg O2 per liter per day. By convention, this value is negative}
+#' \item{NEP}{numeric, net ecosystem production, in units of mg O2 per liter per day. For most methods this equal GPP+R, but this is not necessarily the case for \code{"method"="bookkeep"}}
+#' Note that different models will have different \link{attributes} attached to them. See examples. 
 
 #'@keywords metabolism
 #'
@@ -97,7 +98,12 @@
 #' 
 #' # example attributes
 #' names(attributes(m.ols))
-#' attributes(m.ols)$mod
+#' attr(m.ols, "mod")
+#'  
+#' # To get full JAGS model
+#' # including posterior draws:
+#' \dontrun{names(attributes(m.bay))}
+#' \dontrun{attr(m.bay, "model")}
 #'
 #'@export
 
