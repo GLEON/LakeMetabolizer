@@ -148,7 +148,7 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type="OE", .
 		pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]), "nll"=fit$value)
 		
 	}else{
-		stop("error.type must be either 'OE' or 'PE', Observation Error or Process Erorr respectively.")
+		stop("error.type must be either 'OE' or 'PE', Observation Error or Process Error respectively.")
 	}
 	
 	# ====================================
