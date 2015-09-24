@@ -7,6 +7,7 @@
 #'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
+#'@param error.type Option specifying if model should assume pure Process Error 'PE' or Observation Error 'OE'. Defaults to observation error 'OE'. 
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
 #'A data.frame with columns corresponding to components of metabolism 
@@ -84,11 +85,13 @@
 #'
 #'metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 #'@export
-metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
+metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type="OE", ...){
 
   complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
                   z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
   
+	match.arg(error.type, choices=c('OE', 'PE'))
+	
 	nobs <- length(do.obs)
 	
 	mm.args <- list(...)
@@ -124,9 +127,14 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	}
 	
 	Q0 <- ((diff(range(do.obs,na.rm=TRUE)) - mean(do.obs,na.rm=TRUE))^2 / length(do.obs))
+	
 	guesses <- c(1E-4, 1E-4, log(Q0))
 	
-	fit <- optim(guesses, fn=mleNLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
+	if(error.type=='OE'){
+		
+	}
+	
+	fit <- optim(guesses, fn=mleNLL, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr, error.type=error.type)
 	
 	pars0 <- fit$par
 	
@@ -141,19 +149,28 @@ metab.mle <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	return(list("params"=pars, "metab"=c("GPP"=GPP,"R"=R,"NEP"=GPP+R)))
 }
 
-# ==========================
-# = The R loop for mle NLL =
-# ==========================
-mleLoopR <- function(alpha, doobs, c1, c2, beta, irr, wtr, kz, dosat){
+# ============================================
+# = The R loop for Observation Error mle NLL =
+# ============================================
+mleLoopOE <- function(alpha, doobs, c1, c2, beta, irr, wtr, kz, dosat){
 	nobs <- length(doobs)
-	a.loop <- .C("mleLoopC", alpha=as.double(alpha), as.double(doobs), as.double(c1), as.double(c2), as.double(beta), as.double(irr), as.double(wtr), as.double(kz), as.double(dosat), as.integer(nobs), PACKAGE="LakeMetabolizer")
+	a.loop <- .C("mleLoopCoe", alpha=as.double(alpha), as.double(doobs), as.double(c1), as.double(c2), as.double(beta), as.double(irr), as.double(wtr), as.double(kz), as.double(dosat), as.integer(nobs), PACKAGE="LakeMetabolizer")
+	return(a.loop[["alpha"]])
+}
+
+# ============================================
+# = The R loop for Process Error mle NLL =
+# ============================================
+mleLoopPE <- function(alpha, doobs, c1, c2, beta, irr, wtr, kz, dosat){
+	nobs <- length(doobs)
+	a.loop <- .C("mleLoopCpe", alpha=as.double(alpha), as.double(doobs), as.double(c1), as.double(c2), as.double(beta), as.double(irr), as.double(wtr), as.double(kz), as.double(dosat), as.integer(nobs), PACKAGE="LakeMetabolizer")
 	return(a.loop[["alpha"]])
 }
 
 # ====================
 # = mle NLL function =
 # ====================
-mleNLL <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
+mleNLL <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type){
 	c1 <- Params[1] #PAR coeff
 	c2 <- Params[2] #log(Temp) coeff
 	Q <- exp(Params[3]) # Variance of the process error
@@ -171,7 +188,14 @@ mleNLL <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	#	a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
 	#	alpha[i] <- a1/kz[i-1] + -exp(-kz[i-1])*a1/kz[i-1] + beta[i-1]*alpha[i-1] # NOTE: beta==exp(-kz); kz=K/Zmix
 	#}
+	if(error.type=='OE'){
+		alpha <- mleLoopOE(alpha=alpha, doobs=do.obs, c1=c1, c2=c2, beta=beta, irr=irr, wtr=wtr, kz=kz, dosat=do.sat)
+	}else if(error.type=='PE'){
+		alpha <- mleLoopPE(alpha=alpha, doobs=do.obs, c1=c1, c2=c2, beta=beta, irr=irr, wtr=wtr, kz=kz, dosat=do.sat)
+	}else{
+		stop('error.type must be either OE or PE, Observation Error or Process Erorr respectively.')
+	}
 	
-	alpha <- mleLoopR(alpha=alpha, doobs=do.obs, c1=c1, c2=c2, beta=beta, irr=irr, wtr=wtr, kz=kz, dosat=do.sat)
+	
 	return(-sum(dnorm(do.obs, alpha, sd=sqrt(Q), log=TRUE), na.rm=TRUE))
 }#End function

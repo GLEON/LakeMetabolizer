@@ -4,7 +4,7 @@
 \alias{metab.mle}
 \title{Metabolism calculated from the maximum likelihood estimates of the parameters in a standard linear regression model}
 \usage{
-metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
+metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type = "OE", ...)
 }
 \arguments{
 \item{do.obs}{Vector of dissolved oxygen concentration observations, \eqn{mg O[2] L^{-1}}{mg O2 / L}}
@@ -19,6 +19,8 @@ metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...)
 \item{irr}{Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}}
 
 \item{wtr}{Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature}
+
+\item{error.type}{Option specifying if model should assume pure Process Error 'PE' or Observation Error 'OE'. Defaults to observation error 'OE'.}
 
 \item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
