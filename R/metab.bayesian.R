@@ -7,7 +7,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables("jags")
 bayes.makeModel <- function(k.gas){
   
 	if(!requireNamespace("R2jags")){
-    stop('metab.bayesian requires R2jags')
+    stop("metab.bayesian requires R2jags.\ninstall.packages('R2jags')\n #Also install JAGS (http://mcmc-jags.sourceforge.net/)")
 	}
 	
 	finite.1oK <- is.finite(1/k.gas)
