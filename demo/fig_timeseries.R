@@ -62,7 +62,7 @@ height = 8
 l_mar = 0.35
 b_mar = 0.1
 t_mar = 0.05
-r_mar= 0.05
+r_mar= 0.08
 gapper = 0.15 # space between panels
 
 # figure saved at home folder 
