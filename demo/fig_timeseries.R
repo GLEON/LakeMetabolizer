@@ -81,6 +81,7 @@ plot(ts.data$thermo.depth~ts.data$datetime, type='l',
 lines(ts.data$z.mix~ts.data$datetime,col=cols[7],lty=2)
 lines(ts.data$meta.bot~ts.data$datetime,col=cols[7],lty=2)
 add_axes(xlim, ylim, panel.txt='a)')
+add_axes(xlim,rev(ylim),ylabel=NA,panel.txt='')
 
 
 # schmidt 
