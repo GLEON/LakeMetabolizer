@@ -94,14 +94,14 @@ add_axes(xlim, ylim, panel.txt='b)')
 # PAR 
 ylim = c(min(ts.data$par),max(ts.data$par))
 plot(ts.data$par~ts.data$datetime, type='l',
-     col=cols[6], ylim=ylim,xaxt = 'n', ylab=expression(PAR~(paste(mu,mol,sep='')~m^-2~sec^-1)),
+     col=cols[6], ylim=ylim,xaxt = 'n', ylab=expression(PAR~(paste(mu,mol,sep='')~m^-2~s^-1)),
      xlab='', axes=FALSE)
 add_axes(xlim, ylim, panel.txt='c)')
 
 # U10 
 ylim = c(min(ts.data$wnd_10),max(ts.data$wnd_10))
 plot(ts.data$wnd_10~ts.data$datetime, type='l',
-     col=cols[7], ylim=ylim,xaxt = 'n', ylab=expression(U10~(m~sec^-1)),
+     col=cols[7], ylim=ylim,xaxt = 'n', ylab=expression(U10~(m~s^-1)),
      xlab='', axes=FALSE)
 add_axes(xlim, ylim, panel.txt='d)')
 
