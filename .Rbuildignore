@@ -4,3 +4,5 @@ R/LakeMetabolizer.R
 .travis.yml
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README\.md$
+inst/figdata
