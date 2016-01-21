@@ -26,7 +26,7 @@ metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 }
 \value{
 A list of length 4 with components:
-\item{model}{the jags model, including posterior draws (see \link{jags})}
+\item{model}{the jags model, including posterior draws (see \link[R2jags]{jags})}
 \item{params}{parameter estimates of interest from model (medians)}
 \item{metab.sd}{standard deviation of metabolism estimates}
 \item{metab}{daily metabolism estimates as a data.frame with columns corresponding to
