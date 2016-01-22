@@ -1,4 +1,9 @@
-#rdb
+#'
+#'
+#'
+#'@importFrom utils flush.console
+#'@importFrom stats approx
+#'
 addNAs <- function(x, ...){
 	dateL <- grepl(".?date?.", names(x), ignore.case=TRUE) # matches anything with "date" in it, regardless of what else is or is not there
 	dL <- grepl("^[dD][oO][yY]$", names(x)) # matches doy, regardless of case

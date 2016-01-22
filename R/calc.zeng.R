@@ -16,6 +16,7 @@
 #'@param RH.z height of relative humidity measurement, m (optional)
 #'@return A data.frame including sensible and latent heat flux estimates, and other variables used in calculating these fluxes.
 #'@keywords methods math
+#'@importFrom stats complete.cases 
 #'@references
 #'Zeng, X., M. Zhao., and Dickinson, R.E. 1998. \emph{Intercomparison of bulk aerodynamic algorithms 
 #'for the computation of sea surface fluxes using TOGA COARE and TAO data}. Journal of Climate 11: 2628-2644.

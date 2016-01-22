@@ -16,6 +16,9 @@
 	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 	#'\item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 #'}
+#'
+#'@importFrom stats lm model.matrix
+#'
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@seealso
 #'\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian}, 
