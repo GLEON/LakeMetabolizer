@@ -58,6 +58,8 @@
 #'\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
 #'Limnology and Oceanography 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 #'
+#'@importFrom stats dnorm optim
+#'
 #'@seealso
 #'\link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.kalman}, \link{metab.bayesian}
 #'@examples

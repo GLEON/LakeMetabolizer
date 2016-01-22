@@ -215,6 +215,9 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'@seealso
 #'\link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
 #'@author Ryan Batt, Luke A. Winslow
+#'
+#'@importFrom stats sd density median
+#'
 #'@examples
 #'\dontrun{
 #'library(rLakeAnalyzer)

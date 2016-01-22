@@ -11,6 +11,7 @@
 #'
 #'@keywords methods
 #'@import plyr
+#'@importFrom methods is
 #'@author
 #'Luke A. Winslow
 #'@seealso 
