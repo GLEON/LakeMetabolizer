@@ -1,0 +1,14 @@
+citHeader("To cite LakeMetabolizer in publications use:")
+citEntry(entry = "Article", 
+         author = personList(as.person("Luke A Winslow"), 
+                             as.person("Jake A Zwart"),
+                             as.person("Ryan D Batt"), 
+                             as.person("Hilary A Dugan"), 
+                             as.person("Richard I Woolway"), 
+                             as.person("Jessica R Corman"), 
+                             as.person("Jordan S Read")), 
+         title = "LakeMetabolizer: An R package for estimating lake metabolism from free-water oxygen using diverse statistical models", 
+         journal = "Inland Waters", year = 2016, 
+         textVersion = paste("Winslow, LA, JA Zwart, RD Batt, HA Dugan, RI Woolway, JR Corman, JS Read (2016).",
+                              "LakeMetabolizer: An R package for estimating lake metabolism from free- water oxygen using diverse statistical models.", 
+                              "Inland Waters, In Press."))
