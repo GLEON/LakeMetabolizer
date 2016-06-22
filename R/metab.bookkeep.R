@@ -102,7 +102,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 	gas.flux <- (do.sat - do.obs) * (k.gas/freq) / z.mix 
 
 	#remove the component of delta.do that is due to gas flux
-	delta.do.metab <- delta.do + gas.flux[1:(length(gas.flux)-1)]
+	delta.do.metab <- delta.do - gas.flux[1:(length(gas.flux)-1)]
 
 	#normalize units to per-day
 	# delta.do.meta.daily <- delta.do.metab * (60*60*24)/as.numeric(delta.times, 'secs')
