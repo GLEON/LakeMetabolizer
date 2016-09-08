@@ -141,7 +141,7 @@ plot(c(0,NA),c(0,NA), type='l',
      xaxs = 'i', yaxs = 'i',
      ylim=ylim, 
      ylab=expression(k[600]~(m~day^-1)),
-     xlab=strftime(mean(xlim[1:2]), '%Y-%m-%d'),
+     xlab=strftime(mean(xlim[1:2]), '%d %b %Y'),
      xlim=xlim[1:2])
 add_night(xlim[1:2], ylim)
 add_models(models)
@@ -155,7 +155,7 @@ plot(c(0,NA),c(0,NA), type='l',
      xaxs = 'i', yaxs = 'i',
      ylim=ylim, 
      ylab=NA,
-     xlab=strftime(mean(xlim[3:4]), '%Y-%m-%d'),
+     xlab=strftime(mean(xlim[3:4]), '%d %b %Y'),
      xlim=xlim[3:4])
 add_night(xlim[3:4], ylim)
 add_models(models)
