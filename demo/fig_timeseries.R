@@ -18,7 +18,7 @@ z.mix = ts.meta.depths(get.vars(ts.data, 'wtr'), seasonal=TRUE)
 names(z.mix) = c('datetime','z.mix', 'bottom')
 
 #set z.mix to bottom of lake when undefined
-z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = 20 
+z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = sp.data$metadata$maxdepth 
 ts.data = merge(ts.data, z.mix[,c('datetime','z.mix')])
 
 wtr.data<-get.vars(ts.data,var.names = c('datetime','wtr')) # pulling out just water data 
@@ -43,7 +43,7 @@ add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt, no.x=TRUE)
   if(no.x){
     axis(side = 1, at = ext_x , labels = FALSE, tcl = tick_len)
   }else{
-    axis(side = 1, at = ext_x , labels = strftime(ext_x,'%m-%d'), tcl = tick_len)  
+    axis(side = 1, at = ext_x , labels = strftime(ext_x,'%d %b'), tcl = tick_len)  
   }
   axis(side = 2, at = ext_y, labels = ylab, tcl = tick_len)
   axis(side = 3, at = ext_x, labels = NA, tcl = tick_len)
@@ -109,7 +109,7 @@ add_axes(xlim, ylim, panel.txt='d)')
 ts.data$do.dev<-ts.data$doobs_0.5-ts.data$do.sat # deviation of DO obs from saturation 
 ylim = c(min(ts.data$do.dev),max(ts.data$do.dev))
 plot(ts.data$do.dev~ts.data$datetime, type='l',
-     col=cols[5], ylim=ylim,xaxt = 'n', ylab=expression(DO~-~O[s]~(mg~O[2]~L^-1)),
+     col=cols[5], ylim=ylim,xaxt = 'n', ylab=expression(DO~-~O[s]~(O[2]~'in'~mg~L^-1)),
      xlab='', axes=FALSE)
 abline(0,0,col=rgb(0,0,0,0.5),lty=2)
 add_axes(xlim, ylim, panel.txt='e)',no.x=F)
