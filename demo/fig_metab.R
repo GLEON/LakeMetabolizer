@@ -27,7 +27,7 @@ z.mix = ts.meta.depths(get.vars(ts.data, 'wtr'), seasonal=TRUE)
 names(z.mix) = c('datetime','z.mix', 'bottom')
 
 #set z.mix to bottom of lake when undefined
-z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = 20 
+z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = sp.data$metadata$maxdepth 
 ts.data = merge(ts.data, z.mix[,c('datetime','z.mix')])
 
 
@@ -49,10 +49,11 @@ bayes.res = metab(ts.data, method='bayesian',
 									wtr.name='wtr_0.5', do.obs.name='doobs_0.5', irr.name='par')
 
 #Bookkeep
-ts.data[, names(ts.data)%in%'par'] = as.numeric(ts.data[, names(ts.data)%in%'par'] >=0)
+# add column for day (1) and night (0) 
+ts.data$day_night = as.integer(is.day(datetimes=ts.data$datetime, lat=sp.data$metadata$latitude)) 
 
 book.res = metab(ts.data, method='bookkeep', 
-								 wtr.name='wtr_0.5', do.obs.name='doobs_0.5', irr.name='par')
+								 wtr.name='wtr_0.5', do.obs.name='doobs_0.5', irr.name='day_night')
 
 #Bring year and DOY together to get R datetime again
 ols.res$datetime = ISOdate(ols.res$year, 1, 1) + book.res$doy*3600*24 - 3600*24
@@ -75,7 +76,7 @@ add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt, no.x=TRUE)
 	if(no.x){
 		axis(side = 1, at = ext_x , labels = FALSE, tcl = tick_len)
 	}else{
-		axis(side = 1, at = ext_x , labels = strftime(ext_x,'%m-%d'), tcl = tick_len)	
+		axis(side = 1, at = ext_x , labels = strftime(ext_x,'%d %b'), tcl = tick_len)	
 	}
 	axis(side = 2, at = ext_y, labels = ylab, tcl = tick_len)
 	axis(side = 3, at = ext_x, labels = NA, tcl = tick_len)
@@ -126,7 +127,7 @@ b_mar = 0.1
 t_mar = 0.05
 r_mar= 0.05
 gapper = 0.15 # space between panels
-ylim = c(-1, 1.2)
+ylim=range(c(models[[1]]$data[3:5],models[[2]]$data[3:5],models[[3]]$data[3:5],models[[4]]$data[3:5],models[[5]]$data[3:5]))
 xlim = as.POSIXct(c('2009-07-01 16:00', '2009-07-11'))
 
 #Create plot and save in user home directory (on Windows, Documents folder, on Mac, Home folder)
@@ -137,27 +138,22 @@ par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0.1,0,0,r_mar),xpd=FALSE,
 		mgp = c(1.15,.05,0), mfrow=c(3,1))
 
 #Plot the metabolism results
-plot(kalman.res[,c(6,3)], type='l', col=cols[1], ylim=c(-1,1.2), xaxt = 'n', ylab=expression(GPP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(kalman.res[,c(6,3)], type='o', col=cols[1], ylim=c(-1,1.2), xaxt = 'n', ylab=expression(GPP~(O[2]~'in'~mg~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0, 0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,3))
-#lines(mle.res[,c(6,3)], type='o', col=cols[2])
-#lines(kalman.res[,c(6,3)], type='o', col=cols[3])
-#lines(bayes.res[,c(6,3)], type='o', col=cols[4])
-#lines(book.res[,c(6,3)], type='o', col=cols[5])
-#abline(0,0)
 add_axes(xlim, ylim, panel.txt='a)')
 
-plot(kalman.res[,c(6,4)], type='o', col=cols[1], ylim=c(-1,1), xaxt='n', ylab=expression(R~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(kalman.res[,c(6,4)], type='o', col=cols[1], ylim=c(-1,1), xaxt='n', ylab=expression(R~(O[2]~'in'~mg~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0,0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,4))
-add_axes(xlim, c(-1,1), panel.txt='b)')
+add_axes(xlim, ylim, panel.txt='b)')
 
-plot(ols.res[,c(6,5)], type='o', col=cols[1], ylim=c(-0.5,0.6), ylab=expression(NEP~(mg~O[2]~L^-1~day^-1)), xlab='', axes=FALSE)
+plot(ols.res[,c(6,5)], type='o', col=cols[1], ylim=c(-0.5,0.6), ylab=expression(NEP~(O[2]~'in'~mg~L^-1~day^-1)), xlab='', axes=FALSE)
 abline(0,0, col=rgb(0,0,0,0.5))
 add_models(models, c(6,5))
-add_axes(xlim, c(-0.5,0.6), panel.txt='c)', no.x=FALSE)
+add_axes(xlim, ylim, panel.txt='c)', no.x=FALSE)
 
-add_legend(models, xlim, c(-0.5,0.6))
+add_legend(models, xlim, ylim)
 
 dev.off()
 
