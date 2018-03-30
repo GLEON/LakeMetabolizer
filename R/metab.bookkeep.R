@@ -113,7 +113,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 
 	R <- mean(nep.night, na.rm=TRUE) * freq # should be negative
 	NEP <- mean(delta.do.metab, na.rm=TRUE) * freq # can be positive or negative
-	GPP <- mean(nep.day, na.rm=TRUE) * sum(dayI) - R # should be positive
+	GPP <- mean(nep.day, na.rm = TRUE) * sum(dayI) - mean(nep.night, na.rm = TRUE) * sum(dayI) # should be positive
 
 	metab <- data.frame("GPP"=GPP, "R"=R, "NEP"=NEP)
 	return(metab)
