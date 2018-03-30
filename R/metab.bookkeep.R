@@ -64,7 +64,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
   
 	if("datetime"%in%names(mb.args)){ # check to see if datetime is in the ... args
 		datetime <- mb.args$datetime # extract datetime
-		freq <- calc.freq(datetime) - 1 # calculate sampling frequency from datetime
+		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
 		if(nobs!=freq){ # nobs and freq should agree, if they don't issue a warning
 			bad.date <- format.Date(datetime[1], format="%Y-%m-%d")
 			warning("number of observations on ", bad.date, " (", nobs, ") ", "does not equal estimated sampling frequency", " (", freq, ")", sep="")
@@ -73,7 +73,7 @@ metab.bookkeep <- function(do.obs, do.sat, k.gas, z.mix, irr, ...){
 		warning("datetime not found, inferring sampling frequency from # of observations") # issue a warning (note checks in addNAs)
 		# NOTE: because of the checks in addNA's, it is unlikely a user would receive this warning via metab()
 		# warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
-		freq <- nobs - 1
+		freq <- nobs
 	}
 
 
