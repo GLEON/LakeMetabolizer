@@ -54,7 +54,7 @@ k.heiskanen <- function(ts.data, wnd.z, Kd, atm.press){
     
   } else if(has.vars(ts.data, 'lw')){
     lw_in <- get.vars(ts.data, 'lw') # long wave in
-    Tk <- Ts+Kelvin # water temperature in Kelvin
+    Tk <- Ts[,2] + Kelvin # water temperature in Kelvin
     LWo <- S_B*emiss*Tk^4 # long wave out
     lwnet <- lw_in[,2]-LWo
     
