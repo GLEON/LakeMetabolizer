@@ -16,13 +16,12 @@ A list with the metadata parsed from the file.
 Parses a formatted metadata file. Useful for site-specific metadata 
 that is not contained in the timeseries files.
 }
-\author{
-Luke A Winslow
-}
 \seealso{
 \link{load.ts}
 \link{load.all.data}
 }
+\author{
+Luke A Winslow
+}
 \keyword{IO}
 \keyword{file}
-

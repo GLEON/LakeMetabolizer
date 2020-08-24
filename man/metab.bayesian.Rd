@@ -70,9 +70,6 @@ metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)),
               k.gas=k.gas, do.obs=doobs[,2])
 }
 }
-\author{
-Ryan Batt, Luke A. Winslow
-}
 \references{
 Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar. 
 2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration 
@@ -83,4 +80,6 @@ http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
 \seealso{
 \link{metab.mle}, \link{metab.bookkeep}, \link{metab.kalman}
 }
-
+\author{
+Ryan Batt, Luke A. Winslow
+}

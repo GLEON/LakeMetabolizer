@@ -21,12 +21,11 @@ An object of class data.frame
 \description{
 subsets \code{data} according to header names. Excludes all matches to \code{var.name}
 }
-\author{
-Luke A. Winslow
-}
 \seealso{
 \link{has.vars}
 \link{get.vars}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

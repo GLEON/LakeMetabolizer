@@ -10,9 +10,10 @@ Imports:
     plyr,
     methods
 Suggests:
-    R2jags
+    R2jags,
+    testthat
 Depends:
     R (>= 2.15.0),
     rLakeAnalyzer (>= 1.4)
 Repository: http://github.com/GLEON/LakeMetabolizer
-RoxygenNote: 5.0.1
+RoxygenNote: 7.1.0

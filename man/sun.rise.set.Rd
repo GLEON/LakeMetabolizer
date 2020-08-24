@@ -12,7 +12,7 @@ sun.rise.set(datetimes, lat)
 \item{lat}{Single latitude value of site. South should be negative, north positive}
 }
 \value{
-A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format. 
+A 2-column data frame, first column sunrise, second column sunset, as \link{POSIXct} format in standard time. 
 Value is NA when there is no defined sunrise or sunset for that day (winter/summer at high and low latitudes).
 }
 \description{
@@ -21,9 +21,6 @@ Calculates the time of sunrise and sunset based on latitude and date.
 \examples{
 sun.rise.set(lat=40.75,datetimes=as.POSIXlt('2013-03-31'))
 }
-\author{
-Luke A. Winslow
-}
 \references{
 Iqbal, Muhammad. 1983. An Introduction to Solar Radiation. Elsevier.
 }
@@ -31,5 +28,7 @@ Iqbal, Muhammad. 1983. An Introduction to Solar Radiation. Elsevier.
 \link{is.night}
 \link{is.day}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

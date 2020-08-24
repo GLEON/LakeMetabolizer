@@ -17,12 +17,11 @@ a boolean vector of same length as \code{var.names}
 \description{
 tests \code{data} for data column names
 }
-\author{
-Luke A. Winslow
-}
 \seealso{
 \link{get.vars}
 \link{rmv.vars}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

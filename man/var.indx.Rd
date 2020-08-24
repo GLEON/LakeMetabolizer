@@ -17,13 +17,12 @@ a boolean vector with same length as \code{var.names}
 \description{
 returns index of column matches for \code{data} according to header names matches with \code{var.names}.
 }
-\author{
-Luke A. Winslow
-}
 \seealso{
 \link{has.vars}
 \link{get.vars}
 \link{rmv.vars}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

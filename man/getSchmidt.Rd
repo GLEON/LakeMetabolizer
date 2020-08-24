@@ -24,14 +24,13 @@ Temperature range is only valid from 4-35 deg Celsius
 \examples{
 getSchmidt(temperature=12, gas="O2")
 }
-\author{
-Jordan S. Read
-}
 \references{
 Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, Jody Potter, Patrick Mulholland, 
 Andrew E. Laursen, William H. McDowell, and Denis Newbold. \emph{Scaling the gas transfer velocity and hydraulic 
 geometry in streams and small rivers}. Limnology & Oceanography: Fluids & Environments 2 (2012): 41-53.
 }
+\author{
+Jordan S. Read
+}
 \keyword{math}
 \keyword{methods}
-

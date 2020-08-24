@@ -17,12 +17,11 @@ An object of class data.frame
 \description{
 subsets \code{data} according to header names
 }
-\author{
-Luke A. Winslow
-}
 \seealso{
 \link{has.vars}
 \link{rmv.vars}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

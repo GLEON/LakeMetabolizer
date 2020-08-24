@@ -68,12 +68,6 @@ lwnet = calc.lw.net(ts.data, lat, atm.press)
 plot(lwnet$datetime, lwnet$lwnet)
 
 }
-\author{
-R Iestyn Woolway
-Jordan S. Read
-Hilary Dugan
-Luke Winslow
-}
 \references{
 Crawford, T.M., and Duchon, C.E. 1999. \emph{An improved parameterization for 
 estimating effective atmospheric emissivity for use in calculating daytime 
@@ -82,6 +76,11 @@ downwelling longwave radiation}. Journal of Applied Meteorology 38: 474-480.
 \seealso{
 \code{\link{k.read}} and \code{\link{k.macIntyre}}
 }
+\author{
+R Iestyn Woolway
+Jordan S. Read
+Hilary Dugan
+Luke Winslow
+}
 \keyword{math}
 \keyword{methods}
-

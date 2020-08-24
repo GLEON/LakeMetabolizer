@@ -6,11 +6,15 @@
 \title{Calculates the equilibrium saturation concentration of oxygen in water
   at the supplied conditions}
 \usage{
-o2.at.sat(ts.data, baro, altitude = 0, salinity = 0,
-  model = "garcia-benson")
+o2.at.sat(ts.data, baro, altitude = 0, salinity = 0, model = "garcia-benson")
 
-o2.at.sat.base(temp, baro, altitude = 0, salinity = rep(0, length(temp)),
-  model = "garcia-benson")
+o2.at.sat.base(
+  temp,
+  baro,
+  altitude = 0,
+  salinity = rep(0, length(temp)),
+  model = "garcia-benson"
+)
 }
 \arguments{
 \item{ts.data}{Object of class data.frame with two named columns 
@@ -60,9 +64,6 @@ ylab='Oxygen Saturation (mg/L)')
 plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 
 }
-\author{
-Luke A Winslow
-}
 \references{
 Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In 
 Computation of Dissolved Gas Concentration in Water as Functions of 
@@ -101,6 +102,8 @@ doi:10.1016/0011-7471(70)90037-9
 \seealso{
 \link{water.density}, \link{o2.at.sat.base}
 }
+\author{
+Luke A Winslow
+}
 \keyword{math,}
 \keyword{methods}
-

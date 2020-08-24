@@ -45,10 +45,9 @@ ts.data = merge(k600, ts.data)
 
 k.gas = k600.2.kGAS(ts.data, 'O2')
 }
-\author{
-Jordan S. Read
-}
 \seealso{
 \link{k.read} and \link{k.read.base} for functions that calculate k600 estimates
 }
-
+\author{
+Jordan S. Read
+}

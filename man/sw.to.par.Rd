@@ -37,9 +37,6 @@ sw <- 800
 sw.to.par.base(sw)
 
 }
-\author{
-Luke Winslow and others
-}
 \references{
 Britton, C. M., and J. D. Dodd. \emph{Relationships of photosynthetically active radiation and shortwave irradiance.} 
 Agricultural Meteorology 17, no. 1 (1976): 1-7.
@@ -47,6 +44,8 @@ Agricultural Meteorology 17, no. 1 (1976): 1-7.
 \seealso{
 \link{par.to.sw}
 }
+\author{
+Luke Winslow and others
+}
 \keyword{math}
 \keyword{methods}
-

@@ -17,13 +17,12 @@ An object of class data.frame
 \description{
 grabs best available data for surface water temperature
 }
-\author{
-Jordan S. Read
-}
 \seealso{
 \link{has.vars}
 \link{get.vars}
 \link{rmv.vars}
 }
+\author{
+Jordan S. Read
+}
 \keyword{methods}
-

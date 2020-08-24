@@ -91,9 +91,6 @@ do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 
 metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 }
-\author{
-Luke A Winslow, Ryan Batt, GLEON Fellows
-}
 \references{
 Hanson, PC, SR Carpenter, N Kimura, C Wu, SP Cornelius, TK Kratz. 2008 
 \emph{Evaluation of metabolism models for free-water dissolved oxygen in lakes}. 
@@ -108,4 +105,6 @@ Limnology and Oceanography 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 \seealso{
 \link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.kalman}, \link{metab.bayesian}
 }
-
+\author{
+Luke A Winslow, Ryan Batt, GLEON Fellows
+}

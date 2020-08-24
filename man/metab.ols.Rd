@@ -59,10 +59,9 @@ do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 
 metab.ols(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 }
-\author{
-Luke A Winslow, Ryan Batt, GLEON Fellows
-}
 \seealso{
 \link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian},
 }
-
+\author{
+Luke A Winslow, Ryan Batt, GLEON Fellows
+}
