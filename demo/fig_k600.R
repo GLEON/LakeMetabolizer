@@ -56,7 +56,7 @@ models <- list(
   list('name'="Soloviev", data = k600_soloviev, col = cols[5], lty = 6, lwd = 1.7),
   list('name'="Heiskanen", data = k600_heiskanen, col = cols[6], lty = 1, lwd = 1.2),
   list('name'="Crusius", data = k600_crusius, col = cols[7], lty = 1, lwd = 1.2))
-  
+
 add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt){
   prc_x = 0.1 # position for text relative to axes
   prc_y = 0.07
@@ -75,8 +75,8 @@ add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt){
 }
 add_night <- function(xlim, ylim){
   rise.set = sun.rise.set(xlim[1]+43200, lat) # add mid-day
-  polygon(x = c(xlim[1], rise.set[1], rise.set[1], xlim[1]), y = c(ylim[1],ylim[1],ylim[2],ylim[2]), col = night_col,border = NA)
-  polygon(x = c(xlim[2], rise.set[2], rise.set[2], xlim[2]), y = c(ylim[1],ylim[1],ylim[2],ylim[2]), col = night_col,border = NA)
+  polygon(x = c(xlim[1], rise.set$sunrise, rise.set$sunrise, xlim[1]), y = c(ylim[1],ylim[1],ylim[2],ylim[2]), col = night_col,border = NA)
+  polygon(x = c(xlim[2], rise.set$sunset, rise.set$sunset, xlim[2]), y = c(ylim[1],ylim[1],ylim[2],ylim[2]), col = night_col,border = NA)
 }
 moving_ave <- function(df, window = 18){
   out <- df[,2]*NA
@@ -98,17 +98,17 @@ add_models <- function(models){
 }
 
 add_legend <- function(models, xlim, ylim, prc_x = 0.26, prc_y = 0.06){
-  
+
   y_strt <- ylim[2]-(ylim[2] - ylim[1])*prc_y
   y_spc <- (ylim[2] - ylim[1])*0.05
   x_len <- (xlim[2] - xlim[1])*0.16
   x <- c((xlim[2] - xlim[1])*prc_x+xlim[1], (xlim[2] - xlim[1])*prc_x+xlim[1] + x_len)
-  
+
   for (i in 1:length(models)){
     y = y_strt-(i-1)*y_spc
-    lines(x, c(y,y), 
-          col =models[[i]]$col, 
-          lty = models[[i]]$lty, 
+    lines(x, c(y,y),
+          col =models[[i]]$col,
+          lty = models[[i]]$lty,
           lwd = models[[i]]$lwd)
     text(x[2],y, models[[i]]$name, pos = 4, cex = 0.65)
   }
@@ -136,10 +136,10 @@ layout(matrix(c(rep(1,10),rep(2,9)),nrow=1)) # 55% on the left panel
 par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0,0,0,r_mar),xpd=FALSE,
     mgp = c(1.15,.05,0))
 
-plot(c(0,NA),c(0,NA), type='l', 
+plot(c(0,NA),c(0,NA), type='l',
      axes = FALSE,
      xaxs = 'i', yaxs = 'i',
-     ylim=ylim, 
+     ylim=ylim,
      ylab=expression(k[600]~(m~day^-1)),
      xlab=strftime(mean(xlim[1:2]), '%d %b %Y'),
      xlim=xlim[1:2])
@@ -150,10 +150,10 @@ add_axes(xlim[1:2], ylim, panel.txt = 'a)')
 
 par(mai=c(b_mar,gapper,t_mar,0))
 
-plot(c(0,NA),c(0,NA), type='l', 
+plot(c(0,NA),c(0,NA), type='l',
      axes = FALSE,
      xaxs = 'i', yaxs = 'i',
-     ylim=ylim, 
+     ylim=ylim,
      ylab=NA,
      xlab=strftime(mean(xlim[3:4]), '%d %b %Y'),
      xlim=xlim[3:4])
