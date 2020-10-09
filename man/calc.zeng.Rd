@@ -41,9 +41,6 @@ atm.press <- 1013
 wnd.z <- 2
 calc.zeng(dateTime,Ts,airT,Uz,RH,atm.press,wnd.z)
 }
-\author{
-R. Iestyn. Woolway
-}
 \references{
 Zeng, X., M. Zhao., and Dickinson, R.E. 1998. \emph{Intercomparison of bulk aerodynamic algorithms 
 for the computation of sea surface fluxes using TOGA COARE and TAO data}. Journal of Climate 11: 2628-2644.
@@ -51,6 +48,8 @@ for the computation of sea surface fluxes using TOGA COARE and TAO data}. Journa
 \seealso{
 \link{k.read}
 }
+\author{
+R. Iestyn. Woolway
+}
 \keyword{math}
 \keyword{methods}
-

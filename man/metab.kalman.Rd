@@ -97,9 +97,6 @@ metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)),
             do.sat=do.sat, wtr=wtr[,2],
             k.gas=k.gas, do.obs=doobs[,2])
 }
-\author{
-Ryan Batt, Luke A. Winslow
-}
 \references{
 Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 
 addressing noisy time series with a Kalman filter}. Limnology and Oceanography: Methods 10: 20-30. doi: 10.4319/lom.2012.10.20
@@ -107,4 +104,6 @@ addressing noisy time series with a Kalman filter}. Limnology and Oceanography: 
 \seealso{
 \link{temp.kalman}, \link{watts.in}, \link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.mle}, \link{metab.bayesian}
 }
-
+\author{
+Ryan Batt, Luke A. Winslow
+}

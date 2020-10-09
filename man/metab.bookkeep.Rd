@@ -58,9 +58,6 @@ irr = as.integer(is.day(doobs[,1], 45))
 
 metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr, datetime=doobs$datetime)
 }
-\author{
-R. Iestyn Woolway, Hilary Dugan, Luke A Winslow, Ryan Batt, Jordan S Read, GLEON fellows
-}
 \references{
 Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell. 2000. 
 \emph{Persistence of Net Heterotrophy in Lakes during Nutrient Addition and Food Web Manipulations}. 
@@ -69,4 +66,6 @@ Limnology and Oceanography 45 (8): 1718-1730. doi:10.4319/lo.2000.45.8.1718.
 \seealso{
 \link{metab.bayesian}, \link{metab.mle}, \link{metab.kalman}
 }
-
+\author{
+R. Iestyn Woolway, Hilary Dugan, Luke A Winslow, Ryan Batt, Jordan S Read, GLEON fellows
+}

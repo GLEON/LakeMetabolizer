@@ -17,12 +17,11 @@ a boolean vector of same length as \code{datetimes}
 \description{
 determines if measurement was taken during the nighttime
 }
-\author{
-Luke A. Winslow
-}
 \seealso{
 \link{is.day}
 \link{sun.rise.set}
 }
+\author{
+Luke A. Winslow
+}
 \keyword{methods}
-

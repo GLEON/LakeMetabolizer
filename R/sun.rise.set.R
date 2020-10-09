@@ -58,7 +58,7 @@ is.night <- function(datetimes, lat){
 #'@param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format
 #'@param lat Single latitude value of site. South should be negative, north positive
 #'
-#'@return A 2-column matrix, first column sunrise, second column sunset, as \link{POSIXct} format. 
+#'@return A 2-column data frame, first column sunrise, second column sunset, as \link{POSIXct} format in standard time. 
 #'Value is NA when there is no defined sunrise or sunset for that day (winter/summer at high and low latitudes).
 #'@references
 #'Iqbal, Muhammad. 1983. An Introduction to Solar Radiation. Elsevier.
@@ -103,10 +103,6 @@ sun.rise.set <- function(datetimes, lat){
 	rise <- trunc(datetimes, 'day') + sr*60*60
 	set <- trunc(datetimes, 'day') + ss*60*60
 
-	##Note, this does weird things. It *is* a matrix, but it doesn't print like one because it is viewed 
-	# as POSIXct. I will leave it this way for now, though if someone knows how to get it to show up as
-	# a matrix *and* a POSIXct value, that would be super cool.
-
-	return(as.POSIXct(matrix(c(rise, set), ncol=2), origin='1970-01-01'))
+	return(data.frame(sunrise = rise, sunset = set))
 
 }

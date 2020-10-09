@@ -92,9 +92,6 @@ attr(m.ols, "mod")
 \dontrun{attr(m.bay, "model")}
 
 }
-\author{
-Ryan D. Batt
-}
 \seealso{
 Metabolism models: \link{metab.bookkeep}, \link{metab.ols}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian}
 
@@ -106,5 +103,7 @@ To calculate k.gas: \link{k600.2.kGAS}
 
 To calculate k600 values for k.gas: \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, \link{k.read}
 }
+\author{
+Ryan D. Batt
+}
 \keyword{metabolism}
-

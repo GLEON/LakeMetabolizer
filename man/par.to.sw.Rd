@@ -35,9 +35,6 @@ Returns incoming shortwave radiation by converting PAR measuremt.
 par <- 800
 par.to.sw.base(par)
 }
-\author{
-LakeMetabolizer
-}
 \references{
 Britton, C. M., and J. D. Dodd. \emph{Relationships of photosynthetically active radiation and shortwave irradiance.} 
 Agricultural Meteorology 17, no. 1 (1976): 1-7.
@@ -45,6 +42,8 @@ Agricultural Meteorology 17, no. 1 (1976): 1-7.
 \seealso{
 \link{sw.to.par}
 }
+\author{
+LakeMetabolizer
+}
 \keyword{math}
 \keyword{methods}
-

@@ -41,13 +41,12 @@ wndHeight <- 2
 
 wind.scale.base(wndSpeed, wndHeight)
 }
-\author{
-Aline Jaimes, Luke A. Winslow
-}
 \references{
 Saucier, W. 2003. \emph{Principles of Meteorological Analysis}. Dover Publications. New York. p433
 }
 \seealso{
 Models of gas flux \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, & \link{k.read}.
 }
-
+\author{
+Aline Jaimes, Luke A. Winslow
+}
