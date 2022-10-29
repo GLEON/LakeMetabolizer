@@ -11,14 +11,14 @@ version](http://www.r-pkg.org/badges/version/LakeMetabolizer)](https://cran.r-pr
 
 Collection of Lake Metabolism Functions
 
-A product of the [GLEON](http://www.gleon.org) fellowship and other collaborators.
+A product of the [GLEON](https://gleon.org/) fellowship and other collaborators.
 
 Contributors: Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Gordon Holtgrieve, Aline Jaimes, Jordan Read,
               Luke Winslow, Richard Woolway, Jake Zwart 
               
 This package is described in more detail at [Winslow et al. 2016](https://www.tandfonline.com/doi/abs/10.1080/IW-6.4.883)
 
-Recommended citation: run citation("LakeMetabolizer") at the R prompt.
+Recommended citation: run `citation("LakeMetabolizer")` at the R prompt.
 			  
 			  
 Package Installation
