@@ -2,9 +2,9 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master, github_actions]
+    branches: [main, github_actions]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 name: R-CMD-check
 
@@ -41,8 +41,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
-          needs: check
+          extra-packages: any::rcmdcheck, any::covr
+          needs: check, coverage
 
       - uses: r-lib/actions/check-r-package@v2
         with:

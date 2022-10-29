@@ -1,7 +1,7 @@
 #'@title Attemps to load and merge all timeseries data for a given site name
-#'@description 
-#' Loads and returns all the data available in the specified directory for a given site. 
-#' All timeseries data are merged by \dQuote{datetime} into a single \link{data.frame}. 
+#'@description
+#' Loads and returns all the data available in the specified directory for a given site.
+#' All timeseries data are merged by \dQuote{datetime} into a single \link{data.frame}.
 #' Data are identified by the column header information.
 #'
 #'@usage
@@ -10,7 +10,7 @@
 #'@param data.path The directory to look for files
 #'@param checkMerge Should check merge size before attempting to prevent potential merge problems.
 #'
-#'@return 
+#'@return
 #'  A list with two items
 #'  \item{data}{}
 #'  \item{metadata}{}
@@ -20,40 +20,40 @@
 #'
 #'@author Luke A. Winslow
 #'
-#'@seealso 
+#'@seealso
 #'\link{load.ts}
 #'\link{load.meta}
 #'@export
 load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
- 
+
 	files <- dir(data.path)
 	files <- files[grepl(paste(lake.name, '\\.', sep=''), files, ignore.case=TRUE)]
 	files <- file.path(data.path, files)
- 
+
 	# error out if no matching files found
 	if(length(files) < 1){
 		stop('No files for site:', lake.name, ' found in path:', data.path)
 	}
- 
+
 	# Treat the metadata file differently
 	meta.indx <- grep('.meta', files)
 	if(length(meta.indx) == 1){
 		metadata <- load.meta(files[meta.indx])
 		files <- files[meta.indx*-1]
-	}else{ 
+	}else{
 		if(length(meta.indx) > 1){
 			stop('Metadata file pattern matched more than one file')
 		}else{
 					metadata <- NA
 		}
 	}
- 
+
 	 #Drop bathy if we find it (could maybe handle this if we wanted)
 	 files <- files[!grepl('.bth', files)]
- 
+
 	 #Load and merge all Timeseries files
 	 data <- load.ts(files[1])
-  
+
 	for(i in 2:length(files)){
 		tmp <- load.ts(files[i])
 		# Hmm, if datetime in a file is screwed up, this blows up
@@ -70,6 +70,6 @@ load.all.data <- function(lake.name, data.path, checkMerge=TRUE){
 
 		data <- merge(data, tmp, all=TRUE, by='datetime')
 	}
-  
+
 	return(list(data=data, metadata=metadata))
 }
