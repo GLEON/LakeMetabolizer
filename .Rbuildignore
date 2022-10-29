@@ -1,8 +1,8 @@
 man/LakeMetabolizer.Rd
 R/LakeMetabolizer.R
 .gitignore
-.travis.yml
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.md$
 inst/figdata
+^\.github$
