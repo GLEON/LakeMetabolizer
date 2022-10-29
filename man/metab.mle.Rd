@@ -11,7 +11,7 @@ metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type = "OE", ...)
 
 \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}}
 
-\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models 
+\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models
 (e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}}
 
 \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
@@ -25,7 +25,7 @@ metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type = "OE", ...)
 \item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
 \value{
-A data.frame with columns corresponding to components of metabolism 
+A data.frame with columns corresponding to components of metabolism
 \describe{
 \item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 \item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
@@ -37,29 +37,29 @@ The maximum likelihood estimates of model parameters can be accessed via \code{a
 Process-error-only model with parameters fitted via maximum likelihood estimation (MLE). This function runs the maximum likelihood metabolism model on the supplied gas concentration and other supporting data.
 }
 \details{
-The model has the three parameters, \eqn{c_1, c_2, \epsilon}{c1, c2, epsilon}, and has the form
+The model has the three parameters, \eqn{c_1, c_2, epsilon}{c1, c2, epsilon}, and has the form
 
 \deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
 
 \deqn{a_t = c_1*irr_{t-1} + c_2*log_e(wtr_{t-1}) + v_{t-1}*do.sat_{t-1}}{a[t] = c1*irr[t-1] + c2*log(wtr[t-1]) + v[t-1]*do.sat[t-1]}
 
-\deqn{\beta = e^{-v}}{beta = exp(-v)}
+\deqn{beta = e^{-v}}{beta = exp(-v)}
 
-\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + \beta_{t-1}*\do.obs_{t-1} + \epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
+\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + beta_{t-1}*do.obs_{t-1} + epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
 
 
 The above model is used during model fitting, but if gas flux is not integrated between time steps, those equations simplify to the following:
 
 \deqn{F_{t-1} = k.gas_{t-1}*(do.sat_{t-1} - do.obs_{t-1})/z.mix_{t-1}}{F[t-1] = k.gas[t-1]*(do.sat[t-1] - do.obs[t-1])/z.mix[t-1]}
 
-\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + \epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
+\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
 
 
-The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings. 
+The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings.
 
-GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}. 
+GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}.
 
-Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}. 
+Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}.
 
 NEP is the sum of GPP and R.
 }
@@ -68,13 +68,13 @@ Currently, missing values in any arguments will result in an error, so freq must
 }
 \examples{
 library(rLakeAnalyzer)
-doobs = load.ts(system.file('extdata', 
+doobs = load.ts(system.file('extdata',
                            'sparkling.doobs', package="LakeMetabolizer"))
-wtr = load.ts(system.file('extdata', 
+wtr = load.ts(system.file('extdata',
                          'sparkling.wtr', package="LakeMetabolizer"))
-wnd = load.ts(system.file('extdata', 
+wnd = load.ts(system.file('extdata',
                          'sparkling.wnd', package="LakeMetabolizer"))
-irr = load.ts(system.file('extdata', 
+irr = load.ts(system.file('extdata',
                          'sparkling.par', package="LakeMetabolizer"))
 
 #Subset a day
@@ -92,14 +92,14 @@ do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 }
 \references{
-Hanson, PC, SR Carpenter, N Kimura, C Wu, SP Cornelius, TK Kratz. 2008 
-\emph{Evaluation of metabolism models for free-water dissolved oxygen in lakes}. 
+Hanson, PC, SR Carpenter, N Kimura, C Wu, SP Cornelius, TK Kratz. 2008
+\emph{Evaluation of metabolism models for free-water dissolved oxygen in lakes}.
 Limnology and Oceanography: Methods 6: 454:465.
 
-Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget, 
-R Adrian, B Leroux Babin, CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell, 
-ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw. 2013. 
-\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
+Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget,
+R Adrian, B Leroux Babin, CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell,
+ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw. 2013.
+\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}.
 Limnology and Oceanography 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
 }
 \seealso{

@@ -21,51 +21,51 @@
 #' Use \link{attributes} to access more model output:
 #'\item{smoothDO}{smoothed time series of oxygen concentration (\eqn{mg O[2] L^{-1}}{mg O2 / L}), from Kalman smoother}
 #'\item{params}{parameters estimated by the Kalman filter (\eqn{c_1, c_2, Q, H}{c1, c2, Q, H})}
-#' 
+#'
 #'@details
-#'The model has four parameters, \eqn{c_1, c_2, Q, H}{c1, c2, Q, H}, and consists of equations involving the prediction of upcoming state conditional on information of the previous state (\eqn{a_{t|t-1}}{a[t|t-1]}, \eqn{P_{t|t-1}}{P[t|t-1]}), as well as updates of those predictions that are conditional upon information of the current state (\eqn{a_{t|t}}{a[t|t]}, \eqn{P_{t|t}}{P[t|t]}). \eqn{a} is the 
+#'The model has four parameters, \eqn{c_1, c_2, Q, H}{c1, c2, Q, H}, and consists of equations involving the prediction of upcoming state conditional on information of the previous state (\eqn{a_{t|t-1}}{a[t|t-1]}, \eqn{P_{t|t-1}}{P[t|t-1]}), as well as updates of those predictions that are conditional upon information of the current state (\eqn{a_{t|t}}{a[t|t]}, \eqn{P_{t|t}}{P[t|t]}). \eqn{a} is the
 #'
 #'\deqn{v=k.gas/z.mix}{v=k.gas/z.mix}
 #'
 #'\deqn{a_t = c_1*irr_{t-1} + c_2*log_e(wtr_{t-1}) + v_{t-1}*do.sat_{t-1}}{a[t] = c1*irr[t-1] + c2*log(wtr[t-1]) + v[t-1]*do.sat[t-1]}
 #'
-#'\deqn{\beta = e^{-v}}{beta = exp(-v)}
+#'\deqn{beta = e^{-v}}{beta = exp(-v)}
 #'
-#'\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + \beta_{t-1}*\do.obs_{t-1} + \epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
+#'\deqn{do.obs_t = a_t/v_{t-1} + -e^{-v_{t-1}}*a_t/v_{t-1} + beta_{t-1}*do.obs_{t-1} + epsilon_t}{do.obs[t] = a[t]/v[t-1] + -exp(-v[t-1])*a[t]/v[t-1] + beta[t-1]*do.obs[t-1] + epsilon[t]}
 #'
 #'
 #' The above model is used during model fitting, but if gas flux is not integrated between time steps, those equations simplify to the following:
 #'
 #' \deqn{F_{t-1} = k.gas_{t-1}*(do.sat_{t-1} - do.obs_{t-1})/z.mix_{t-1}}{F[t-1] = k.gas[t-1]*(do.sat[t-1] - do.obs[t-1])/z.mix[t-1]}
 #'
-#'\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + \epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
+#'\deqn{do.obs_t=do.obs_{t-1}+c_1*irr_{t-1}+c_2*log_e(wtr_{t-1}) + F_{t-1} + epsilon_t}{do.obs[t] = do.obs[t-1] + c1*irr[t-1] + c2*log(wtr[t-1]) + F[t-1] + epsilon[t]}
 #'
 #'
-#'The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings. 
+#'The parameters are fit using maximum likelihood, and the optimization (minimization of the negative log likelihood function) is performed by \code{optim} using default settings.
 #'
-#'GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}. 
+#'GPP is then calculated as \code{mean(c1*irr, na.rm=TRUE)*freq}, where \code{freq} is the number of observations per day, as estimated from the typical size between time steps. Thus, generally \code{freq==length(do.obs)}.
 #'
-#'Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}. 
+#'Similarly, R is calculated as \code{mean(c2*log(wtr), na.rm=TRUE)*freq}.
 #'
-#'NEP is the sum of GPP and R. 
+#'NEP is the sum of GPP and R.
 #'
 #'@references
-#'Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 
+#'Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism:
 #'addressing noisy time series with a Kalman filter}. Limnology and Oceanography: Methods 10: 20-30. doi: 10.4319/lom.2012.10.20
 #'@seealso
 #'\link{temp.kalman}, \link{watts.in}, \link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.mle}, \link{metab.bayesian}
 #'@author Ryan Batt, Luke A. Winslow
-#'@note If observation error is substantial, consider applying a Kalman filter to the water temperature time series by supplying 
+#'@note If observation error is substantial, consider applying a Kalman filter to the water temperature time series by supplying
 #' \code{wtr} as the output from \link{temp.kalman}
 #'@examples
 #'library(rLakeAnalyzer)
-#'doobs <- load.ts(system.file('extdata', 
+#'doobs <- load.ts(system.file('extdata',
 #'                             'sparkling.doobs', package="LakeMetabolizer"))
-#'wtr <- load.ts(system.file('extdata', 
+#'wtr <- load.ts(system.file('extdata',
 #'                           'sparkling.wtr', package="LakeMetabolizer"))
-#'wnd <- load.ts(system.file('extdata', 
+#'wnd <- load.ts(system.file('extdata',
 #'                           'sparkling.wnd', package="LakeMetabolizer"))
-#'irr <- load.ts(system.file('extdata', 
+#'irr <- load.ts(system.file('extdata',
 #'                           'sparkling.par', package="LakeMetabolizer"))
 #'
 #'#Subset a day
@@ -80,26 +80,26 @@
 #'k.gas <- k600.2.kGAS.base(k600, wtr[,3], 'O2')
 #'do.sat <- o2.at.sat.base(wtr[,3], altitude=300)
 #'
-#'metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
+#'metab.kalman(irr=irr[,2], z.mix=rep(1, length(k.gas)),
 #'             do.sat=do.sat, wtr=wtr[,2],
 #'             k.gas=k.gas, do.obs=doobs[,2])
 #'@export
 metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
-  
-  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas,
                   z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
-  
+
   nobs <- length(do.obs)
-  
+
   mm.args <- list(...)
-  
+
   if(any(z.mix <= 0)){
     stop("z.mix must be greater than zero.")
   }
   if(any(wtr <= 0)){
     stop("all wtr must be positive.")
   }
-  
+
   if("datetime"%in%names(mm.args)){ # check to see if datetime is in the ... args
     datetime <- mm.args$datetime # extract datetime
     freq <- calc.freq(datetime) # calculate sampling frequency from datetime
@@ -113,21 +113,21 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
     # warning will only be seen through direct use of metab.bookkeep when datettime is not supplied
     freq <- nobs
   }
-  
+
   # Filter and fit
   guesses <- c(1E-4,1E-4,log(5),log(5))
   fit <- optim(guesses, fn=KFnllDO, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
   pars0 <- fit$par
   pars <- c("gppCoeff"=pars0[1], "rCoeff"=pars0[2], "Q"=exp(pars0[3]), "H"=exp(pars0[4]))
-  
+
   # Smooth
   smoothDO <- KFsmoothDO(pars, do.obs=do.obs, do.sat=do.sat, k.gas=(k.gas/freq), z.mix=z.mix, irr=irr, wtr=wtr)
-  
+
   # Use fits to calculate metabolism
-  
+
   GPP <- mean(pars[1]*irr, na.rm=TRUE) * freq
   R <- mean(pars[2]*log(wtr), na.rm=TRUE) * freq
-  
+
   return(list("smoothDO"=smoothDO,"params"=pars, "metab"=c("GPP"=GPP,"R"=R, "NEP"=GPP+R)))
 }
 
@@ -139,7 +139,7 @@ metab.kalman <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 # ======================
 # Main recursion written in C
 KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
-	
+
 	# ===========================
 	# = Unpack and set initials =
 	# ===========================
@@ -148,21 +148,21 @@ KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	c2 <- Params[2] #log(Temp) coeff
 	Q <- exp(Params[3]) # Variance of the process error
 	H <- exp(Params[4]) # Variance of observation error
-	
+
 	# See KalmanDO_smooth.R comments for explanation of beta
 	kz <- k.gas/z.mix # K and Zmix are both vector of length nobs
 	# beta <- 1-kz # beta is a vector of length nobs (this beta is for difference equation form)
 	beta <- exp(-kz) # This beta is for using the differential equation form
-	
+
 	# Set first true value equal to first observation
 	alpha <- do.obs[1]#Let's give this model some starting values
-	
+
 	# Set process covariance, P, equal to Q
 	P <- Q #starting value
-	
+
 	# Empty vector for nll's
 	nlls <- rep(0,length(do.obs))
-		
+
 	# ==================
 	# = Main Recursion =
 	# ==================
@@ -172,35 +172,35 @@ KFnllDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr){
 	# Equations for Predictions from Harvey
 	# a[t|t-1] = T[t]*a[t-1] + c[t] Harvey pg 105 eq. 3.2.2a
 	# P[t|t-1] = T[t]*P[t-1]*T'[t] + R[t]*Q[t]*R'[t] Harvey pg 106 eq. 3.2.2b
-	
+
 	# Predictions where gas flux not split into beta etc. (I'm pretty sure this is wrong):
 	# Uk <- K[i-1]*(do.sat[i-1] - alpha)/Zmix[i-1]
 	# alpha <- alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + Uk
 	# P <- (Uk*P*Uk) + Q
-	
+
 	# Predictions where gas flux is split into beta:
 	# Difference Equation Version (original):
 	# alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
-	
+
 	# Differential Equation Version:
 	# Gordon's code (from BayesMetabSS_indivProcessErr_072012.txt):
 	# alpha[f,j] <- P[f,j] - rho[f,j] + KO2[f,j]* DOSat[f,j];
 	# DOHat[f+1,j] <- (alpha[f,j]-(alpha[f,j]-KO2[f,j]*DOTrue[f,j])*exp(-KO2[f,j]))/KO2[f,j];
-	
+
 	# Define Gordon's "alpha" as "a1":
 	# a1 = c1*irr + c2*log(wtr) + kz*do.sat # my a1 is his alpha
-	
+
 	# Coefficients in front of alpha are defined above as "beta", and play a particular role in propagating uncertainty
 	# Need to algebraically regarrange Gordon's equation for DOHat (my "alpha" is his "DOHat")
 	# Note that alpha and a1 are rewritten each iteration of the loop...
 	# Therefore, alpha on the left side is "alpha[t]", and alpha on the right side is "alpha[t-1]"
-	
+
 	# alpha = (a1 - (a1 - kz*alpha)*exp(-kz))/kz # my alpha is his DOHat
 	# alpha = (a1 + (-a1 + kz*alpha)*exp(-kz))/kz # redistribute -1
 	# alpha = (a1 + exp(-kz)*(-a1 + kz*alpha))/kz # regarrange
 	# alpha = (a1 + -exp(-kz)*a1 + exp(-kz)*kz*alpha)/kz # multiply "exp(kz)" through
 	# alpha = a1/kz + -exp(-kz)*a1/kz + exp(-kz)*alpha # multiply "/kz" through
-	
+
 	# ======================
 	# = Updating Equations =
 	# ======================
@@ -223,7 +223,7 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 	nobs <- length(do.obs)
 	d0 <- double(nobs-1)
 	# beta <- 1-KO2zmix #do.obs_t = 1*do.obs_t-1 + -KO2zmix*do.obs_t-1 + Sea%*%Ewe + eta === (1-KO2zmix)*do.obs_t-1.....
-	
+
 	# Unpack parameters (these were previously fitted)
 	c1 <- Params[1] # irr Coeff
 	c2 <- Params[2] # log(wtr) Coeff
@@ -234,7 +234,7 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		H <- Params[4]*Hfac
 	}
 	 # Variance of Observation Error
-	
+
 	# Need to define portion of K multiplied by state variable (DO)
 	# Gas flux = K[t-1](do.sat[t-1] - alpha[t-1])/Zmix[t-1]
 	# Gas flux = (K[t-1]/Zmix[t-1])*(do.sat[t-1]) - (K[t-1]/Zmix[t-1])*(alpha[t-1])
@@ -250,20 +250,20 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 	kz <- k.gas/z.mix # K and Zmix are both vector of length nobs
 	# beta <- 1-kz # beta is a vector of length nobs (this beta is for difference equation form)
 	beta <- exp(-kz) # This beta is for using the differential equation form
-	
+
 	# Set first true value equal to first observation
 	alpha <- do.obs[1]
-	
+
 	# Set process covariance, P, equal to Q
 	P <- Q # starting value
-	
+
 	# Initial values
 	aHat <- c(alpha, d0) # aHat[t] == "a[t|t-1]" (estimate of a before updating)
 	pHat <- c(P, d0) # pHat[t] == "p[t|t-1]" (estimate of a before updating)
 	aVec <- aHat # aVec[t] == "a[t|t]" or "a[t]" (aVec is the "updated" version of aHat)
 	pVec <- pHat # pVec[t] == "P[t|t]" or "P[t]" (pVec is the "updated" version of pHat)
 	etaVec <- double(nobs)
-	
+
 	for(i in 2:nobs){
 		# ===============
 		# = Predictions =
@@ -271,36 +271,36 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		# Equations for Predictions from Harvey
 		# a[t|t-1] = T[t]*a[t-1] + c[t] Harvey pg 105 eq. 3.2.2a
 		# P[t|t-1] = T[t]*P[t-1]*T'[t] + R[t]*Q[t]*R'[t] Harvey pg 106 eq. 3.2.2b
-		
+
 		# Predictions where gas flux not split into beta etc.:
 		# Uk <- K[i-1]*(do.sat[i-1] - alpha)/Zmix[i-1]
 		# alpha <- alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + Uk
 		# aHat[i] <- alpha
 		# P <- (Uk*P*Uk) + Q
 		# pHat[i] <- P
-		
+
 		# Predictions where gas flux is split into beta (see explanation above):
-		
+
 		# Difference Equation Version:
 		# alpha <- beta[i-1]*alpha + c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
-		
+
 		# Differential Equation Version (see kalmanDO_nll.R for explanation):
 		if(is.finite(1/kz[i-1])){
-			
-			a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]	
+
+			a1 <- c1*irr[i-1] + c2*log(wtr[i-1]) + kz[i-1]*do.sat[i-1]
 			alpha <- a1/kz[i-1] + -beta[i-1]*a1/kz[i-1] + beta[i-1]*alpha # NOTE: beta==exp(-kz); kz=K/Zmix
-			
+
 		}else{
-			
+
 			alpha <- c1*irr[i-1] + c2*log(wtr[i-1])
-			
+
 		}
 
-		
+
 		aHat[i] <- alpha
 		P <- (beta[i-1]*P*beta[i-1]) + Q
 		pHat[i] <- P
-	
+
 		# ======================
 		# = Updating Equations =
 		# ======================
@@ -308,7 +308,7 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		# a[t] = a[t|t-1] + P[t|t-1]*Z'[t]*F[t]^-1(y[t] - Z[t]*a[t|t-1] - d[t]). Harvey, page 106, 3.2.3a
 		# P[t] = P[t|t-1] - P[t|t-1]*Z'[t]*F[t]^-1*Z[t]*P[t|t-1] Harvey, page 106, eq. 3.2.3b
 		# F[t] = Z[t]*P[t|t-1]*Z'[t] + H[t] Harvey, page 106, eq. 3.2.3c
-				
+
 		eta <- do.obs[i] - alpha
 		Eff <- P + H
 		alpha <- alpha + P/Eff*eta
@@ -318,13 +318,13 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 		pVec[i] <- P
 		etaVec[i] <- eta
 	}
-	
+
 	#Kalman Smoother
 	aSmooth <- rep(NA,nobs)
 	Psmooth <- rep(NA,nobs)
 	aSmooth[nobs] <- aVec[nobs] # "starting" value for smoother (smoother starts at end and works backwards)
 	# pSmooth[nobs] <- pVec[nobs]
-	
+
 	# Filtering is informed by past information
 	# Smoothing includes the information from filtering (estimates of parameters), but also future information.
 	# "The aim of filtering is to find the expected value of the state vector, alpha[t], conditional on the information available at time t, that is E(alpha[t]|Y[t]). The aim of smoothing is to take account of the information made available after time t. The mean of the distribution of alpha[t], conditional on all the sample, may be written as E(alpha[t]|Y[T]) and is known as the smoothed estimate. THe corresponding estimator is called the SMOOTHER. Since the smoother is based on more information than the filtered estimator, it will have a MSE which, in general, is smaller than that of the filtered estimator; it cannot be greater." ~ Harvey 1989, pgs 149-150.
@@ -332,11 +332,11 @@ KFsmoothDO <- function(Params, do.obs, do.sat, k.gas, z.mix, irr, wtr, Hfac=NULL
 	# P[t|T] = P[t] + Pstar[t]*(P[t+1|T] - P[t+1|t])*Pstar[t]
 	# Pstar[t] = P[t]*T[t+1]/P[t+1|t]
 	# t is current time step, T is last time step (when in []), T contains AR parameters (when NOT in [])
-	
+
 	for(i in length(d0):1){
 		pStar <- pVec[i]*beta[i+1]/pHat[i+1]
 		aSmooth[i] <- aVec[i] + pStar*(aSmooth[i+1] - aHat[i+1])
-		
+
 		# CAN ALSO SMOOTH P, WHICH GIVES THE SMOOTHED COVARIANCE MATRIX (not a matrix for univariate; gives estimate of accuracy of state estimate)
 		# pSmooth[i] <- pVec[i] + pStar*(pSmooth[i+1] - pHat[i+1])*pStar
 		}

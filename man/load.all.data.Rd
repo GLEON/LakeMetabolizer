@@ -19,8 +19,8 @@ A list with two items
  \item{metadata}{}
 }
 \description{
-Loads and returns all the data available in the specified directory for a given site. 
-All timeseries data are merged by \dQuote{datetime} into a single \link{data.frame}. 
+Loads and returns all the data available in the specified directory for a given site.
+All timeseries data are merged by \dQuote{datetime} into a single \link{data.frame}.
 Data are identified by the column header information.
 }
 \seealso{
