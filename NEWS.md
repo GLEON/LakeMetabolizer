@@ -6,7 +6,7 @@
 
 * Updated recommended citation 
 
-* Added coveralls CI 
+* Added codecov CI 
 
 # Version 1.5.3 (2020-04-23)
 
