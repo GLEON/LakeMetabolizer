@@ -1,7 +1,9 @@
 LakeMetabolizer
 ===============
-[![Build Status](https://travis-ci.org/GLEON/LakeMetabolizer.svg?branch=master)](https://travis-ci.org/GLEON/LakeMetabolizer)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/GLEON/LakeMetabolizer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GLEON/LakeMetabolizer/actions/workflows/R-CMD-check.yaml)
 [![Download Count](http://cranlogs.r-pkg.org/badges/LakeMetabolizer)](http://cran.r-project.org/web/packages/LakeMetabolizer/index.html)
+<!-- badges: end -->
 
 Collection of Lake Metabolism Functions
 
@@ -11,9 +13,16 @@ Contributors: Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Gordon Holtg
               Luke Winslow, Richard Woolway, Jake Zwart 
 			  
 			  
-Install from CRAN
+Package Installation
 ===
+To install `LakeMetabolizer` from CRAN, run the following command: 
 
 ```R
-install.packages('LakeMetabolizer')
+install.packages("LakeMetabolizer")
 ```
+
+To get the most recent package changes, install from GitHub with the following command: 
+```R
+remotes::install_github("GLEON/LakeMetabolizer")
+```
+
