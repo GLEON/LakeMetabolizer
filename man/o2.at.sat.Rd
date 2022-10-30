@@ -17,22 +17,22 @@ o2.at.sat.base(
 )
 }
 \arguments{
-\item{ts.data}{Object of class data.frame with two named columns 
+\item{ts.data}{Object of class data.frame with two named columns
 \dQuote{datetime} and \dQuote{wtr} (water temp in deg C).}
 
 \item{baro}{barometric pressure in millibars.}
 
 \item{altitude}{a numeric value indicating the elevation above mean sea level
-in meters. Defaults to mean sea level. An alternative to supplying 
+in meters. Defaults to mean sea level. An alternative to supplying
 barometric pressure.}
 
 \item{salinity}{a numeric vector of salinity in PSU. Defaults to zero. Length
 must be one or equal to length of temperature.}
 
-\item{model}{the empirical model to be used. \code{"garcia-benson"}, 
-\code{"garcia"}, \code{"weiss"} and \code{"benson"} are the available 
-options. \code{"garcia-benson"} is our current recommendation. The models 
-correspond to the like-named references described below, where both 
+\item{model}{the empirical model to be used. \code{"garcia-benson"},
+\code{"garcia"}, \code{"weiss"} and \code{"benson"} are the available
+options. \code{"garcia-benson"} is our current recommendation. The models
+correspond to the like-named references described below, where both
 \code{"garcia"} and \code{"garcia-benson"} are from Garcia & Gordon (1992).}
 
 \item{temp}{a numeric vector of water temperature in degrees Celsius.}
@@ -42,16 +42,16 @@ The equilibration concentration at the supplied conditions in mg/L of
   oxygen.
 }
 \description{
-Used to calculate the equilibrium concentration of oxygen in 
-  water. The equilibration concentration of oxygen in water varies with both 
-  temperature, salinity, and the partial pressure of oxygen in contact with 
+Used to calculate the equilibrium concentration of oxygen in
+  water. The equilibration concentration of oxygen in water varies with both
+  temperature, salinity, and the partial pressure of oxygen in contact with
   the water (calculated from supplied elevation or barometric pressure).
 }
 \details{
-DO solubility is converted from mL/L to mg/L by multiplying by 
-  1.42905, per USGS memo 2011.03. Corrections for vapor pressure are made 
-  according to barometric pressure as in Equations 2&3 of USGS memos 81.11 
-  and 81.15. When barometric pressure is not supplied, it is estimated from 
+DO solubility is converted from mL/L to mg/L by multiplying by
+  1.42905, per USGS memo 2011.03. Corrections for vapor pressure are made
+  according to barometric pressure as in Equations 2&3 of USGS memos 81.11
+  and 81.15. When barometric pressure is not supplied, it is estimated from
   altitude by the barometric formula as in Colt (2012).
 }
 \examples{
@@ -59,24 +59,24 @@ temp.range = 1:25
 sal.range = 1:25
 
 par(mfrow=c(1,2))
-plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)', 
+plot(temp.range, o2.at.sat.base(temp.range), xlab='Temperature (C)',
 ylab='Oxygen Saturation (mg/L)')
 plot(o2.at.sat.base(rep(20,25), salinity=sal.range), xlab='Salinity (PSU)', ylab='')
 
 }
 \references{
-Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In 
-Computation of Dissolved Gas Concentration in Water as Functions of 
-Temperature, Salinity and Pressure (Second Edition), edited by John Colt, 
+Colt, John. \emph{1 - Solubility of Atmospheric Gases in Freshwater.} In
+Computation of Dissolved Gas Concentration in Water as Functions of
+Temperature, Salinity and Pressure (Second Edition), edited by John Colt,
 1-71. London: Elsevier, 2012.
 http://www.sciencedirect.com/science/article/pii/B9780124159167000012.
 
 Garcia, H., and L. Gordon (1992), \emph{Oxygen solubility in seawater: Better
 fitting equations}, Limnol. Oceanogr., 37(6).
 
-Benson, B. B. & Krause, D. (1984). \emph{The concentration and isotopic 
-fractionation of oxygen dissolved in freshwater and seawater in equilibrium 
-with the atmosphere.} Limnology and Oceanography, 29(3), 620-632. 
+Benson, B. B. & Krause, D. (1984). \emph{The concentration and isotopic
+fractionation of oxygen dissolved in freshwater and seawater in equilibrium
+with the atmosphere.} Limnology and Oceanography, 29(3), 620-632.
 doi:10.4319/lo.1984.29.3.0620
 
 Staehr, Peter A., Darren Bade, Matthew C. Van de Bogert, Gregory R. Koch,
@@ -85,14 +85,14 @@ Metabolism and the Diel Oxygen Technique: State of the Science.} Limnology
 and Oceanography: Methods 8, no. 11 (November 1, 2010): 628-44.
 doi:10.4319/lom.2010.8.0628
 
-USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of 
+USGS. \emph{New Tables of Dissolved Oxygen Saturation Values.} Quality of
 Water Branch, 1981. http://water.usgs.gov/admin/memo/QW/qw81.11.html.
 
-USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of 
-Quality of Water Technical Memorandum No. 81.11.} Quality of Water Branch, 
+USGS. \emph{New Tables of Dissolved Oxygen Saturation Values; Amendment of
+Quality of Water Technical Memorandum No. 81.11.} Quality of Water Branch,
 1981. http://water.usgs.gov/admin/memo/QW/qw81.15.html.
 
-USGS. \emph{Change to Solubility Equations for Oxygen in Water.} Technical 
+USGS. \emph{Change to Solubility Equations for Oxygen in Water.} Technical
 Memorandum 2011.03. USGS Office of Water Quality, 2011.
 
 Weiss, R. (1970). \emph{The solubility of nitrogen, oxygen and argon in water
@@ -105,5 +105,5 @@ doi:10.1016/0011-7471(70)90037-9
 \author{
 Luke A Winslow
 }
-\keyword{math,}
+\keyword{math}
 \keyword{methods}
