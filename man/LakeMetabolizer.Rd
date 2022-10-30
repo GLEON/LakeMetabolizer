@@ -15,12 +15,12 @@ License: \tab GPL (>=2 )\cr
 Repository: \tab http://github.com/GLEON/LakeMetabolizer\cr
 }
 
-LakeMetabolizer contains sets of functions to handle metabolism modeling 
-through the free water oxygen technique. 
+LakeMetabolizer contains sets of functions to handle metabolism modeling
+through the free water oxygen technique.
 
-\strong{Metabolism models:}
+\strong{Metabolism models}
 
-\link{metab.bayes} \cr
+\link{metab.bayesian}\cr
 \link{metab.bookkeep}\cr
 \link{metab.kalman}\cr
 \link{metab.mle}\cr
@@ -29,7 +29,7 @@ through the free water oxygen technique.
 
 \strong{Gas exchange models}
 
-\link{k.cole}\cr                  
+\link{k.cole}\cr
 \link{k.crusius}\cr
 \link{k.macIntyre}\cr
 \link{k.read}\cr
@@ -44,7 +44,7 @@ through the free water oxygen technique.
 \link{calc.zeng}\cr
 \link{getSchmidt}\cr
 \link{o2.at.sat}\cr
-\link{scale.exp.wind}\cr
+\link{wind.scale}\cr
 \link{sun.rise.set}\cr
 }
 \author{
@@ -55,7 +55,7 @@ Maintainer: Luke Winslow <lawinslow@gmail.com>
 \references{
 The original concept of freewater metabolism attributed to:
 
-Odum, Howard T. 1956. \emph{Primary Production in Flowing Waters.} 
+Odum, Howard T. 1956. \emph{Primary Production in Flowing Waters.}
 Limnology and Oceanography 1 (2): 102-117. http://www.jstor.org/stable/2833008.
 }
 
