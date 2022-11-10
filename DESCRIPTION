@@ -1,7 +1,7 @@
 Package: LakeMetabolizer
 Title: Tools for the Analysis of Ecosystem Metabolism
 Maintainer: Jake Zwart <jayzlimno@gmail.com>
-Version: 1.5.3
+Version: 1.5.5
 Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul
     Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 Description: A collection of tools for the calculation of freewater metabolism.
@@ -16,4 +16,4 @@ Depends:
     R (>= 2.15.0),
     rLakeAnalyzer (>= 1.4)
 Repository: http://github.com/GLEON/LakeMetabolizer
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.1
