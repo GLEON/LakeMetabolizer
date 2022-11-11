@@ -80,7 +80,7 @@ m.bk <- metab(data, "bookkeep", lake.lat=42.6)
 m.ols <- metab(data, "ols", lake.lat=42.6)
 m.mle <- metab(data, "mle", lake.lat=42.6)
 m.kal <- metab(data, "kalman", lake.lat=42.6)
-\donttest{m.bay <- metab(data, "bayesian", lake.lat=42.6)}
+\dontrun{m.bay <- metab(data, "bayesian", lake.lat=42.6)}
 
 # example attributes
 names(attributes(m.ols))
@@ -88,8 +88,8 @@ attr(m.ols, "mod")
 
 # To get full JAGS model
 # including posterior draws:
-\donttest{names(attributes(m.bay))}
-\donttest{attr(m.bay, "model")}
+\dontrun{names(attributes(m.bay))}
+\dontrun{attr(m.bay, "model")}
 
 }
 \seealso{
