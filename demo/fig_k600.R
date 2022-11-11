@@ -126,8 +126,8 @@ ylim = c(0,7.55)
 xlim = as.POSIXct(c('2009-07-02 22:00', '2009-07-04 02:00', '2009-07-08 22:00', '2009-07-10 02:00'))
 
 
-#Create plot and save in user home directory (on Windows, Documents folder, on Mac, Home folder)
-png('~/k600_figure.png', res=300, width=width, height=height, units = 'in')
+#Create plot and save in temporary directory
+png(file.path(tempdir(), 'k600_figure.png'), res=300, width=width, height=height, units = 'in')
 
 #
 

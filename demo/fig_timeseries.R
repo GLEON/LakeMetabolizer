@@ -18,14 +18,14 @@ z.mix = ts.meta.depths(get.vars(ts.data, 'wtr'), seasonal=TRUE)
 names(z.mix) = c('datetime','z.mix', 'bottom')
 
 #set z.mix to bottom of lake when undefined
-z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = sp.data$metadata$maxdepth 
+z.mix[z.mix$z.mix <=0 | is.na(z.mix$z.mix), 'z.mix'] = sp.data$metadata$maxdepth
 ts.data = merge(ts.data, z.mix[,c('datetime','z.mix')])
 
-wtr.data<-get.vars(ts.data,var.names = c('datetime','wtr')) # pulling out just water data 
-data.path = system.file('extdata', package="rLakeAnalyzer") 
-bathy<-load.bathy(fPath = file.path(data.path,'Sparkling.bth')) 
+wtr.data<-get.vars(ts.data,var.names = c('datetime','wtr')) # pulling out just water data
+data.path = system.file('extdata', package="rLakeAnalyzer")
+bathy<-load.bathy(fPath = file.path(data.path,'Sparkling.bth'))
 
-ts.data$schmidt<-ts.schmidt.stability(wtr = wtr.data,bathy = bathy)$schmidt.stability # calculating schmidt stability 
+ts.data$schmidt<-ts.schmidt.stability(wtr = wtr.data,bathy = bathy)$schmidt.stability # calculating schmidt stability
 ts.data$meta.bot<-ts.meta.depths(wtr=wtr.data)$bot
 ts.data$thermo.depth<-ts.thermo.depth(wtr.data)$thermo.depth
 
@@ -43,7 +43,7 @@ add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt, no.x=TRUE)
   if(no.x){
     axis(side = 1, at = ext_x , labels = FALSE, tcl = tick_len)
   }else{
-    axis(side = 1, at = ext_x , labels = strftime(ext_x,'%d %b'), tcl = tick_len)  
+    axis(side = 1, at = ext_x , labels = strftime(ext_x,'%d %b'), tcl = tick_len)
   }
   axis(side = 2, at = ext_y, labels = ylab, tcl = tick_len)
   axis(side = 3, at = ext_x, labels = NA, tcl = tick_len)
@@ -54,7 +54,7 @@ add_axes <- function(xlim, ylim, ylabel = pretty(ylim,10), panel.txt, no.x=TRUE)
 }
 
 
-# Figure 1 
+# Figure 1
 cols <- c("#1b9e77", "#d95f02", "black", "#e7298a", "DodgerBlue", "#e6ab02", "grey50")
 width = 3.37 # single column width for journal
 night_col = 'grey90'
@@ -65,14 +65,14 @@ t_mar = 0.05
 r_mar= 0.08
 gapper = 0.15 # space between panels
 
-# figure saved at home folder 
-png('~/fig_1.png', res=300, width=width, height=height, units = 'in')
+#Create plot and save in temporary directory
+png(file.path(tempdir(), 'fig_1.png'), res=300, width=width, height=height, units = 'in')
 
 #layout(matrix(c(rep(1,10),rep(2,9)),ncol=1)) # 55% on the left panel
 par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0.1,0,0,r_mar),xpd=FALSE,
     mgp = c(1.15,.05,0), mfrow=c(5,1))
 
-#Plot the  time series data 
+#Plot the  time series data
 ylim = c(max(ts.data$meta.bot),0)
 xlim = as.POSIXct(c('2009-07-01 16:00', '2009-07-11'))
 plot(ts.data$thermo.depth~ts.data$datetime, type='l',
@@ -84,29 +84,29 @@ add_axes(xlim, ylim, panel.txt='a)')
 add_axes(xlim,rev(ylim),ylabel=NA,panel.txt='')
 
 
-# schmidt 
+# schmidt
 ylim = c(min(ts.data$schmidt),max(ts.data$schmidt))
 plot(ts.data$schmidt~ts.data$datetime, type='l',
      col=cols[1], ylim=ylim,xaxt = 'n', ylab=expression(Schmidt~Stability~(J~m^-2)),
      xlab='', axes=FALSE)
 add_axes(xlim, ylim, panel.txt='b)')
 
-# PAR 
+# PAR
 ylim = c(min(ts.data$par),max(ts.data$par))
 plot(ts.data$par~ts.data$datetime, type='l',
      col=cols[6], ylim=ylim,xaxt = 'n', ylab=expression(PAR~(paste(mu,mol,sep='')~m^-2~s^-1)),
      xlab='', axes=FALSE)
 add_axes(xlim, ylim, panel.txt='c)')
 
-# U10 
+# U10
 ylim = c(min(ts.data$wnd_10),max(ts.data$wnd_10))
 plot(ts.data$wnd_10~ts.data$datetime, type='l',
      col=cols[7], ylim=ylim,xaxt = 'n', ylab=expression(U10~(m~s^-1)),
      xlab='', axes=FALSE)
 add_axes(xlim, ylim, panel.txt='d)')
 
-# DO deviation from saturation 
-ts.data$do.dev<-ts.data$doobs_0.5-ts.data$do.sat # deviation of DO obs from saturation 
+# DO deviation from saturation
+ts.data$do.dev<-ts.data$doobs_0.5-ts.data$do.sat # deviation of DO obs from saturation
 ylim = c(min(ts.data$do.dev),max(ts.data$do.dev))
 plot(ts.data$do.dev~ts.data$datetime, type='l',
      col=cols[5], ylim=ylim,xaxt = 'n', ylab=expression(DO~-~O[s]~(O[2]~'in'~mg~L^-1)),
