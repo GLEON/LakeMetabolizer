@@ -30,7 +30,7 @@ Description: A collection of tools for the calculation of freewater metabolism
     Winslow, L.A., Zwart, J.A., Batt, R.D., Dugan, H.A., Woolway, R.I.,
     Corman, J.R., Hanson, P.C. and Read, J.S. "LakeMetabolizer: An R package
     for estimating lake metabolism from free-water oxygen using diverse
-    statistical models" (2016) <doi:10.1080/IW-6.4.883>
+    statistical models" (2016) <doi:10.1080/IW-6.4.883>.
 License: GPL (>= 2)
 Imports:
     plyr,
