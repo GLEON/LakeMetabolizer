@@ -130,6 +130,7 @@ gapper = 0.15 # space between panels
 ylim=range(c(models[[1]]$data[3:5],models[[2]]$data[3:5],models[[3]]$data[3:5],models[[4]]$data[3:5],models[[5]]$data[3:5]))
 xlim = as.POSIXct(c('2009-07-01 16:00', '2009-07-11'))
 
+default_par = par(no.readonly = TRUE)
 #Create plot and save in temporary directory
 png(file.path(tempdir(), 'fig_metab.png'), res=300, width=width, height=height, units = 'in')
 
@@ -156,6 +157,7 @@ add_axes(xlim, ylim, panel.txt='c)', no.x=FALSE)
 add_legend(models, xlim, ylim)
 
 dev.off()
+par(default_par)
 
 #summary stats
 res = ols.res

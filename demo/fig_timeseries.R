@@ -65,6 +65,7 @@ t_mar = 0.05
 r_mar= 0.08
 gapper = 0.15 # space between panels
 
+default_par = par(no.readonly = TRUE)
 #Create plot and save in temporary directory
 png(file.path(tempdir(), 'fig_1.png'), res=300, width=width, height=height, units = 'in')
 
@@ -115,4 +116,4 @@ abline(0,0,col=rgb(0,0,0,0.5),lty=2)
 add_axes(xlim, ylim, panel.txt='e)',no.x=F)
 
 dev.off()
-
+par(default_par)
