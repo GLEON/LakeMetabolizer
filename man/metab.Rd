@@ -7,7 +7,7 @@
 metab(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...)
 }
 \arguments{
-\item{data}{a data.frame whose columns are 
+\item{data}{a data.frame whose columns are
 
  \code{"datetime"} = class POSIXct vector
 
@@ -25,7 +25,7 @@ metab(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...)
 
 Columns that are not used by a particular statistical method do not need to be supplied.}
 
-\item{method}{a character string specifying one of the 5 statistical methods 
+\item{method}{a character string specifying one of the 5 statistical methods
 (bayesian, bookkeep, kalman, ols, mle)}
 
 \item{wtr.name}{the name of the column containing temperature at the depth of do.obs (predictor variable for R)}
@@ -51,12 +51,12 @@ Returns daily time series of gross primary production (GPP), respiration (R), an
 \examples{
 
 # fake data
-datetime <- seq(as.POSIXct("2014-06-16 00:00:00", tz="GMT"), 
+datetime <- seq(as.POSIXct("2014-06-16 00:00:00", tz="GMT"),
      as.POSIXct("2014-06-17 23:55:00", tz="GMT"), length.out=288*2)
 do.obs <- 2*sin(2*pi*(1/288)*(1:(288*2))+1.1*pi) + 8 + rnorm(288*2, 0, 0.5)
 wtr <- 3*sin(2*pi*(1/288)*(1:(288*2))+pi) + 17 + rnorm(288*2, 0, 0.15)
-do.sat <- LakeMetabolizer:::o2.at.sat.base(wtr, 960)
-irr <- (1500*sin(2*pi*(1/288)*(1:(288*2))+1.5*pi) +650 + rnorm(288*2, 0, 0.25)) * 
+do.sat <- LakeMetabolizer::o2.at.sat.base(wtr, 960)
+irr <- (1500*sin(2*pi*(1/288)*(1:(288*2))+1.5*pi) +650 + rnorm(288*2, 0, 0.25)) *
      ifelse(is.day(datetime, 42.3), 1, 0)
 k.gas <- 0.4
 z.mix <- 1
@@ -67,29 +67,29 @@ par(new=TRUE); plot(do.obs, type="l", col="blue", xaxt="n", yaxt="n", xlab="", y
 par(new=TRUE); plot(irr, type="l", col="orange", xaxt="n", yaxt="n", xlab="", ylab="")
 abline(v=144, lty="dotted")
 abline(v=288)
-legend("topleft", legend=c("wtr", "do.obs", "irr"), lty=1, 
+legend("topleft", legend=c("wtr", "do.obs", "irr"), lty=1,
      col=c("black", "blue", "orange"), inset=c(0.08, 0.01))
 
 # put data in a data.frame
-data <- data.frame(datetime=datetime, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+data <- data.frame(datetime=datetime, do.obs=do.obs, do.sat=do.sat, k.gas=k.gas,
      z.mix=z.mix, irr=irr, wtr=wtr)
 
 # run each metabolism model
 m.bk <- metab(data, "bookkeep", lake.lat=42.6)
- m.bk <- metab(data, lake.lat=42.6) # no method defaults to "bookeep" 
+ m.bk <- metab(data, lake.lat=42.6) # no method defaults to "bookeep"
 m.ols <- metab(data, "ols", lake.lat=42.6)
 m.mle <- metab(data, "mle", lake.lat=42.6)
 m.kal <- metab(data, "kalman", lake.lat=42.6)
-\dontrun{m.bay <- metab(data, "bayesian", lake.lat=42.6)}
+\donttest{m.bay <- metab(data, "bayesian", lake.lat=42.6)}
 
 # example attributes
 names(attributes(m.ols))
 attr(m.ols, "mod")
- 
+
 # To get full JAGS model
 # including posterior draws:
-\dontrun{names(attributes(m.bay))}
-\dontrun{attr(m.bay, "model")}
+\donttest{names(attributes(m.bay))}
+\donttest{attr(m.bay, "model")}
 
 }
 \seealso{
