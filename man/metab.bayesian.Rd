@@ -42,7 +42,7 @@ gas concentration and other supporting data. This allows for both estimates of
 metabolism along with uncertainty around the parameters.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rLakeAnalyzer)
 
 doobs = load.ts(system.file('extdata',

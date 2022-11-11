@@ -219,7 +219,7 @@ bayesFit <- function(data, params, mf, tend="median", ...){ #function that write
 #'@importFrom stats sd density median
 #'
 #'@examples
-#'\donttest{
+#'\dontrun{
 #'library(rLakeAnalyzer)
 #'
 #'doobs = load.ts(system.file('extdata',
