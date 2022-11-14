@@ -40,5 +40,7 @@ Depends:
     R (>= 2.15.0),
     rLakeAnalyzer (>= 1.4)
 Repository: http://github.com/GLEON/LakeMetabolizer
+BugReports: https://github.com/GLEON/LakeMetabolizer/issues
+URL: https://www.tandfonline.com/doi/abs/10.1080/IW-6.4.883
 RoxygenNote: 7.2.1
 Encoding: UTF-8
