@@ -2,8 +2,6 @@ Package: LakeMetabolizer
 Title: Tools for the Analysis of Ecosystem Metabolism
 Maintainer: Jake Zwart <jayzlimno@gmail.com>
 Version: 1.5.5
-Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul
-    Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 Authors@R: c(person("Luke", "Winslow", role = c("aut"),
                     email = "lawinslow@gmail.com"),
              person("Jake", "Zwart", role = c("cre", "aut"),
