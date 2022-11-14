@@ -7,13 +7,13 @@ Authors@R: c(person("Luke", "Winslow", role = c("aut"),
              person("Jake", "Zwart", role = c("cre", "aut"),
                     email = "jayzlimno@gmail.com",
                     comment = c(ORCID = "0000-0002-3870-405X")),
-            person("Ryan", "Batt", role = "aut"),
-            person("Jessica", "Corman", role = "aut"),
-            person("Hilary", "Dugan", role = "aut"),
-            person("Paul", "Hanson", role = "aut"),
-            person("Aline", "Jaimes", role = "aut"),
-            person("Jordan", "Read", role = "aut"),
-            person("Richard", "Woolway", role = "aut"))
+             person("Ryan", "Batt", role = "aut"),
+             person("Jessica", "Corman", role = "aut"),
+             person("Hilary", "Dugan", role = "aut"),
+             person("Paul", "Hanson", role = "aut"),
+             person("Aline", "Jaimes", role = "aut"),
+             person("Jordan", "Read", role = "aut"),
+             person("Richard", "Woolway", role = "aut"))
 Description: A collection of tools for the calculation of freewater metabolism
     from in situ time series of dissolved oxygen, water temperature, and,
     optionally, additional environmental variables. LakeMetabolizer implements
