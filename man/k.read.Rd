@@ -48,8 +48,8 @@ Returns a data.frame with a datetime column and a k600 column. k600 is in units 
 Returns the gas exchange velocity based on the chosen model in units of m/day
 }
 \details{
-Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
-c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre 
+Can change default parameters of MacIntyre and Vachon models. Default for Vachon is
+c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen 2014 uses MacIntyre
 model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 }
 \examples{
@@ -59,11 +59,11 @@ tb.data = load.all.data('sparkling', data.path)
 
 ts.data = tb.data$data #pull out just the timeseries data
 
-#calculate U10 and add it back onto the original 
+#calculate U10 and add it back onto the original
 
 u10 = wind.scale(ts.data)
 ts.data = rmv.vars(ts.data, 'wnd', ignore.offset=TRUE) #drop old wind speed column
-ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset  
+ts.data = merge(ts.data, u10)                          #merge new u10 into big dataset
 
 
 k600_cole = k.cole(ts.data)
@@ -76,38 +76,38 @@ atm.press  = 1018
 lat       = tb.data$metadata$latitude
 lake.area = tb.data$metadata$lakearea
 
-#for k.read and k.macIntyre, we need LW_net. 
-#Calculate from the observations we have available. 
+#for k.read and k.macIntyre, we need LW_net.
+#Calculate from the observations we have available.
 
 lwnet = calc.lw.net(ts.data, lat, atm.press)
 ts.data = merge(ts.data, lwnet)
-\dontrun{
-k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press, 
+
+k600_read = k.read(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press,
 lat=lat, lake.area=lake.area)
 
-k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd, 
+k600_soloviev = k.read.soloviev(ts.data, wnd.z=wnd.z, Kd=kd,
 atm.press=atm.press, lat=lat, lake.area=lake.area)
 
 k600_macIntyre = k.macIntyre(ts.data, wnd.z=wnd.z, Kd=kd, atm.press=atm.press)
-}
+
 }
 \references{
-Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
-in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
+Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide
+in a low-wind oligotrophic lake measured by the addition of SF~ 6}.
 Limnology and Oceanography 43 (1998): 647-656.
 
-MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney, 
-and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer 
+MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney,
+and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer
 coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
 
-Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
-John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection 
+Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre,
+John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection
 as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 
-Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
+Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 
-Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
 of gas transfer velocity versus wind speed relationships in lakes}.
 Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
 

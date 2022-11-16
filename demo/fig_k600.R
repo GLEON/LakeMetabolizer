@@ -126,11 +126,11 @@ ylim = c(0,7.55)
 xlim = as.POSIXct(c('2009-07-02 22:00', '2009-07-04 02:00', '2009-07-08 22:00', '2009-07-10 02:00'))
 
 
-#Create plot and save in user home directory (on Windows, Documents folder, on Mac, Home folder)
-png('~/k600_figure.png', res=300, width=width, height=height, units = 'in')
+default_par = par(no.readonly = TRUE)
+#Create plot and save in temporary directory
+png(file.path(tempdir(), 'k600_figure.png'), res=300, width=width, height=height, units = 'in')
 
 #
-
 
 layout(matrix(c(rep(1,10),rep(2,9)),nrow=1)) # 55% on the left panel
 par(mai=c(b_mar,l_mar,t_mar,0), omi = c(0,0,0,r_mar),xpd=FALSE,
@@ -163,6 +163,7 @@ add_axes(xlim[3:4], ylim, ylabel = NA, panel.txt = 'b)')
 #par(xpd=TRUE)
 
 dev.off()
+par(default_par)
 
 #quick summary of k600 values for results section
 

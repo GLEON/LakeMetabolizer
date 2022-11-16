@@ -14,13 +14,13 @@ k.cole.base(wnd)
 
 k.crusius.base(wnd, method='power')
 
-k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
+k.read.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
 airT, wnd, RH, sw, lwnet)
 
-k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml, 
+k.read.soloviev.base(wnd.z, Kd, lat, lake.area, atm.press, dateTime, Ts, z.aml,
 airT, wnd, RH, sw, lwnet)
 
-k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, 
+k.macIntyre.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw,
 lwnet, params=c(1.2,0.4872,1.4784))
 
 k.vachon.base(wnd, lake.area, params=c(2.51,1.48,0.39))
@@ -59,22 +59,22 @@ k.heiskanen.base(wnd.z, Kd, atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, l
 \item{params}{Optional parameter input, only for \link{k.vachon.base} and \link{k.macIntyre.base}. See details.}
 }
 \value{
-Numeric value of gas exchange velocity (k600) in units of m/day. Before use, 
+Numeric value of gas exchange velocity (k600) in units of m/day. Before use,
 should be converted to appropriate gas using \link{k600.2.kGAS}.
 }
 \description{
 Returns the gas exchange velocity based on the chosen model in units of m/day
 }
 \details{
-Can change default parameters of MacIntyre and Vachon models. Default for Vachon is 
-c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre 
+Can change default parameters of MacIntyre and Vachon models. Default for Vachon is
+c(2.51,1.48,0.39). Default for MacIntyre is c(1.2,0.4872,1.4784). Heiskanen et al. (2014) uses MacIntyre
 model with c(0.5,0.77,0.3) and z.aml constant at 0.15.
 }
 \examples{
 wnd.z <- 2
 Kd <- 2
 lat <- 54
-lake.area <- 5000 
+lake.area <- 5000
 atm.press <- 1013
 dateTime <- as.POSIXct("2013-12-30 14:00")
 Ts <- 16.5
@@ -92,33 +92,33 @@ k600_cole <- k.cole.base(U10)
 
 k600_crusius <- k.crusius.base(U10)
 
-k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press, 
+k600_read <- k.read.base(wnd.z, Kd, lat, lake.area, atm.press,
 dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area, 
+k600_soloviev <- k.read.soloviev.base(wnd.z, Kd, lat, lake.area,
 atm.press, dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
-k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press, 
+k600_macInytre <- k.macIntyre.base(wnd.z, Kd, atm.press,
 dateTime, Ts, z.aml, airT, wnd, RH, sw, lwnet)
 
 }
 \references{
-Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide 
-in a low-wind oligotrophic lake measured by the addition of SF~ 6}. 
+Cole, J., J. Nina, and F. Caraco. \emph{Atmospheric exchange of carbon dioxide
+in a low-wind oligotrophic lake measured by the addition of SF~ 6}.
 Limnology and Oceanography 43 (1998): 647-656.
 
-MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney, 
-and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer 
+MacIntyre, Sally, Anders Jonsson, Mats Jansson, Jan Aberg, Damon E. Turney,
+and Scott D. Miller. \emph{Buoyancy flux, turbulence, and the gas transfer
 coefficient in a stratified lake}. Geophysical Research Letters 37, no. 24 (2010).
 
-Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre, 
-John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection 
+Read, Jordan S., David P. Hamilton, Ankur R. Desai, Kevin C. Rose, Sally MacIntyre,
+John D. Lenters, Robyn L. Smyth et al. \emph{Lake-size dependency of wind shear and convection
 as controls on gas exchange}. Geophysical Research Letters 39, no. 9 (2012).
 
-Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low 
+Crusius, John, and Rik Wanninkhof. \emph{Gas transfer velocities measured at low
 wind speed over a lake}. Limnology and Oceanography 48, no. 3 (2003): 1010-1017.
 
-Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence 
+Dominic Vachon and Yves T. Prairie. \emph{The ecosystem size and shape dependence
 of gas transfer velocity versus wind speed relationships in lakes}.
 Can. J. Fish. Aquat. Sci. 70 (2013): 1757-1764.
 

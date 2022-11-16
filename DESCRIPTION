@@ -2,9 +2,29 @@ Package: LakeMetabolizer
 Title: Tools for the Analysis of Ecosystem Metabolism
 Maintainer: Jake Zwart <jayzlimno@gmail.com>
 Version: 1.5.5
-Author: Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul
-    Hanson, Aline Jaimes, Jordan Read, Richard Woolway
-Description: A collection of tools for the calculation of freewater metabolism.
+Authors@R: c(person("Luke", "Winslow", role = c("aut"),
+                    email = "lawinslow@gmail.com"),
+             person("Jake", "Zwart", role = c("cre", "aut"),
+                    email = "jayzlimno@gmail.com",
+                    comment = c(ORCID = "0000-0002-3870-405X")),
+             person("Ryan", "Batt", role = "aut"),
+             person("Jessica", "Corman", role = "aut"),
+             person("Hilary", "Dugan", role = "aut"),
+             person("Paul", "Hanson", role = "aut"),
+             person("Aline", "Jaimes", role = "aut"),
+             person("Jordan", "Read", role = "aut"),
+             person("Richard", "Woolway", role = "aut"))
+Description: A collection of tools for the calculation of freewater metabolism
+    from in situ time series of dissolved oxygen, water temperature, and,
+    optionally, additional environmental variables. LakeMetabolizer implements
+    5 different metabolism models with diverse statistical underpinnings:
+    bookkeeping, ordinary least squares, maximum likelihood, Kalman filter,
+    and Bayesian. Each of these 5 metabolism models can be combined with
+    1 of 7 models for computing the coefficient of gas exchange across the
+    air–water interface (k). LakeMetabolizer also features a variety of
+    supporting functions that compute conversions and implement calculations
+    commonly applied to raw data prior to estimating metabolism (e.g., oxygen
+    saturation and optical conversion models).
 License: GPL (>= 2)
 Imports:
     plyr,
@@ -16,4 +36,7 @@ Depends:
     R (>= 2.15.0),
     rLakeAnalyzer (>= 1.4)
 Repository: http://github.com/GLEON/LakeMetabolizer
+BugReports: https://github.com/GLEON/LakeMetabolizer/issues
+URL: https://www.tandfonline.com/doi/abs/10.1080/IW-6.4.883
 RoxygenNote: 7.2.1
+Encoding: UTF-8

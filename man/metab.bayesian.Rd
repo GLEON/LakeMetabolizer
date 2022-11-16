@@ -11,7 +11,7 @@ metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 
 \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}}
 
-\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models 
+\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models
 (e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}}
 
 \item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
@@ -31,27 +31,27 @@ A list of length 4 with components:
 \item{metab.sd}{standard deviation of metabolism estimates}
 \item{metab}{daily metabolism estimates as a data.frame with columns corresponding to
 \describe{
-\item{\code{GPP}}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}  
-\item{\code{R}}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}  
-\item{\code{NEP}}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}  
+\item{\code{GPP}}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{\code{R}}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{\code{NEP}}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 }}
 }
 \description{
-This function runs the bayesian metabolism model on the supplied 
-gas concentration and other supporting data. This allows for both estimates of 
+This function runs the bayesian metabolism model on the supplied
+gas concentration and other supporting data. This allows for both estimates of
 metabolism along with uncertainty around the parameters.
 }
 \examples{
 \dontrun{
 library(rLakeAnalyzer)
 
-doobs = load.ts(system.file('extdata', 
+doobs = load.ts(system.file('extdata',
                            'sparkling.doobs', package="LakeMetabolizer"))
-wtr = load.ts(system.file('extdata', 
+wtr = load.ts(system.file('extdata',
                          'sparkling.wtr', package="LakeMetabolizer"))
-wnd = load.ts(system.file('extdata', 
+wnd = load.ts(system.file('extdata',
                          'sparkling.wnd', package="LakeMetabolizer"))
-irr = load.ts(system.file('extdata', 
+irr = load.ts(system.file('extdata',
                          'sparkling.par', package="LakeMetabolizer"))
 
 #Subset a day
@@ -65,16 +65,16 @@ k600 = k.cole.base(wnd[,2])
 k.gas = k600.2.kGAS.base(k600, wtr[,3], 'O2')
 do.sat = o2.at.sat(wtr[,1:2], altitude=300)
 
-metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)), 
+metab.bayesian(irr=irr[,2], z.mix=rep(1, length(k.gas)),
               do.sat=do.sat[,2], wtr=wtr[,2],
               k.gas=k.gas, do.obs=doobs[,2])
 }
 }
 \references{
-Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar. 
-2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration 
-Using a Bayesian Statistical Model of Oxygen Dynamics}. 
-Limnology and Oceanography 55 (3): 1047-1062. doi:10.4319/lo.2010.55.3.1047. 
+Holtgrieve, Gordon W., Daniel E. Schindler, Trevor a. Branch, and Z. Teresa A'mar.
+2010. \emph{Simultaneous Quantification of Aquatic Ecosystem Metabolism and Reaeration
+Using a Bayesian Statistical Model of Oxygen Dynamics}.
+Limnology and Oceanography 55 (3): 1047-1062. doi:10.4319/lo.2010.55.3.1047.
 http://www.aslo.org/lo/toc/vol_55/issue_3/1047.html.
 }
 \seealso{
