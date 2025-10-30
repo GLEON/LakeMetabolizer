@@ -11,17 +11,17 @@ metab.bookkeep(do.obs, do.sat, k.gas, z.mix, irr, ...)
 
 \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}}
 
-\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models 
+\item{k.gas}{Vector of kGAS values calculated from any of the gas flux models
 (e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}}
 
-\item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
+\item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link[rLakeAnalyzer]{ts.meta.depths}}
 
 \item{irr}{Integer vector of 1's (daytime) and 0's (nighttime), or numeric vector of irradiance that will be converted to boolean 1's and 0's if "datetime" is passed via \code{...}}
 
 \item{...}{additional arguments to be passed, particularly \code{POSIXct} class "datetime"}
 }
 \value{
-A data.frame with columns corresponding to components of metabolism 
+A data.frame with columns corresponding to components of metabolism
 \describe{
 \item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 \item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
@@ -29,19 +29,19 @@ A data.frame with columns corresponding to components of metabolism
 }
 }
 \description{
-This model is a simple model based on the assumption that movements in DO during 
-the day are due to NEP and gas exchange. Respiration is estimated from night-time decreases. 
+This model is a simple model based on the assumption that movements in DO during
+the day are due to NEP and gas exchange. Respiration is estimated from night-time decreases.
 GPP is calculated from the algebraic manipulation of NEP and R. Based on Cole et al 2000.
 }
 \examples{
 library(rLakeAnalyzer)
 Sys.setenv(TZ='GMT')
 
-doobs = load.ts(system.file('extdata', 
+doobs = load.ts(system.file('extdata',
                            'sparkling.doobs', package="LakeMetabolizer"))
-wtr = load.ts(system.file('extdata', 
+wtr = load.ts(system.file('extdata',
                          'sparkling.wtr', package="LakeMetabolizer"))
-wnd = load.ts(system.file('extdata', 
+wnd = load.ts(system.file('extdata',
                          'sparkling.wnd', package="LakeMetabolizer"))
 
 #Subset a day
@@ -59,8 +59,8 @@ irr = as.integer(is.day(doobs[,1], 45))
 metab.bookkeep(doobs[,2], do.sat, k.gas, z.mix=1, irr, datetime=doobs$datetime)
 }
 \references{
-Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell. 2000. 
-\emph{Persistence of Net Heterotrophy in Lakes during Nutrient Addition and Food Web Manipulations}. 
+Cole, Jonathan J., Michael L. Pace, Stephen R. Carpenter, and James F. Kitchell. 2000.
+\emph{Persistence of Net Heterotrophy in Lakes during Nutrient Addition and Food Web Manipulations}.
 Limnology and Oceanography 45 (8): 1718-1730. doi:10.4319/lo.2000.45.8.1718.
 }
 \seealso{

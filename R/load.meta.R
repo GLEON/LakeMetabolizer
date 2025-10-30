@@ -15,7 +15,7 @@
 #'@author Luke A Winslow
 #'
 #'@seealso
-#'\link{rLakeAnalyzer::load.ts}
+#'\link[rLakeAnalyzer]{load.ts}
 #'\link{load.all.data}
 #'@export
 load.meta = function(fPath){

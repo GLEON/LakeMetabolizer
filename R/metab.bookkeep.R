@@ -6,7 +6,7 @@
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
-#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{rLakeAnalyzer::ts.meta.depths}
+#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link[rLakeAnalyzer]{ts.meta.depths}
 #'@param irr Integer vector of 1's (daytime) and 0's (nighttime), or numeric vector of irradiance that will be converted to boolean 1's and 0's if "datetime" is passed via \code{...}
 #'@param ... additional arguments to be passed, particularly \code{POSIXct} class "datetime"
 #'@return

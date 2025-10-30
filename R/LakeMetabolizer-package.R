@@ -1,3 +1,4 @@
+"_PACKAGE"
 #' @title Tools for the analysis of ecosystem metabolism
 #'
 #' @description A collection of tools for the calculation of freewater metabolism.
@@ -49,10 +50,9 @@
 #' Limnology and Oceanography 1 (2): 102-117. http://www.jstor.org/stable/2833008.
 #'
 #' @author
-#' Luke Winslow, Jake Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
+#' Luke Winslow, Jacob Zwart, Ryan Batt, Jessica Corman, Hilary Dugan, Paul Hanson, Aline Jaimes, Jordan Read, Richard Woolway
 #'
-#' Maintainer: Luke Winslow <lawinslow@@gmail.com>
+#' Maintainer: Jacob Zwart <jayzlimno@@gmail.com>
 #'
-#' @docType package
 #' @name LakeMetabolizer
 NULL

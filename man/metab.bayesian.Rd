@@ -14,7 +14,7 @@ metab.bayesian(do.obs, do.sat, k.gas, z.mix, irr, wtr, priors, ...)
 \item{k.gas}{Vector of kGAS values calculated from any of the gas flux models
 (e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}}
 
-\item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}}
+\item{z.mix}{Vector of mixed-layer depths in meters. To calculate, see \link[rLakeAnalyzer]{ts.meta.depths}}
 
 \item{irr}{Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}}
 

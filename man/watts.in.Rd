@@ -4,10 +4,10 @@
 	Simple estimate of energy gained by a layer of water
 }
 \description{
-	Estimate the amount of energy gained by a layer of water as the difference between 
-	energy entering from the top of the layer and energy leaving at the bottom. 
-	Energy gained/ lost is calculated from photosynthetically active radiation 
-	(PAR, which is then converted to watts) and an estimate of kd (light attenuation coefficient) 
+	Estimate the amount of energy gained by a layer of water as the difference between
+	energy entering from the top of the layer and energy leaving at the bottom.
+	Energy gained/ lost is calculated from photosynthetically active radiation
+	(PAR, which is then converted to watts) and an estimate of kd (light attenuation coefficient)
 	which is derived from the depth of 1 percent surface light.
 }
 \usage{
@@ -35,10 +35,10 @@ watts.in(top, bot, irr, z1perc)
 	into temperature change.
 }
 \value{
-	numeric vector of estimates of energy gain 
+	numeric vector of estimates of energy gain
 }
 \references{
-	Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism: 
+	Batt, Ryan D. and Stephen R. Carpenter. 2012. \emph{Free-water lake metabolism:
 	addressing noisy time series with a Kalman filter}. Limnology and Oceanography: Methods
 	10: 20-30. doi: 10.4319/lom.2012.10.20
 }
