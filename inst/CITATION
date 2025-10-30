@@ -11,7 +11,7 @@ bibentry(
     person(c("R.", "Iestyn"), "Woolway", role = "aut"),
     person(c("Jessica", "R."), "Corman", role = "aut"),
     person(c("Paul", "C."), "Hanson", role = "aut"),
-    person(c("Jordan", "S."), "Read", role = "aut"),
+    person(c("Jordan", "S."), "Read", role = "aut")
   ),
   journal = "Inland Waters",
   year = "2016",
