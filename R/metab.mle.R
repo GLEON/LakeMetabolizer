@@ -4,7 +4,7 @@
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
 #'@param k.gas Vector of kGAS values calculated from any of the gas flux models
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
-#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
+#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{rLakeAnalyzer::ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param error.type Option specifying if model should assume pure Process Error 'PE' or Observation Error 'OE'. Defaults to observation error 'OE'.
