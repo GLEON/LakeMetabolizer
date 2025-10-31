@@ -21,7 +21,7 @@
 #'@author Luke A. Winslow
 #'
 #'@seealso
-#'\link{load.ts}
+#'\link[rLakeAnalyzer]{load.ts}
 #'\link{load.meta}
 #'@export
 load.all.data <- function(lake.name, data.path, checkMerge=TRUE){

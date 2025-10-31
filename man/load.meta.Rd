@@ -13,11 +13,11 @@ load.meta(fPath)
 A list with the metadata parsed from the file.
 }
 \description{
-Parses a formatted metadata file. Useful for site-specific metadata 
+Parses a formatted metadata file. Useful for site-specific metadata
 that is not contained in the timeseries files.
 }
 \seealso{
-\link{load.ts}
+\link[rLakeAnalyzer]{load.ts}
 \link{load.all.data}
 }
 \author{

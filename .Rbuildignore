@@ -6,3 +6,4 @@ R/LakeMetabolizer.R
 ^README\.md$
 inst/figdata
 ^\.github$
+^cran-comments\.md$

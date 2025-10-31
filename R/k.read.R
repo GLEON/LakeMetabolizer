@@ -39,7 +39,7 @@
 #'
 #'@return Returns a data.frame with a datetime column and a k600 column. k600 is in units of meters per day (m/d).
 #'@import rLakeAnalyzer
-#'@useDynLib LakeMetabolizer
+#'@useDynLib LakeMetabolizer, .registration = TRUE
 #'@keywords methods math
 #'
 #'@references

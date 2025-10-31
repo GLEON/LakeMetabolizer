@@ -64,7 +64,7 @@
 #' and seawater}. Deep Sea Research and Oceanographic Abstracts, 17(4), 721-735.
 #' doi:10.1016/0011-7471(70)90037-9
 #'
-#' @seealso \link{water.density}, \link{o2.at.sat.base}
+#' @seealso \link[rLakeAnalyzer]{water.density}, \link{o2.at.sat.base}
 #' @keywords math methods
 #' @examples
 #' temp.range = 1:25

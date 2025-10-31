@@ -24,7 +24,7 @@ All timeseries data are merged by \dQuote{datetime} into a single \link{data.fra
 Data are identified by the column header information.
 }
 \seealso{
-\link{load.ts}
+\link[rLakeAnalyzer]{load.ts}
 \link{load.meta}
 }
 \author{

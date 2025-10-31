@@ -1,10 +1,10 @@
 Package: LakeMetabolizer
 Title: Tools for the Analysis of Ecosystem Metabolism
-Maintainer: Jake Zwart <jayzlimno@gmail.com>
-Version: 1.5.5
+Maintainer: Jacob Zwart <jayzlimno@gmail.com>
+Version: 1.5.6
 Authors@R: c(person("Luke", "Winslow", role = c("aut"),
                     email = "lawinslow@gmail.com"),
-             person("Jake", "Zwart", role = c("cre", "aut"),
+             person("Jacob", "Zwart", role = c("cre", "aut"),
                     email = "jayzlimno@gmail.com",
                     comment = c(ORCID = "0000-0002-3870-405X")),
              person("Ryan", "Batt", role = "aut"),
@@ -38,5 +38,5 @@ Depends:
 Repository: http://github.com/GLEON/LakeMetabolizer
 BugReports: https://github.com/GLEON/LakeMetabolizer/issues
 URL: https://www.tandfonline.com/doi/abs/10.1080/IW-6.4.883
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.3
 Encoding: UTF-8

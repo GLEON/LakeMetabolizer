@@ -1,16 +1,16 @@
 #'@title Metabolism model based on a ordinary least squares parameter estimation framework.
-#'@description This function runs the ordinary least squares metabolism model on the supplied gas concentration and other supporting data. This is a 
+#'@description This function runs the ordinary least squares metabolism model on the supplied gas concentration and other supporting data. This is a
 #'common approach that allows for the concurrent estimation of metabolism paramters from a timeseries.
 #'@param do.obs Vector of dissolved oxygen concentration observations, mg L^-1
 #'@param do.sat Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}
-#'@param k.gas Vector of kGAS values calculated from any of the gas flux models 
+#'@param k.gas Vector of kGAS values calculated from any of the gas flux models
 #'(e.g., \link{k.cole}) and converted to kGAS using \link{k600.2.kGAS}
-#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link{ts.meta.depths}
+#'@param z.mix Vector of mixed-layer depths in meters. To calculate, see \link[rLakeAnalyzer]{ts.meta.depths}
 #'@param irr Vector of photosynthetically active radiation in \eqn{\mu mol\ m^{-2} s^{-1}}{micro mols / m^2 / s}
 #'@param wtr Vector of water temperatures in \eqn{^{\circ}C}{degrees C}. Used in scaling respiration with temperature
 #'@param ... additional arguments; currently "datetime" is the only recognized argument passed through \code{...}
 #'@return
-#'A data.frame with columns corresponding to components of metabolism 
+#'A data.frame with columns corresponding to components of metabolism
 #'\describe{
 	#'\item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 	#'\item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
@@ -21,16 +21,16 @@
 #'
 #'@author Luke A Winslow, Ryan Batt, GLEON Fellows
 #'@seealso
-#'\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian}, 
+#'\link{metab}, \link{metab.bookkeep}, \link{metab.mle}, \link{metab.kalman}, \link{metab.bayesian},
 #'@examples
 #'library(rLakeAnalyzer)
-#'doobs = load.ts(system.file('extdata', 
+#'doobs = load.ts(system.file('extdata',
 #'                            'sparkling.doobs', package="LakeMetabolizer"))
-#'wtr = load.ts(system.file('extdata', 
+#'wtr = load.ts(system.file('extdata',
 #'                          'sparkling.wtr', package="LakeMetabolizer"))
-#'wnd = load.ts(system.file('extdata', 
+#'wnd = load.ts(system.file('extdata',
 #'                          'sparkling.wnd', package="LakeMetabolizer"))
-#'irr = load.ts(system.file('extdata', 
+#'irr = load.ts(system.file('extdata',
 #'                          'sparkling.par', package="LakeMetabolizer"))
 #'
 #'#Subset a day
@@ -49,20 +49,20 @@
 #'@export
 metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
-  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas, 
+  complete.inputs(do.obs=do.obs, do.sat=do.sat, k.gas=k.gas,
                   z.mix=z.mix, irr=irr, wtr=wtr, error=TRUE)
-  
+
 	nobs <- length(do.obs)
-	
+
 	mo.args <- list(...)
-  
+
 	if(any(z.mix <= 0)){
 	  stop("z.mix must be greater than zero.")
 	}
 	if(any(wtr <= 0)){
 		stop("all wtr must be positive.")
 	}
-  
+
 	if("datetime"%in%names(mo.args)){ # check to see if datetime is in the ... args
 		datetime <- mo.args$datetime # extract datetime
 		freq <- calc.freq(datetime) # calculate sampling frequency from datetime
@@ -81,17 +81,17 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 
 
 	inst_flux <- (k.gas/freq) * (do.sat - do.obs)  # positive is into the lake
-	
+
 	# flux <- (inst_flux[1:(n.obs-1)] + inst_flux[-1])/2
 	flux <- inst_flux[-nobs]
 
-	
+
 	noflux.do.diff <- do.diff - flux/z.mix[-nobs]
-	
+
 	lntemp <- log(wtr)
 	mod <- lm(noflux.do.diff ~ irr[-nobs] + lntemp[-nobs] -1) # note that if we decied to use resp=rho*log(Temp), you would do lm(do~irr+lntemp-1) (mind the -1)
 
-	rho <- mod[[1]][2] 
+	rho <- mod[[1]][2]
 	iota <- mod[[1]][1]
 	mod.matrix <- model.matrix(mod)
 	gpp <- mean(iota*mod.matrix[,1], na.rm=TRUE) * freq
@@ -106,5 +106,5 @@ metab.ols <- function(do.obs, do.sat, k.gas, z.mix, irr, wtr, ...){
 	results <- list("mod"=mod, "metab"=data.frame("GPP"=gpp, "R"=resp, "NEP"=nep))
 	# attr(results, "lm.mod") <- mod
 	return(results)
-	
+
 }
