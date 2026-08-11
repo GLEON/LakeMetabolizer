@@ -4,10 +4,22 @@
 \alias{metab.mle}
 \title{Metabolism calculated from the maximum likelihood estimates of the parameters in a standard linear regression model}
 \usage{
-metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type = "OE", ...)
+metab.mle(
+  do.obs,
+  do.sat,
+  k.gas,
+  z.mix,
+  irr,
+  wtr,
+  error.type = "OE",
+  n.boot = 0,
+  ar1.resids = TRUE,
+  constrain.sign = FALSE,
+  ...
+)
 }
 \arguments{
-\item{do.obs}{Vector of dissolved oxygen concentration observations, \eqn{mg O[2] L^{-1}}{mg O2 / L}}
+\item{do.obs}{Vector of dissolved oxygen concentration observations, \eqn{mg O_2 L^{-1}}{mg O2 / L}}
 
 \item{do.sat}{Vector of dissolved oxygen saturation values based on water temperature. Calculate using \link{o2.at.sat}}
 
@@ -22,6 +34,12 @@ metab.mle(do.obs, do.sat, k.gas, z.mix, irr, wtr, error.type = "OE", ...)
 
 \item{error.type}{Option specifying if model should assume pure Process Error 'PE' or Observation Error 'OE'. Defaults to observation error 'OE'.}
 
+\item{n.boot}{Numeric of the number of bootstrap iterations. Set to 0 to bypass uncertainty quantification (default). Set to 2 or greater to quantify uncertainty via bootstrapping. To ensure reproducible confidence intervals, use \link{set.seed}.}
+
+\item{ar1.resids}{Logical. If TRUE, the AR(1) structure of the residuals will be retained during randomization when bootstrapping.}
+
+\item{constrain.sign}{Logical. If TRUE, estimates of GPP and R coefficients with be constrained to positive and negative values, respectively.}
+
 \item{...}{additional arguments; currently "datetime" is the only recognized argument passed through \code{...}}
 }
 \value{
@@ -30,6 +48,18 @@ A data.frame with columns corresponding to components of metabolism
 \item{GPP}{numeric estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 \item{R}{numeric estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
 \item{NEP}{numeric estimate of Net Ecosystem production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+}
+If n.boot is 2 or greater, the data frame will also contain the following columns:
+\describe{
+\item{GPP.lci}{lower 95\% confidence interval of the estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{GPP.uci}{upper 95\% confidence interval of the estimate of Gross Primary Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{GPP.cv}{coefficient of variation of the bootstrapped estimates of Gross Primary Production}
+\item{R.lci}{lower 95\% confidence interval of the estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{R.uci}{upper 95\% confidence interval of the estimate of Respiration, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{R.cv}{coefficient of variation of the bootstrapped estimates of Respiration. As R is typically negative, the CV is also negative.}
+\item{NEP.lci}{lower 95\% confidence interval of the estimate of Net Ecosystem Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{NEP.uci}{upper 95\% confidence interval of the estimate of Net Ecosystem Production, \eqn{mg O_2 L^{-1} d^{-1}}{mg O2 / L / d}}
+\item{NEP.cv}{coefficient of variation of the bootstrapped estimates of Net Ecosystem Production. As the mean NEP can approach 0, the CV can become inflated.}
 }
 The maximum likelihood estimates of model parameters can be accessed via \code{attributes(metab.mle(...))[["params"]]}
 }
@@ -92,19 +122,27 @@ do.sat = o2.at.sat.base(wtr[,3], altitude=300)
 metab.mle(doobs[,2], do.sat, k.gas, z.mix[,2], irr[,2], wtr[,3])
 }
 \references{
-Hanson, PC, SR Carpenter, N Kimura, C Wu, SP Cornelius, TK Kratz. 2008
-\emph{Evaluation of metabolism models for free-water dissolved oxygen in lakes}.
-Limnology and Oceanography: Methods 6: 454:465.
+Hanson, Paul C., Stephen R. Carpenter, Nobuaki Kimura, Chin Wu, Sean P. Cornelius, 
+and Timothy K. Kratz. 2008. \emph{Evaluation of Metabolism Models for Free-Water Dissolved 
+Oxygen Methods in Lakes}. Limnology and Oceanography: Methods 6 (9): 454–65. 
+\url{https://doi.org/10.4319/lom.2008.6.454}.
 
-Solomon CT, DA Bruesewitz, DC Richardson, KC Rose, MC Van de Bogert, PC Hanson, TK Kratz, B Larget,
-R Adrian, B Leroux Babin, CY Chiu, DP Hamilton, EE Gaiser, S Hendricks, V Istvanovics, A Laas, DM O'Donnell,
-ML Pace, E Ryder, PA Staehr, T Torgersen, MJ Vanni, KC Weathers, G Zhuw. 2013.
-\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}.
-Limnology and Oceanography 58 (3): 849:866. doi:10.4319/lo.2013.58.3.0849.
+Solomon, Christopher T., Denise A. Bruesewitz, David C. Richardson, et al. 2013. 
+\emph{Ecosystem Respiration: Drivers of Daily Variability and Background Respiration in Lakes around the Globe}. 
+Limnology and Oceanography 58 (3): 849–66. \url{https://doi.org/10.4319/lo.2013.58.3.0849}.
+
+Dugan, Hilary A., R. Iestyn Woolway, Arianto B. Santoso, et al. 2016. 
+\emph{Consequences of Gas Flux Model Choice on the Interpretation of Metabolic 
+Balance across 15 Lakes}. Inland Waters 6 (4): 581–92. \url{https://doi.org/10.1080/IW-6.4.836}.
+
+Corman, Jessica R., Jacob A. Zwart, Jennifer Klug, et al. 2023. \emph{Response of 
+Lake Metabolism to Catchment Inputs Inferred Using High-Frequency Lake and 
+Stream Data from across the Northern Hemisphere}. Limnology and Oceanography 
+68 (12): 2617–31. \url{https://doi.org/10.1002/lno.12449}.
 }
 \seealso{
 \link{metab}, \link{metab.bookkeep}, \link{metab.ols}, \link{metab.kalman}, \link{metab.bayesian}
 }
 \author{
-Luke A Winslow, Ryan Batt, GLEON Fellows
+Luke A Winslow, Ryan Batt, Bennett McAfee, GLEON Fellows
 }

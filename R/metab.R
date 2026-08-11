@@ -7,7 +7,8 @@
 #'
 #'
 #'@usage
-#'metab(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...)
+#'metab(data, method, verbose = interactive(), wtr.name="wtr", irr.name="irr", 
+#'      do.obs.name="do.obs", ...)
 #'
 #'@param data
 #' a data.frame whose columns are
@@ -31,6 +32,7 @@
 #'@param method
 #' a character string specifying one of the 5 statistical methods
 #'(bayesian, bookkeep, kalman, ols, mle)
+#'@param verbose logical. If TRUE, a progress bar will be displayed. Defaults to TRUE
 #'@param wtr.name the name of the column containing temperature at the depth of do.obs (predictor variable for R)
 #'@param irr.name the name of the column containing irradiance (predictor variable for GPP)
 #'@param do.obs.name the name of the column in data containing the DO observations (in mg/L) to be used as the response variable
@@ -59,7 +61,7 @@
 #'
 #' To calculate k.gas: \link{k600.2.kGAS}
 #'
-#' To calculate k600 values for k.gas: \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, \link{k.read}
+#' To calculate k600 values for k.gas: \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, \link{k.read}, \link{k.klaus}
 #'
 #'
 #'@examples
@@ -107,7 +109,7 @@
 #'
 #'@export
 
-metab <- function(data, method = NULL, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...){
+metab <- function(data, method = NULL, verbose = interactive(), wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...){
 
 	m.args <- list(...)
 
@@ -163,6 +165,9 @@ metab <- function(data, method = NULL, wtr.name="wtr", irr.name="irr", do.obs.na
 	# ==================================
 	# = Apply metab to subsets of data =
 	# ==================================
+	if (verbose == TRUE){
+	  pb <- utils::txtProgressBar(min = 0, max = nid, initial = 0, style = 3) 
+	}
 	for(i in unique(ids)){
 
 		poss.args <- c("do.obs","do.sat","k.gas","z.mix", "irr", "wtr", "datetime") # data2 columns that could correspond to arguments
@@ -173,7 +178,12 @@ metab <- function(data, method = NULL, wtr.name="wtr", irr.name="irr", do.obs.na
 
 		# print(paste("Analyzing day #", i)); flush.console(); # Is this annoying? I'm commenting-out
 		results[[i]] <- do.call(mtdCall, largs) # this is where all of the work happens
+		
+		if (verbose == TRUE){
+		  utils::setTxtProgressBar(pb,i)
+		}
 	}
+	if (verbose == TRUE){close(pb)}
 	answer0 <- conquerList(results, naming=data.frame("year"=data2[!duplicated(ids),"year"], "doy"=trunc(data2[!duplicated(ids),"doy"])))
 
 

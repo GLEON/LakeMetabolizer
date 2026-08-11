@@ -4,7 +4,8 @@
 \alias{metab}
 \title{Calculate metabolism}
 \usage{
-metab(data, method, wtr.name="wtr", irr.name="irr", do.obs.name="do.obs", ...)
+metab(data, method, verbose = interactive(), wtr.name="wtr", irr.name="irr", 
+     do.obs.name="do.obs", ...)
 }
 \arguments{
 \item{data}{a data.frame whose columns are
@@ -27,6 +28,8 @@ Columns that are not used by a particular statistical method do not need to be s
 
 \item{method}{a character string specifying one of the 5 statistical methods
 (bayesian, bookkeep, kalman, ols, mle)}
+
+\item{verbose}{logical. If TRUE, a progress bar will be displayed. Defaults to TRUE}
 
 \item{wtr.name}{the name of the column containing temperature at the depth of do.obs (predictor variable for R)}
 
@@ -101,7 +104,7 @@ To calculate do.sat: \link{o2.at.sat}
 
 To calculate k.gas: \link{k600.2.kGAS}
 
-To calculate k600 values for k.gas: \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, \link{k.read}
+To calculate k600 values for k.gas: \link{k.cole}, \link{k.crusius}, \link{k.macIntyre}, \link{k.read}, \link{k.klaus}
 }
 \author{
 Ryan D. Batt
